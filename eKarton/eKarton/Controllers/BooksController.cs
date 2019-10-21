@@ -39,9 +39,17 @@ namespace eKarton.Controllers
             [HttpPost]
             public ActionResult<Book> Create(Book book)
             {
-                _bookService.Create(book);
+            Book book1 = new Book();
+            book1.Author = "sdsadsa";
+            book1.BookName = "sdsadsa";
+            book1.Category = "sdsad";
+            book1.Id = "321";
+            book1.Price = 34.22M;
+            
 
-                return CreatedAtRoute("GetBook", new { id = book.Id.ToString() }, book);
+                _bookService.Create(book1);
+
+                return CreatedAtRoute("GetBook", new { id = book1.Id.ToString() }, book1);
             }
 
             [HttpPut("{id:length(24)}")]
