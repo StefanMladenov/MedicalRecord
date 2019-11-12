@@ -7,8 +7,8 @@ namespace eKarton.Models
 {
     public class Pregled
     {
-
         public int Pregled_id { get; set; }
+     
         public string Izvestaj_pisano { get; set; }
 
         public DateTime Datum { get; set; }

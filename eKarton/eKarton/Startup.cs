@@ -5,7 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 using eKarton.Services;
+using eKarton.Models.SQL;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace eKarton
 {
@@ -24,6 +29,8 @@ namespace eKarton
             services.Configure<BookstoreDatabaseSettings>(
                 Configuration.GetSection(nameof(BookstoreDatabaseSettings)));
 
+            services.AddDbContext<EKartonContext>(opts => opts.UseSqlServer(Configuration["DefaultConnection:ConnectionString"]));
+
             services.AddSingleton<IBookstoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
 
@@ -38,7 +45,12 @@ namespace eKarton
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                                       Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
+                RequestPath = new PathString("/app-images")
+            });
             app.UseHttpsRedirection();
 
             app.UseRouting();
