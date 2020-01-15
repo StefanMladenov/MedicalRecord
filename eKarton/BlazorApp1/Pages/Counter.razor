@@ -1,16 +1,22 @@
 ﻿@page "/counter"
 
+@using BlazorApp1.Data
+@inject UserService UuserService
+
 <h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+@*<p>Current count: @currentCount</p>*@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
-@code {
-    int currentCount = 0;
+@code { 
+        //int currentCount = 0;
+    [CascadingParameter] string user { get; set; }
 
-    void IncrementCount()
+    async Task IncrementCount()
     {
-        currentCount++;
+        //currentCount++;
+        var a = await UuserService.RequestAsync<List<AuthenticateModel>>(HttpMethod.Get, "users", user);
+
     }
 }

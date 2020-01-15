@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using EKartonWebApp.ViewModels
+@model LekarVM
+@{
+    ViewData["Title"] = "Login";
+    Layout = "";
+}
+
+<h2>Login</h2>
+@using (Html.BeginForm("PutLekar", "Home", FormMethod.Post))
+{
+    //this is for create form tag
+    @Html.AntiForgeryToken() // this is for prevent CSRF attack
+    @Html.ValidationSummary(true)
+    if (@ViewBag.Message != null)
+    {
+
+        <div style="border:1px solid red">
+            @ViewBag.Message
+        </div>
+    }
+
+    <table>
+        <tr>
+            <td>@Html.LabelFor(a => a.Ime)</td>
+            <td>@Html.TextBoxFor(a => a.Ime)</td>
+            <td>@Html.ValidationMessageFor(a => a.Ime)</td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(a => a.Prezime)
+            </td>
+            <td>
+                @Html.TextBoxFor(a => a.Prezime)
+            </td>
+            <td>
+                @Html.ValidationMessageFor(a => a.Prezime)
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="PutLekar" />
+            </td>
+            <td></td>
+        </tr>
+    </table>
+}
+<a asp-area="" asp-controller="Home" asp-action="Register">Register</a>
+<a asp-area="" asp-controller="Home" asp-action="GetLekari">GetGetGet</a>
+@*@using (Html.BeginForm("Register", "Home"))
+    {
+        <table>
+            <td></td>
+            <td>
+                <input type="button" value="Register" />
+            </td>
+            <td></td>
+        </table>
+    }*@
+

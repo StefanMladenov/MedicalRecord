@@ -7,8 +7,7 @@ namespace EKartonWebApp.ViewModels
 {
     public class LekarVM
     {
-        public string JMBG { get; set; }
-        public string BrojFaksimila { get; set; }
-
+        public string Ime { get; set; }
+        public string Prezime { get; set; }
     }
 }

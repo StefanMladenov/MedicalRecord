@@ -24,14 +24,14 @@ namespace eKarton.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EKarton>>> GetEKartoniLista()
         {
-            return await _context.EKartoniLista.ToListAsync();
+            return await _context.EKartoni.ToListAsync();
         }
 
         // GET: api/EKarton/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EKarton>> GetEKarton(int id)
         {
-            var eKarton = await _context.EKartoniLista.FindAsync(id);
+            var eKarton = await _context.EKartoni.FindAsync(id);
 
             if (eKarton == null)
             {
@@ -47,7 +47,7 @@ namespace eKarton.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEKarton(int id, EKarton eKarton)
         {
-            if (id != eKarton.KartonID)
+            if (id != eKarton.Id)
             {
                 return BadRequest();
             }
@@ -79,23 +79,23 @@ namespace eKarton.Controllers
         [HttpPost]
         public async Task<ActionResult<EKarton>> PostEKarton(EKarton eKarton)
         {
-            _context.EKartoniLista.Add(eKarton);
+            _context.EKartoni.Add(eKarton);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEKarton", new { id = eKarton.KartonID }, eKarton);
+            return CreatedAtAction("GetEKarton", new { id = eKarton.Id }, eKarton);
         }
 
         // DELETE: api/EKarton/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<EKarton>> DeleteEKarton(int id)
         {
-            var eKarton = await _context.EKartoniLista.FindAsync(id);
+            var eKarton = await _context.EKartoni.FindAsync(id);
             if (eKarton == null)
             {
                 return NotFound();
             }
 
-            _context.EKartoniLista.Remove(eKarton);
+            _context.EKartoni.Remove(eKarton);
             await _context.SaveChangesAsync();
 
             return eKarton;
@@ -103,7 +103,7 @@ namespace eKarton.Controllers
 
         private bool EKartonExists(int id)
         {
-            return _context.EKartoniLista.Any(e => e.KartonID == id);
+            return _context.EKartoni.Any(e => e.Id == id);
         }
     }
 }

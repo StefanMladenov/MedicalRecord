@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eKarton.Models.SQL
 {
     public class Slika
     {
-        public int SlikaID { get; set; }
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public string ImagePath { get; set; }
 
         [DataType(DataType.Date)]
@@ -32,12 +34,36 @@ namespace eKarton.Models.SQL
     }
     public class Uput : Slika 
     {
-
+        public Ustanova Ustanova { get; set; }
+        public Lekar Lekar { get; set; }
     }
 
     public class Snimak : Slika
     {
         public string DeoTela { get; set; }
+    }
+
+    public class Rentgen : Snimak
+    {
+
+    }
+
+    public class Ultrazvuk:Snimak
+    {
+
+    }
+
+    public class Skener:Snimak
+    {
+
+    }
+    public class NuklearnaMagnetnaRezonanca:Snimak
+    {
+
+    }
+    public class Ostalo : Snimak
+    {
+
     }
 
 }

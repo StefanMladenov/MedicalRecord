@@ -19,100 +19,132 @@ namespace eKarton.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eKarton.Models.SQL.Alergen", b =>
+            modelBuilder.Entity("eKarton.Models.SQL.Anamneza", b =>
                 {
-                    b.Property<int>("AlergenID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Alergican")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ImeAlergena")
+                    b.Property<string>("SocioEpidemioloskiStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("KartonAlergenaID")
+                    b.HasKey("Id");
+
+                    b.ToTable("Anamneze");
+                });
+
+            modelBuilder.Entity("eKarton.Models.SQL.Bolest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AnamnezaId")
                         .HasColumnType("int");
 
-                    b.HasKey("AlergenID");
+                    b.Property<int>("BolestDiskriminator")
+                        .HasColumnType("int");
 
-                    b.HasIndex("KartonAlergenaID");
+                    b.Property<string>("NazivBolesti")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Alergen");
+                    b.Property<string>("SifraBolesti")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Terapija")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnamnezaId");
+
+                    b.ToTable("Bolesti");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.EKarton", b =>
                 {
-                    b.Property<int>("KartonID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("KartonAlergenaID")
+                    b.Property<int?>("AnamnezaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("KartonMajkeKartonID")
+                    b.Property<int?>("KartonAlergenaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("KartonOcaKartonID")
+                    b.Property<int?>("KartonMajkeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("KartonVakcinacijeID")
+                    b.Property<int?>("KartonOcaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LekarOsobaID")
+                    b.Property<int?>("KartonVakcinacijeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PacijentOsobaID")
+                    b.Property<int?>("LekarId")
                         .HasColumnType("int");
 
-                    b.HasKey("KartonID");
+                    b.Property<int?>("PacijentId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("KartonAlergenaID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("KartonMajkeKartonID");
+                    b.HasIndex("AnamnezaId");
 
-                    b.HasIndex("KartonOcaKartonID")
+                    b.HasIndex("KartonAlergenaId");
+
+                    b.HasIndex("KartonMajkeId");
+
+                    b.HasIndex("KartonOcaId")
                         .IsUnique()
-                        .HasFilter("[KartonOcaKartonID] IS NOT NULL");
+                        .HasFilter("[KartonOcaId] IS NOT NULL");
 
-                    b.HasIndex("KartonVakcinacijeID");
+                    b.HasIndex("KartonVakcinacijeId");
 
-                    b.HasIndex("LekarOsobaID");
+                    b.HasIndex("LekarId");
 
-                    b.HasIndex("PacijentOsobaID");
+                    b.HasIndex("PacijentId");
 
-                    b.ToTable("EKartoniLista");
+                    b.ToTable("EKartoni");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.KartonAlergena", b =>
                 {
-                    b.Property<int>("KartonAlergenaID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasKey("KartonAlergenaID");
+                    b.Property<string>("Hrana")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("KartoniAlergenaLista");
+                    b.Property<string>("Ostalo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KartoniAlergena");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.KartonVakcinacije", b =>
                 {
-                    b.Property<int>("KartonVakcinacijeID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasKey("KartonVakcinacijeID");
+                    b.HasKey("Id");
 
-                    b.ToTable("KartoniVakcinacijeLista");
+                    b.ToTable("KartoniVakcinacije");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Lek", b =>
                 {
-                    b.Property<int>("LekID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -123,28 +155,30 @@ namespace eKarton.Migrations
                     b.Property<string>("ImeLeka")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("KartonAlergenaID")
+                    b.Property<int?>("KartonAlergenaId")
                         .HasColumnType("int");
 
-                    b.HasKey("LekID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("KartonAlergenaID");
+                    b.HasIndex("KartonAlergenaId");
 
-                    b.ToTable("LekoviLista");
+                    b.ToTable("Lekovi");
                 });
 
-            modelBuilder.Entity("eKarton.Models.SQL.Osoba", b =>
+            modelBuilder.Entity("eKarton.Models.SQL.Lekar", b =>
                 {
-                    b.Property<int>("OsobaID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BrFaksimila")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DatumRodjenja")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
+                    b.Property<string>("EMail")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ime")
@@ -155,21 +189,85 @@ namespace eKarton.Migrations
                     b.Property<string>("JMBG")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Prezime")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("OsobaID");
+                    b.Property<string>("Specijalizacija")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("OsobeLista");
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Osoba");
+                    b.Property<int?>("UstanovaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UstanovaId");
+
+                    b.ToTable("Lekari");
+                });
+
+            modelBuilder.Entity("eKarton.Models.SQL.Pacijent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DatumRodjenja")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EMail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ImeMajke")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImeOca")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JMBG")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LBO")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Pol")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Prezime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VidOsiguranja")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pacijenti");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.PregledEntity", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -177,19 +275,19 @@ namespace eKarton.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EKartonKartonID")
+                    b.Property<int?>("EKartonId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("EKartonKartonID");
+                    b.HasIndex("EKartonId");
 
                     b.ToTable("PregledEntity");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Slika", b =>
                 {
-                    b.Property<int>("SlikaID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -197,7 +295,7 @@ namespace eKarton.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EKartonKartonID")
+                    b.Property<int?>("EKartonId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImagePath")
@@ -206,16 +304,31 @@ namespace eKarton.Migrations
                     b.Property<string>("TipSlike")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SlikaID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("EKartonKartonID");
+                    b.HasIndex("EKartonId");
 
-                    b.ToTable("SlikeLista");
+                    b.ToTable("Slike");
+                });
+
+            modelBuilder.Entity("eKarton.Models.SQL.Ustanova", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Naziv")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ustanove");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Vakcina", b =>
                 {
-                    b.Property<int>("VakcinaID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -226,126 +339,90 @@ namespace eKarton.Migrations
                     b.Property<string>("ImeVakcine")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("KartonVakcinacijeID")
+                    b.Property<int?>("KartonVakcinacijeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Trajanje")
                         .HasColumnType("int");
 
-                    b.HasKey("VakcinaID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("KartonVakcinacijeID");
+                    b.HasIndex("KartonVakcinacijeId");
 
-                    b.ToTable("VakcineLista");
+                    b.ToTable("Vakcine");
                 });
 
-            modelBuilder.Entity("eKarton.Models.SQL.Lekar", b =>
+            modelBuilder.Entity("eKarton.Models.SQL.Bolest", b =>
                 {
-                    b.HasBaseType("eKarton.Models.SQL.Osoba");
-
-                    b.Property<int>("BrFaksimila")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GodineRadnogStaza")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Ordinacija")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Specijalizacija")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ustanova")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Lekar");
-                });
-
-            modelBuilder.Entity("eKarton.Models.SQL.Pacijent", b =>
-                {
-                    b.HasBaseType("eKarton.Models.SQL.Osoba");
-
-                    b.Property<string>("ImeMajke")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImeOca")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KrvnaGrupa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LBO")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Tezina")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Visina")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("Pacijent");
-                });
-
-            modelBuilder.Entity("eKarton.Models.SQL.Alergen", b =>
-                {
-                    b.HasOne("eKarton.Models.SQL.KartonAlergena", null)
-                        .WithMany("AlergeniLista")
-                        .HasForeignKey("KartonAlergenaID");
+                    b.HasOne("eKarton.Models.SQL.Anamneza", null)
+                        .WithMany("Bolesti")
+                        .HasForeignKey("AnamnezaId");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.EKarton", b =>
                 {
+                    b.HasOne("eKarton.Models.SQL.Anamneza", "Anamneza")
+                        .WithMany()
+                        .HasForeignKey("AnamnezaId");
+
                     b.HasOne("eKarton.Models.SQL.KartonAlergena", "KartonAlergena")
                         .WithMany()
-                        .HasForeignKey("KartonAlergenaID");
+                        .HasForeignKey("KartonAlergenaId");
 
                     b.HasOne("eKarton.Models.SQL.EKarton", "KartonMajke")
                         .WithMany()
-                        .HasForeignKey("KartonMajkeKartonID");
+                        .HasForeignKey("KartonMajkeId");
 
                     b.HasOne("eKarton.Models.SQL.EKarton", "KartonOca")
                         .WithOne()
-                        .HasForeignKey("eKarton.Models.SQL.EKarton", "KartonOcaKartonID");
+                        .HasForeignKey("eKarton.Models.SQL.EKarton", "KartonOcaId");
 
                     b.HasOne("eKarton.Models.SQL.KartonVakcinacije", "KartonVakcinacije")
                         .WithMany()
-                        .HasForeignKey("KartonVakcinacijeID");
+                        .HasForeignKey("KartonVakcinacijeId");
 
                     b.HasOne("eKarton.Models.SQL.Lekar", "Lekar")
                         .WithMany()
-                        .HasForeignKey("LekarOsobaID");
+                        .HasForeignKey("LekarId");
 
                     b.HasOne("eKarton.Models.SQL.Pacijent", "Pacijent")
                         .WithMany()
-                        .HasForeignKey("PacijentOsobaID");
+                        .HasForeignKey("PacijentId");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Lek", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.KartonAlergena", null)
-                        .WithMany("LekoviLista")
-                        .HasForeignKey("KartonAlergenaID");
+                        .WithMany("Lekovi")
+                        .HasForeignKey("KartonAlergenaId");
+                });
+
+            modelBuilder.Entity("eKarton.Models.SQL.Lekar", b =>
+                {
+                    b.HasOne("eKarton.Models.SQL.Ustanova", "Ustanova")
+                        .WithMany("Lekari")
+                        .HasForeignKey("UstanovaId");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.PregledEntity", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.EKarton", null)
                         .WithMany("PreglediLista")
-                        .HasForeignKey("EKartonKartonID");
+                        .HasForeignKey("EKartonId");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Slika", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.EKarton", null)
                         .WithMany("SlikeLista")
-                        .HasForeignKey("EKartonKartonID");
+                        .HasForeignKey("EKartonId");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Vakcina", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.KartonVakcinacije", null)
                         .WithMany("VakcineLista")
-                        .HasForeignKey("KartonVakcinacijeID");
+                        .HasForeignKey("KartonVakcinacijeId");
                 });
 #pragma warning restore 612, 618
         }
