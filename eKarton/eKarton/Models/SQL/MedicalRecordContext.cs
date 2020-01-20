@@ -2,36 +2,37 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data;
+
 namespace eKarton.Models.SQL
 {
-    public class EKartonContext:DbContext
+    public class MedicalRecordContext:DbContext
     {
-        public EKartonContext(DbContextOptions<EKartonContext> options)
+        public MedicalRecordContext(DbContextOptions<MedicalRecordContext> options)
            : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Anamneza>().HasMany(t => t.Bolesti);
+            modelBuilder.Entity<Anamnesis>().HasMany(t => t.Diseases);
 
-            modelBuilder.Entity<KartonAlergena>().Property(p => p.Hrana)
+            modelBuilder.Entity<Allergy>().Property(p => p.Food)
             .HasConversion(
             v => JsonConvert.SerializeObject(v),
             v => JsonConvert.DeserializeObject<List<string>>(v));
 
-            modelBuilder.Entity<KartonAlergena>().Property(p => p.Ostalo)
+            modelBuilder.Entity<Allergy>().Property(p => p.Other)
            .HasConversion(
            v => JsonConvert.SerializeObject(v),
            v => JsonConvert.DeserializeObject<List<string>>(v));
 
-            modelBuilder.Entity<EKarton>().HasMany(k => k.PreglediLista);
+            modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Visits);
 
-            modelBuilder.Entity<EKarton>().HasMany(k => k.SlikeLista);
+            modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Images);
 
-            modelBuilder.Entity<EKarton>().HasOne(j => j.KartonOca);
+            modelBuilder.Entity<MedicalRecord>().HasOne(j => j.FathersMedicalRecord);
 
-            modelBuilder.Entity<EKarton>().HasOne(k => k.KartonMajke);
+            modelBuilder.Entity<MedicalRecord>().HasOne(k => k.MothersMedicalRecord);
         }
         //    modelBuilder.Entity<Lek>().HasKey(m => m.LekID);
 
@@ -102,16 +103,16 @@ namespace eKarton.Models.SQL
         //    #endregion
 
         //}
-        public DbSet<EKarton> EKartoni { get; set; }
-        public DbSet<Slika> Slike{ get; set; }
-        public DbSet<Pacijent> Pacijenti { get; set; }
-        public DbSet<Lekar> Lekari { get; set; }
-        public DbSet<KartonVakcinacije> KartoniVakcinacije { get; set; }
-        public DbSet<KartonAlergena> KartoniAlergena { get; set; }
-        public DbSet<Lek> Lekovi { get; set; }
-        public DbSet<Vakcina> Vakcine { get; set; }
-        public DbSet<Bolest> Bolesti { get; set; }
-        public DbSet<Anamneza> Anamneze { get; set; }
-        public DbSet<Ustanova> Ustanove{ get; set; }
+        public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<Image> Images{ get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<VaccinationStatus> VaccinationStatuses { get; set; }
+        public DbSet<Allergy> Allergies { get; set; }
+        public DbSet<Medicine> Medicines { get; set; }
+        public DbSet<Vaccine> Vaccines { get; set; }
+        public DbSet<Disease> Diseases { get; set; }
+        public DbSet<Anamnesis> Anamnesis { get; set; }
+        public DbSet<Institute> Institutes{ get; set; }
     }
 }

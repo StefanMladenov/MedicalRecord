@@ -70,34 +70,42 @@ namespace EKartonWebApp.Controllers
         }
 
         [HttpPost]
-        public /*async Task*/ IActionResult PutLekar(LekarVM vm)
+        public /*async Task*/ IActionResult PostDoctor(DoctorVM vm)
         {
-            //HttpClient cli = _api.InitializeClient();
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:5001/api/");
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            LekarDTO lekar = new LekarDTO();
-            lekar.Ime = vm.Ime;
-            lekar.Prezime = vm.Prezime;
-            var myContent = JsonConvert.SerializeObject(lekar);
-            var content = new StringContent(myContent, Encoding.UTF8, "application/json");
-            var dd = client.PostAsync("Lekar/PostLekar", content);
-            return View("Lekar"); 
+            ////HttpClient cli = _api.InitializeClient();
+            //HttpClient client = new HttpClient();
+            //client.BaseAddress = new Uri("https://localhost:5001/api/");
+            //client.DefaultRequestHeaders.Clear();
+            //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            DoctorDTO doctor = new DoctorDTO();
+            doctor.FirstName = vm.FirstName;
+            doctor.LastName = vm.LastName;
+            //var myContent = JsonConvert.SerializeObject(doctor);
+            //var content = new StringContent(myContent, Encoding.UTF8, "application/json");
+            //var dd = client.PostAsync("https://localhost:5001/api/" + Routes.PostDoctor, content);
+            _api.Create(doctor, Routes.PostDoctor);
+            return View("Login");
+            //return View("Doctor"); 
         }
 
         [HttpGet]
-        public IActionResult Lekar()
+        public IActionResult Doctor()
         {
-            return View("Lekar");
+            return View("Doctor");
         }
 
         [HttpGet]
-        public IActionResult GetLekari()
+        public IActionResult GetDoctors()
         {
-            List<LekarDTO> list = _api.GetAll<LekarDTO>("Lekar/GetLekari");
-            //List<LekarDTO> list = _api.GetAll("/Lekar/GetLekari");
+            List<DoctorDTO> list = _api.GetAll<DoctorDTO>(Routes.GetDoctors);
             return View(list);
+        }
+
+        //[HttpDelete]
+        public IActionResult DeleteDoctor(int id)
+        {
+            _api.Delete(id,Routes.DeleteDoctor);
+            return View();
         }
     }
 }

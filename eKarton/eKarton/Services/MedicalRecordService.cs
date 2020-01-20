@@ -6,31 +6,30 @@ using System.Threading.Tasks;
 
 namespace eKarton.Services
 {
-    public class EkartonService
+    public class MedicalRecordService
     {
-        private readonly EKartonContext _context;
+        private readonly MedicalRecordContext _context;
 
-        public EkartonService(EKartonContext context)
+        public MedicalRecordService(MedicalRecordContext context)
         {
             _context = context;
         }
 
         // GET: api/EKarton
-        public List<EKarton> GetKartoni()
+        public List<MedicalRecord> GetKartoni()
         {
-            return _context.EKartoni.ToList();
+            return _context.MedicalRecords.ToList();
         }
 
         // GET: api/EKarton/5
-        public EKarton GetEKarton(int id)
+        public MedicalRecord GetEKarton(int id)
         {
-            // return _context.EKartoni.Find(x => x.Id == id);
-            EKarton karton = _context.EKartoni.Find(id);
-            if (karton != null)
+            MedicalRecord medicalRecord = _context.MedicalRecords.Find(id);
+            if (medicalRecord != null)
             {
-                return karton;
+                return medicalRecord;
             }
-            return karton;
+            return medicalRecord;
         }
 
         // PUT: api/EKarton/5

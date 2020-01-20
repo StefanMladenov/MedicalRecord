@@ -7,6 +7,6 @@ namespace EKartonWebApp.ViewModels
 {
     public class PacijentVM
     {
-        public int LBO { get; set; }
+        public int Id { get; set; }
     }
 }

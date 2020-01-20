@@ -4,14 +4,14 @@
 @{
 }
 @using EKartonWebApp.ViewModels
-@model LekarVM
+@model DoctorVM
 @{
     ViewData["Title"] = "Login";
     Layout = "";
 }
 
 <h2>Login</h2>
-@using (Html.BeginForm("PutLekar", "Home", FormMethod.Post))
+@using (Html.BeginForm("PostDoctor", "Home", FormMethod.Post))
 {
     //this is for create form tag
     @Html.AntiForgeryToken() // this is for prevent CSRF attack
@@ -26,19 +26,19 @@
 
     <table>
         <tr>
-            <td>@Html.LabelFor(a => a.Ime)</td>
-            <td>@Html.TextBoxFor(a => a.Ime)</td>
-            <td>@Html.ValidationMessageFor(a => a.Ime)</td>
+            <td>@Html.LabelFor(a => a.FirstName)</td>
+            <td>@Html.TextBoxFor(a => a.FirstName)</td>
+            <td>@Html.ValidationMessageFor(a => a.FirstName)</td>
         </tr>
         <tr>
             <td>
-                @Html.LabelFor(a => a.Prezime)
+                @Html.LabelFor(a => a.LastName)
             </td>
             <td>
-                @Html.TextBoxFor(a => a.Prezime)
+                @Html.TextBoxFor(a => a.LastName)
             </td>
             <td>
-                @Html.ValidationMessageFor(a => a.Prezime)
+                @Html.ValidationMessageFor(a => a.LastName)
             </td>
         </tr>
         <tr>
@@ -51,7 +51,7 @@
     </table>
 }
 <a asp-area="" asp-controller="Home" asp-action="Register">Register</a>
-<a asp-area="" asp-controller="Home" asp-action="GetLekari">GetGetGet</a>
+<a asp-area="" asp-controller="Home" asp-action="GetDoctors">GetGetGet</a>
 @*@using (Html.BeginForm("Register", "Home"))
     {
         <table>

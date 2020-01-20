@@ -34,7 +34,7 @@ namespace eKarton
             services.Configure<BookstoreDatabaseSettings>(
                 Configuration.GetSection(nameof(BookstoreDatabaseSettings)));
 
-            services.AddDbContext<EKartonContext>(opts => opts.UseSqlServer(Configuration["DefaultConnection:ConnectionString"]));
+            services.AddDbContext<MedicalRecordContext>(opts => opts.UseSqlServer(Configuration["DefaultConnection:ConnectionString"]));
 
             // configure basic authentication 
             services.AddAuthentication("BasicAuthentication")

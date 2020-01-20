@@ -128,5 +128,5 @@ E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.d
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.pdb
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.csprojAssemblyReference.cache
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\Login.cshtml.g.cs
-E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\Lekar.cshtml.g.cs
-E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\GetLekari.cshtml.g.cs
+E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\Doctor.cshtml.g.cs
+E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\GetDoctors.cshtml.g.cs

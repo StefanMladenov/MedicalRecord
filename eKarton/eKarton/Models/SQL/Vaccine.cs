@@ -4,19 +4,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eKarton.Models.SQL
 {
-    public class Vakcina
+    public class Vaccine
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string ImeVakcine { get; set; }
+        public string VaccineName { get; set; }
         
         //if trajanje==null then neograniceno else dani
-        public int Trajanje { get; set; }
+        public int Duration { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Datum vakcinacije")]
-        public DateTime DatumVakcinacije { get; set; }
+        [Display(Name = "Date of vaccination")]
+        public DateTime VaccinationDate { get; set; }
     }
 }

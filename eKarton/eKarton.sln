@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EKartonWebApp", "EKartonWeb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp1", "BlazorApp1\BlazorApp1.csproj", "{435A516D-7EDE-4969-A841-B6334C5DD1E4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLL MODELS", "DLL MODELS", "{EBFCD053-42F7-493D-A033-652887D303F9}"
+	ProjectSection(SolutionItems) = preProject
+		SQLModels.cs = SQLModels.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace EKartonWebApp.ViewModels
 {
-    public class LekarVM
+    public class DoctorVM
     {
-        public string Ime { get; set; }
-        public string Prezime { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

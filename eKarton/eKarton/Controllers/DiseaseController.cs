@@ -11,48 +11,48 @@ namespace eKarton.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EKartonController : ControllerBase
+    public class DiseaseController : ControllerBase
     {
-        private readonly EKartonContext _context;
+        private readonly MedicalRecordContext _context;
 
-        public EKartonController(EKartonContext context)
+        public DiseaseController(MedicalRecordContext context)
         {
             _context = context;
         }
 
-        // GET: api/EKarton
+        // GET: api/Bolest
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EKarton>>> GetEKartoniLista()
+        public async Task<ActionResult<IEnumerable<Disease>>> GetBolesti()
         {
-            return await _context.EKartoni.ToListAsync();
+            return await _context.Diseases.ToListAsync();
         }
 
-        // GET: api/EKarton/5
+        // GET: api/Bolest/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<EKarton>> GetEKarton(int id)
+        public async Task<ActionResult<Disease>> GetBolest(int id)
         {
-            var eKarton = await _context.EKartoni.FindAsync(id);
+            var disease = await _context.Diseases.FindAsync(id);
 
-            if (eKarton == null)
+            if (disease == null)
             {
                 return NotFound();
             }
 
-            return eKarton;
+            return disease;
         }
 
-        // PUT: api/EKarton/5
+        // PUT: api/Bolest/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEKarton(int id, EKarton eKarton)
+        public async Task<IActionResult> PutBolest(int id, Disease disease)
         {
-            if (id != eKarton.Id)
+            if (id != disease.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(eKarton).State = EntityState.Modified;
+            _context.Entry(disease).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace eKarton.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EKartonExists(id))
+                if (!BolestExists(id))
                 {
                     return NotFound();
                 }
@@ -73,37 +73,37 @@ namespace eKarton.Controllers
             return NoContent();
         }
 
-        // POST: api/EKarton
+        // POST: api/Bolest
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<EKarton>> PostEKarton(EKarton eKarton)
+        public async Task<ActionResult<Disease>> PostBolest(Disease disease)
         {
-            _context.EKartoni.Add(eKarton);
+            _context.Diseases.Add(disease);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEKarton", new { id = eKarton.Id }, eKarton);
+            return CreatedAtAction("GetBolest", new { id = disease.Id }, disease);
         }
 
-        // DELETE: api/EKarton/5
+        // DELETE: api/Bolest/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<EKarton>> DeleteEKarton(int id)
+        public async Task<ActionResult<Disease>> DeleteBolest(int id)
         {
-            var eKarton = await _context.EKartoni.FindAsync(id);
-            if (eKarton == null)
+            var disease = await _context.Diseases.FindAsync(id);
+            if (disease == null)
             {
                 return NotFound();
             }
 
-            _context.EKartoni.Remove(eKarton);
+            _context.Diseases.Remove(disease);
             await _context.SaveChangesAsync();
 
-            return eKarton;
+            return disease;
         }
 
-        private bool EKartonExists(int id)
+        private bool BolestExists(int id)
         {
-            return _context.EKartoni.Any(e => e.Id == id);
+            return _context.Diseases.Any(e => e.Id == id);
         }
     }
 }
