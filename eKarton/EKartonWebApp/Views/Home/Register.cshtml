@@ -10,99 +10,131 @@
         {
             new SelectListItem {Text = "Lekar", Value = "Lekar"},
             new SelectListItem {Text = "Pacijent", Value = "Pacijent"},
-                                            }, "Value", "Text");
+                                                    }, "Value", "Text");
 }
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    </head>
 <h1>Register</h1>
 
 @using (Html.BeginForm("Register", "Home", FormMethod.Post))
 {
-<table>
-    <tr>
-        <td>
-            @Html.LabelFor(model => model.Ime)
-        </td>
-        <td>
-            @Html.EditorFor(model => model.Ime)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(model => model.Prezime)
-        </td>
-        <td>
-            @Html.EditorFor(model => model.Prezime)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(model => model.EMail)
-        </td>
-        <td>
-            @Html.EditorFor(model => model.EMail)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(model => model.Username)
-        </td>
-        <td>
-            @Html.EditorFor(model => model.Username)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(model => model.Password)
-        </td>
-        <td>
-            @Html.EditorFor(model => model.Password)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(model => model.ConfirmPassword)
-        </td>
-        <td>
-            @Html.EditorFor(model => model.ConfirmPassword)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.LabelFor(model => model.JMBG)
-        </td>
-        <td>
-            @Html.EditorFor(model => model.JMBG)
-        </td>
-    </tr>
-    </table>
-<div style="margin-top:20px">
-    @Html.DropDownList("Sortby", new SelectListItem[]
-    {
-         new SelectListItem() { Text = "Pacijent", Value = "0" },
-         new SelectListItem() { Text = "Lekar", Value = "1" }},
-         new
-         {
-             @onchange = "callChangefunc(this.value)"
-    });
-</div>
-<div style="margin-top:20px">
-    <div id="LBO">
-        <div>
-            @Html.LabelFor(model => model.LBO)
-        </div>
-        <div>
-            @Html.EditorFor(model => model.LBO)
-        </div>
-    </div>
 
-    <div id="BrojFaksimila" style="display:none">
-        <div>
-            @Html.LabelFor(model => model.BrojFaksimila)
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+            </tr>
+        </tbody>
+    </table>
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Ime)
+            </td>
+            <td>
+                @Html.EditorFor(model => model.Ime)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Prezime)
+            </td>
+            <td>
+                @Html.EditorFor(model => model.Prezime)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.EMail)
+            </td>
+            <td>
+                @Html.EditorFor(model => model.EMail)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Username)
+            </td>
+            <td>
+                @Html.EditorFor(model => model.Username)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Password)
+            </td>
+            <td>
+                @Html.EditorFor(model => model.Password)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.ConfirmPassword)
+            </td>
+            <td>
+                @Html.EditorFor(model => model.ConfirmPassword)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.JMBG)
+            </td>
+            <td>
+                @Html.EditorFor(model => model.JMBG)
+            </td>
+        </tr>
+    </table>
+    <div style="margin-top:20px">
+        @Html.DropDownList("Sortby", new SelectListItem[]
+        {
+             new SelectListItem() { Text = "Pacijent", Value = "0" },
+             new SelectListItem() { Text = "Lekar", Value = "1" }},
+             new
+             {
+                 @onchange = "callChangefunc(this.value)"
+        });
+    </div>
+    <div style="margin-top:20px">
+        <div id="LBO">
+            <div>
+                @Html.LabelFor(model => model.LBO)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.LBO)
+            </div>
         </div>
-        <div>
-            @Html.EditorFor(model => model.BrojFaksimila)
+
+        <div id="BrojFaksimila" style="display:none">
+            <div>
+                @Html.LabelFor(model => model.BrojFaksimila)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.BrojFaksimila)
+            </div>
         </div>
     </div>
-</div>
     <table>
         @*<td>
                 @Html.DropDownListFor(m => m.Tip, selectList, "Izaberi", new {onchange })
@@ -112,23 +144,23 @@
             <input type="submit" value="Submit">
         </td>
     </table>
-    }
-    <a asp-controller="Home" asp-action="Login"> Back to login</a>
-    <a asp-area="" asp-controller="Home" asp-action="Doctor">Doctor</a>
+}
+<a asp-controller="Home" asp-action="Login"> Back to login</a>
+<a asp-area="" asp-controller="Home" asp-action="Doctor">Doctor</a>
 
 
-    <script>
-        function callChangefunc(val) {
-            var x = document.getElementById("BrojFaksimila");
-            var y = document.getElementById("LBO");
-            if (val == 1) {
-                y.style.display = "none";
-                x.style.display = "block";
-            }
-            else {
-                x.style.display = "none";
-                y.style.display = "block";
-            }
+<script>
+    function callChangefunc(val) {
+        var x = document.getElementById("BrojFaksimila");
+        var y = document.getElementById("LBO");
+        if (val == 1) {
+            y.style.display = "none";
+            x.style.display = "block";
         }
-    </script>
+        else {
+            x.style.display = "none";
+            y.style.display = "block";
+        }
+    }
+</script>
 

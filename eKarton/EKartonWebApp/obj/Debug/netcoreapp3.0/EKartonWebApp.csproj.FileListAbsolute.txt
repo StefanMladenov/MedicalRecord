@@ -104,7 +104,6 @@ E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\staticwebassets
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\staticwebassets\EKartonWebApp.StaticWebAssets.xml
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.Properties.Resources.resources
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.csproj.GenerateResource.cache
-E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.MvcApplicationPartsAssemblyInfo.cache
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.RazorAssemblyInfo.cache
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.RazorAssemblyInfo.cs
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.AssemblyInfoInputs.cache
@@ -130,3 +129,5 @@ E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.c
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\Login.cshtml.g.cs
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\Doctor.cshtml.g.cs
 E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\GetDoctors.cshtml.g.cs
+E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\EKartonWebApp.MvcApplicationPartsAssemblyInfo.cache
+E:\eKarton\eKarton\eKarton\EKartonWebApp\obj\Debug\netcoreapp3.0\Razor\Views\Home\New.cshtml.g.cs
