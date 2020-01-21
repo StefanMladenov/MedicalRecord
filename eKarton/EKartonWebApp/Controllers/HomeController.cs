@@ -33,7 +33,7 @@ namespace EKartonWebApp.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View("Register");
         }
 
         [HttpGet]
