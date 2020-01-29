@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eKarton.Migrations
 {
-    public partial class MedicalRecordsMigration : Migration
+    public partial class Stefan : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,11 +55,9 @@ namespace eKarton.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
-                    UniqueCitizensIdentityNumber = table.Column<string>(nullable: true),
+                    UniqueCitizensIdentityNumber = table.Column<string>(maxLength: 13, nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     EMail = table.Column<string>(nullable: true),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
                     FathersName = table.Column<string>(nullable: true),
                     MothersName = table.Column<string>(nullable: true),
                     Gender = table.Column<int>(nullable: false),
@@ -135,14 +133,11 @@ namespace eKarton.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
-                    UniqueCitizensIdentityNumber = table.Column<string>(nullable: true),
+                    UniqueCitizensIdentityNumber = table.Column<string>(maxLength: 13, nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false),
                     EMail = table.Column<string>(nullable: true),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
                     Specialization = table.Column<string>(nullable: true),
-                    InstituteId = table.Column<int>(nullable: true),
-                    FacsimileNumber = table.Column<int>(nullable: false)
+                    InstituteId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -291,6 +286,12 @@ namespace eKarton.Migrations
                 column: "InstituteId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Doctors_UniqueCitizensIdentityNumber",
+                table: "Doctors",
+                column: "UniqueCitizensIdentityNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Images_MedicalRecordId",
                 table: "Images",
                 column: "MedicalRecordId");
@@ -336,6 +337,12 @@ namespace eKarton.Migrations
                 name: "IX_Medicines_AllergyId",
                 table: "Medicines",
                 column: "AllergyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_UniqueCitizensIdentityNumber",
+                table: "Patients",
+                column: "UniqueCitizensIdentityNumber",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vaccines_VaccinationStatusId",

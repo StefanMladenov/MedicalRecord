@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using eKarton.Models.SQL;
 using eKarton.Services;
@@ -19,14 +18,14 @@ namespace eKarton.Controllers
 
         // GET: api/Lekar
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Doctor>>> GetDoctors()
+        public ActionResult<IEnumerable<Doctor>> GetDoctors()
         {
             return _service.GetDoctors();
         }
 
         // GET: api/Lekar/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Doctor>> GetDoctor(int id)
+        public ActionResult<Doctor> GetDoctor(int id)
         {
             var doctor = _service.GetDoctor(id);
             if (doctor == null)
@@ -40,7 +39,7 @@ namespace eKarton.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDoctor(int id, [FromBody]Doctor doctor)
+        public IActionResult PutDoctor(int id, [FromBody]Doctor doctor)
         {
             if (id != doctor.Id)
             {
@@ -50,14 +49,21 @@ namespace eKarton.Controllers
             return Accepted();
         }
         [HttpPost]
-        public async Task<IActionResult> PostDoctor([FromBody]Doctor doctor)
+        public IActionResult PostDoctor([FromBody]Doctor doctor)
         {
-            _service.PostDoctor(doctor);
-            return Accepted(); 
+            if (ModelState.IsValid)
+            {
+                _service.PostDoctor(doctor);
+                return Accepted();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
         
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDoctor(int id)
+        public IActionResult DeleteDoctor(int id)
         {
             _service.DeleteDoctor(id);
             return Accepted();

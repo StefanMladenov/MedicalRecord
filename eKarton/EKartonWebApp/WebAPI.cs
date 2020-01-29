@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -15,10 +18,10 @@ namespace EKartonWebApp
         #region Read
         public List<T> GetAll<T>(string path);
         public void GetOne(int id, string path);
-        public void GetBy<T>(T t, int index, string path); // kako drugacije da prosledim path 
+        public void GetBy<T>(T t, int index, string path);
         #endregion
 
-        public void Update<T>(T t, string path);
+        public void Update<T>(T t, string path, int id);
         public void Delete(int id, string path);
     }
 
@@ -74,15 +77,15 @@ namespace EKartonWebApp
 
         public T GetOne<T>(int id, string path)
         {
-            //var k = _client.GetAsync(path).ContinueWith((taskwithresponse) =>
-            //{
-            //    var response = taskwithresponse.Result;
-            //    var jsonString = response.Content.ReadAsStringAsync();
-            //    jsonString.Wait();
-            //    return JsonConvert.DeserializeObject<T>(jsonString.Result);
-            //});
-            //return ;
-            throw new NotImplementedException();
+            List<T> t = new List<T>();
+            HttpResponseMessage response = _client.GetAsync(path + "/" + id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var customerJsonString = response.Content.ReadAsStringAsync();
+                var model1 = JsonConvert.DeserializeObject<T>(customerJsonString.Result);
+                return model1;
+            }
+            return t[0];
         }
 
         public void GetBy<T>(T t,int index, string path)
@@ -90,21 +93,61 @@ namespace EKartonWebApp
             throw new NotImplementedException();
         }
 
-        public void Update<T>(T t, string path)
+        public void Update<T>(T t, string path,int id)
         {
-            throw new NotImplementedException();
+            _client.PutAsync(path + "/" + id, SerializeContent(t));
         }
 
         public void Delete(int id, string path)
         {
-            //HttpContent content = new HttpContent();
-            _client.DeleteAsync(path + "/" + id);
+           _client.DeleteAsync(path + id);
         }
 
         public void GetOne(int id, string path)
         {
-            throw new NotImplementedException();
+            _client.GetAsync(path + "/" + id);
         }
+
+        //public async Task SendImage(string path, [FromForm] IFormFile model)
+        //{
+        //    HttpClient cli = new HttpClient();
+
+        //    // we need to send a request with multipart/form-data
+        //    //var multiForm = new MultipartFormDataContent()
+        //    //{
+        //    //    // add API method parameters
+        //    //    { new StringContent("CustomField1"), "1" },
+        //    //    { new StringContent("CustomField2"), "1234" },
+        //    //    { new StringContent("CustomField3"), "5" },
+        //    //};
+        //    //var multiForm = new MultipartFormDataContent()
+        //    // add file and directly upload it
+        //    //using FileStream fs = System.IO.File.OpenRead("C:/1.jpg");
+        //    //multiForm.Add(new StreamContent(fs), "file", "1.jpg");
+
+        //    // send request to API
+        //    //var responce = await cli.PostAsync("https://localhost:123/api/Images/PostImage", model);
+        //    var memory = new MemoryStream();
+        //    model.CopyTo(memory);
+        //    using (var form = new MultipartFormDataContent())
+        //    {
+        //        /*using (var fs = File.OpenRead())
+        //        {*/
+        //            using (var streamContent = new StreamContent(memory))
+        //            {
+        //                using (var fileContent = new ByteArrayContent(await streamContent.ReadAsByteArrayAsync()))
+        //                {
+        //                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+
+        //                    // "file" parameter name should be the same as the server side input parameter name
+        //                    form.Add(fileContent, "file", model.FileName);
+        //                    HttpResponseMessage response = await cli.PostAsync(Routes.APIBaseURI + "/Image/UploadFile", form);
+        //                }
+        //            }
+        //        //}
+        //    }
+            
+        //}
     }
 
     public class MedicalRecordDTO
@@ -283,63 +326,5 @@ namespace EKartonWebApp
         Moved,
         Family
     }
-
-    //public class PacijentDTO : OsobaDTO
-    //{
-    //    public string ImeOca { get; set; }
-    //    public string ImeMajke { get; set; }
-    //    public int LBO { get; set; }
-    //    public int VidOsiguranja { get; set; }
-    //    public int Pol { get; set; }
-    //}
-    //public class PregledEntityDTO
-    //{
-    //    public int Id { get; set; }
-
-    //    public DateTime Datum { get; set; }
-
-    //}
-    //public class VakcinaDTO
-    //{
-    //    public int Id { get; set; }
-    //    public string ImeVakcine { get; set; }
-
-    //    //if trajanje==null then neograniceno else dani
-    //    public int Trajanje { get; set; }
-    //    public DateTime DatumVakcinacije { get; set; }
-    //}
-    //public class SlikaDTO
-    //{
-    //    public int Id { get; set; }
-
-    //    public string ImagePath { get; set; }
-
-    //    public DateTime Datum { get; set; }
-
-    //    public string TipSlike { get; set; }
-    //}
-
-    //public class AlergoloskeProbeDTO : SlikaDTO
-    //{
-
-    //}
-
-    //public class LaboratorijaDTO : SlikaDTO
-    //{
-
-    //}
-    //public class SpirometrijaDTO : SlikaDTO
-    //{
-
-    //}
-    //public class UputDTO : SlikaDTO
-    //{
-
-    //}
-
-    //public class SnimakDTO : SlikaDTO
-    //{
-    //    public string DeoTela { get; set; }
-    //}
 }
 

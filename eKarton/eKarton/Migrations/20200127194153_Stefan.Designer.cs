@@ -10,8 +10,8 @@ using eKarton.Models.SQL;
 namespace eKarton.Migrations
 {
     [DbContext(typeof(MedicalRecordContext))]
-    [Migration("20200120192929_MedicalRecordsMigration")]
-    partial class MedicalRecordsMigration
+    [Migration("20200127194153_Stefan")]
+    partial class Stefan
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,9 +96,6 @@ namespace eKarton.Migrations
                     b.Property<string>("EMail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FacsimileNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -112,21 +109,20 @@ namespace eKarton.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Specialization")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UniqueCitizensIdentityNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(13)")
+                        .HasMaxLength(13);
 
                     b.HasKey("Id");
 
                     b.HasIndex("InstituteId");
+
+                    b.HasIndex("UniqueCitizensIdentityNumber")
+                        .IsUnique();
 
                     b.ToTable("Doctors");
                 });
@@ -279,19 +275,18 @@ namespace eKarton.Migrations
                     b.Property<string>("MothersName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("TypeOfInsurance")
                         .HasColumnType("int");
 
                     b.Property<string>("UniqueCitizensIdentityNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(13)")
+                        .HasMaxLength(13);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UniqueCitizensIdentityNumber")
+                        .IsUnique();
 
                     b.ToTable("Patients");
                 });

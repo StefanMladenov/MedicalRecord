@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <Folder Include="Models\Mongo\" />
+    <Folder Include="MyStaticFiles\images\" />
+    <Folder Include="MyStaticFiles\StaticFiles\" />
     <Folder Include="Images\" />
   </ItemGroup>
 

@@ -20,6 +20,8 @@ namespace eKarton.Models.SQL
         [Display(Name = "Last name")]
         public string LastName { get; set; }
 
+        [Required]
+        [StringLength(13, MinimumLength = 13)]
         public string UniqueCitizensIdentityNumber { get; set; }
 
         [DataType(DataType.Date)]
@@ -27,15 +29,15 @@ namespace eKarton.Models.SQL
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
         public string EMail { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        //public string Username { get; set; }
+        //public string Password { get; set; }
 
     }
     public class Doctor : Person
     {
         public string Specialization { get; set; }
         public Institute Institute { get; set; }
-        public int FacsimileNumber { get; set; }
+        /*public int FacsimileNumber { get; set; }*/
     }
 
     public class Patient : Person

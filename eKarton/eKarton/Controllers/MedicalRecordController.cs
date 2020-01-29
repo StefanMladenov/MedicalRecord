@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using eKarton.Models.SQL;
+using eKarton.Services;
 
 namespace eKarton.Controllers
 {
@@ -13,26 +10,24 @@ namespace eKarton.Controllers
     [ApiController]
     public class MedicalRecordController : ControllerBase
     {
-        private readonly MedicalRecordContext _context;
-
+        private readonly MedicalRecordService _service;
         public MedicalRecordController(MedicalRecordContext context)
         {
-            _context = context;
+            _service = new MedicalRecordService(context);
         }
 
         // GET: api/EKarton
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MedicalRecord>>> GetMedicalRecords()
+        public ActionResult<IEnumerable<MedicalRecord>> GetMedicalRecords()
         {
-            return await _context.MedicalRecords.ToListAsync();
+            return _service.GetMedicalRecords();
         }
 
         // GET: api/EKarton/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MedicalRecord>> GetEKarton(int id)
+        public ActionResult<MedicalRecord> GetMedicalRecord(int id)
         {
-            var medicalRecord = await _context.MedicalRecords.FindAsync(id);
-
+            var medicalRecord =  _service.GetMedicalRecord(id);
             if (medicalRecord == null)
             {
                 return NotFound();
@@ -45,31 +40,13 @@ namespace eKarton.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEKarton(int id, MedicalRecord medicalRecord)
+        public async Task<IActionResult> PutMedicalRecord(int id, [FromBody]MedicalRecord medicalRecord)
         {
             if (id != medicalRecord.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(medicalRecord).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EKartonExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _service.PutMedicalRecord(id, medicalRecord);
             return NoContent();
         }
 
@@ -77,33 +54,18 @@ namespace eKarton.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<MedicalRecord>> PostEKarton(MedicalRecord medicalRecord)
+        public ActionResult<MedicalRecord> PostMedicalRecord([FromBody]MedicalRecord medicalRecord)
         {
-            _context.MedicalRecords.Add(medicalRecord);
-            await _context.SaveChangesAsync();
-
+            _service.PostMedicalRecord(medicalRecord);
             return CreatedAtAction("GetEKarton", new { id = medicalRecord.Id }, medicalRecord);
         }
 
         // DELETE: api/EKarton/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<MedicalRecord>> DeleteEKarton(int id)
+        public ActionResult<MedicalRecord> DeleteMedicalRecord(int id)
         {
-            var medicalRecord = await _context.MedicalRecords.FindAsync(id);
-            if (medicalRecord == null)
-            {
-                return NotFound();
-            }
-
-            _context.MedicalRecords.Remove(medicalRecord);
-            await _context.SaveChangesAsync();
-
-            return medicalRecord;
-        }
-
-        private bool EKartonExists(int id)
-        {
-            return _context.MedicalRecords.Any(e => e.Id == id);
+            _service.DeleteMedicalRecord(id);
+            return Accepted();
         }
     }
 }

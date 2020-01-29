@@ -10,7 +10,6 @@ using eKarton.Services;
 using eKarton.Models.SQL;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using eKarton.Helpers;
 
@@ -57,14 +56,17 @@ namespace eKarton
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseStaticFiles(new StaticFileOptions()
+            /*app.UseStaticFiles();*/ //letting the application know that we need access to wwwroot folder.
+
+            app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                                       Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
-                RequestPath = new PathString("/app-images")
+            Path.Combine(Directory.GetCurrentDirectory(), "MyStaticFiles")),
+                RequestPath = "/StaticFiles"
             });
-            app.UseHttpsRedirection();
 
+            app.UseHttpsRedirection();
+            //app.UseMvc();
             app.UseRouting();
 
             // global cors policy

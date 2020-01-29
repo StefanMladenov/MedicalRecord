@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using eKarton.Models.SQL;
+using eKarton.Services;
 
 namespace eKarton.Controllers
 {
@@ -13,26 +9,25 @@ namespace eKarton.Controllers
     [ApiController]
     public class DiseaseController : ControllerBase
     {
-        private readonly MedicalRecordContext _context;
+        private readonly DiseaseService _service;
 
         public DiseaseController(MedicalRecordContext context)
         {
-            _context = context;
+            _service = new DiseaseService(context);
         }
 
         // GET: api/Bolest
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Disease>>> GetBolesti()
+        public ActionResult<IEnumerable<Disease>> GetDiseases()
         {
-            return await _context.Diseases.ToListAsync();
+            return _service.GetDiseases();
         }
 
         // GET: api/Bolest/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Disease>> GetBolest(int id)
+        public ActionResult<Disease> GetDisease(int id)
         {
-            var disease = await _context.Diseases.FindAsync(id);
-
+            var disease = _service.GetDisease(id);
             if (disease == null)
             {
                 return NotFound();
@@ -45,31 +40,13 @@ namespace eKarton.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBolest(int id, Disease disease)
+        public ActionResult<Disease> PutDisease(int id, [FromBody] Disease disease)
         {
             if (id != disease.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(disease).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BolestExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _service.PutDisease(id, disease);
             return NoContent();
         }
 
@@ -77,33 +54,18 @@ namespace eKarton.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Disease>> PostBolest(Disease disease)
+        public ActionResult<Disease> PostDisease([FromBody]Disease disease)
         {
-            _context.Diseases.Add(disease);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBolest", new { id = disease.Id }, disease);
+            _service.PostDisease(disease);
+            return Accepted();
         }
 
         // DELETE: api/Bolest/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Disease>> DeleteBolest(int id)
+        public ActionResult<Disease> DeleteDisease(int id)
         {
-            var disease = await _context.Diseases.FindAsync(id);
-            if (disease == null)
-            {
-                return NotFound();
-            }
-
-            _context.Diseases.Remove(disease);
-            await _context.SaveChangesAsync();
-
-            return disease;
-        }
-
-        private bool BolestExists(int id)
-        {
-            return _context.Diseases.Any(e => e.Id == id);
+            _service.DeleteDisease(id);
+            return Accepted();
         }
     }
 }

@@ -29,8 +29,8 @@ namespace eKarton.Services
             _doctor.LastName = doctor.LastName;
             _context.Doctors.Update(_doctor);
             _context.SaveChanges();
-        }      
-        
+        }
+
         public void PostDoctor(Doctor doctor)
         {
             _context.Doctors.Add(doctor);
@@ -40,7 +40,7 @@ namespace eKarton.Services
         public void DeleteDoctor(int id)
         {
             var doctor = _context.Doctors.Find(id);
-            if(doctor != null)
+            if (doctor != null)
             {
                 _context.Doctors.Remove(doctor);
             }

@@ -17,6 +17,6 @@
     <ShowAllFiles>false</ShowAllFiles>
     <_SelectedScaffolderID>ApiControllerWithContextScaffolder</_SelectedScaffolderID>
     <_SelectedScaffolderCategoryPath>root/Common</_SelectedScaffolderCategoryPath>
-    <WebStackScaffolding_DbContextTypeFullName>eKarton.Models.SQL.EKartonContext</WebStackScaffolding_DbContextTypeFullName>
+    <WebStackScaffolding_DbContextTypeFullName>eKarton.Models.SQL.MedicalRecordContext</WebStackScaffolding_DbContextTypeFullName>
   </PropertyGroup>
 </Project>

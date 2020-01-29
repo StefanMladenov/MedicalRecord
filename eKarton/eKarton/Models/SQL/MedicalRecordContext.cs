@@ -26,6 +26,14 @@ namespace eKarton.Models.SQL
            v => JsonConvert.SerializeObject(v),
            v => JsonConvert.DeserializeObject<List<string>>(v));
 
+            modelBuilder.Entity<Patient>()
+            .HasIndex(u => u.UniqueCitizensIdentityNumber)
+            .IsUnique();
+            
+            modelBuilder.Entity<Doctor>()
+            .HasIndex(u => u.UniqueCitizensIdentityNumber)
+            .IsUnique();
+
             modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Visits);
 
             modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Images);
