@@ -9,7 +9,7 @@ namespace eKarton.Controllers
     [ApiController]
     public class PatientController : ControllerBase
     {
-        private readonly PatientService _service;
+        private readonly IService<Patient> _service;
 
         public PatientController(MedicalRecordContext context)
         {
@@ -19,14 +19,14 @@ namespace eKarton.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Patient>> GetPatients()
         {
-            return _service.GetPatients();
+            return _service.GetAll();
         }
 
         // GET: api/Pacijent/5
-        [HttpGet("{id}")]
-        public ActionResult<Patient> GetPatient(int id)
+        [HttpGet("{guid}")]
+        public ActionResult<Patient> GetPatient(string guid)
         {
-            var patient = _service.GetPatient(id);
+            var patient = _service.GetByGuid(guid);
             if (patient == null)
             {
                 return NotFound();
@@ -34,36 +34,53 @@ namespace eKarton.Controllers
             return patient;
         }
 
-        // PUT: api/Pacijent/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public IActionResult PutPatient(int id, [FromBody]Patient patient)
+        // PUT: api/Patient/5
+        [HttpPut("{guid}")]
+        public IActionResult PutPatient(string guid, [FromBody]Patient patient)
         {
-            if (id != patient.Id)
+            if (guid != patient.Guid)
             {
                 return BadRequest();
             }
-            _service.PutPatient(id, patient);
+            _service.Update(guid, patient);
             return Accepted();
         }
 
-        // POST: api/Pacijent
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        // POST: api/Patient
         [HttpPost]
         public ActionResult<Patient> PostPatient([FromBody]Patient patient)
         {
-            _service.PostPatient(patient);
-            return Accepted();;
+            if (ModelState.IsValid)
+            {
+                _service.Create(patient);
+                return Accepted();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
-        // DELETE: api/Pacijent/5
-        [HttpDelete("{id}")]
-        public ActionResult<Patient> DeletePatient(int id)
+        // DELETE: api/Patient/5
+        [HttpDelete("{guid}")]
+        public ActionResult<Patient> DeletePatient(string guid)
         {
-            _service.DeletePatient(id);
+            _service.Delete(guid);
             return Accepted();
         }
+
+/*        [HttpPost("{UCIN}")]
+        public ActionResult PatientExists(string ucin)
+        {
+            bool exists = _service.Exists(ucin);
+            if(exists)
+            {
+                return Accepted();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }*/
     }
 }

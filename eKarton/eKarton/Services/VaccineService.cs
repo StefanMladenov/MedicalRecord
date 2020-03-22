@@ -1,10 +1,12 @@
 ﻿using eKarton.Models.SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace eKarton.Services
 {
-    public class VaccineService
+    public class VaccineService : IService<Vaccine>
     {
         private readonly MedicalRecordContext _context;
         public VaccineService(MedicalRecordContext context)
@@ -12,41 +14,53 @@ namespace eKarton.Services
             _context = context;
         }
 
-        public List<Vaccine> GetVaccines()
+        public List<Vaccine> GetAll()
         {
             return _context.Vaccines.ToList();
         }
 
-        public Vaccine GetVaccine(int id)
+        public Vaccine GetByGuid(string guid)
         {
-            return _context.Vaccines.Find(id);
+            return _context.Vaccines.Find(guid);
         }
 
-        public void PutVaccine(int id, Vaccine _vaccine)
+        public List<Vaccine> GetByCondition(Vaccine vaccine)
         {
-            Vaccine vaccine = _context.Vaccines.Find(id);
-            vaccine.Id = _vaccine.Id;
-            vaccine.Duration = _vaccine.Duration;
-            vaccine.VaccinationDate = _vaccine.VaccinationDate;
-            vaccine.VaccineName = _vaccine.VaccineName;
+            throw new NotImplementedException();
+        }
+
+        public void Create(Vaccine obj)
+        {
+            if (obj.Guid != null)
+            {
+                obj.Guid = Guid.NewGuid().ToString();
+            }
+            obj.CreatedAt = DateTime.Now;
+            _context.Vaccines.Add(obj);
+            _context.SaveChanges();
+        }
+
+        public void Update(string guid, Vaccine obj)
+        {
+            Vaccine vaccine = _context.Vaccines.Find(guid);
+            /*            vaccine.Id = _vaccine.Id;
+                        vaccine.Duration = _vaccine.Duration;
+                        vaccine.VaccinationDate = _vaccine.VaccinationDate;
+                        vaccine.VaccineName = _vaccine.VaccineName;*/
+            vaccine = obj;
             _context.Vaccines.Update(vaccine);
             _context.SaveChanges();
         }
 
-        public void PostVaccine(Vaccine vaccine)
+        public void Delete(string guid)
         {
-            _context.Vaccines.Add(vaccine);
-            _context.SaveChanges();
-        }
-
-        public void DeleteVaccine(int id)
-        {
-            var vaccine = _context.Vaccines.Find(id);
+            var vaccine = _context.Vaccines.Find(guid);
             if (vaccine != null)
             {
                 _context.Vaccines.Remove(vaccine);
             }
             _context.SaveChanges();
         }
+
     }
 }

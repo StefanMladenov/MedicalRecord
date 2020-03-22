@@ -1,8 +1,5 @@
-﻿
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-
 using eKarton.Models.SQL;
 using eKarton.Services;
 
@@ -12,7 +9,7 @@ namespace eKarton.Controllers
     [ApiController]
     public class VaccinationStatusController : ControllerBase
     {
-        private readonly VaccinationStatusService _service;
+        private readonly IService<VaccinationStatus> _service;
         public VaccinationStatusController(MedicalRecordContext context)
         {
             _service = new VaccinationStatusService(context);
@@ -22,14 +19,14 @@ namespace eKarton.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<VaccinationStatus>> GetVaccinationStatuses()
         {
-            return _service.GetVaccinationStatuses();
+            return _service.GetAll();
         }
 
         // GET: api/VaccinationStatus/5
-        [HttpGet("{id}")]
-        public ActionResult<VaccinationStatus> GetVaccinationStatus(int id)
+        [HttpGet("{guid}")]
+        public ActionResult<VaccinationStatus> GetVaccinationStatus(string guid)
         {
-            var vaccinationStatus = _service.GetVaccinationStatus(id);
+            var vaccinationStatus = _service.GetByGuid(guid);
 
             if (vaccinationStatus == null)
             {
@@ -42,10 +39,10 @@ namespace eKarton.Controllers
         // PUT: api/VaccinationStatus/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public IActionResult PutVaccinationStatus(int id, [FromBody]VaccinationStatus vaccinationStatus)
+        [HttpPut("{guid}")]
+        public IActionResult PutVaccinationStatus(string guid, [FromBody]VaccinationStatus vaccinationStatus)
         {
-            _service.PutVaccinationStatus(id, vaccinationStatus);
+            _service.Update(guid, vaccinationStatus);
             return NoContent();
         }
 
@@ -55,15 +52,15 @@ namespace eKarton.Controllers
         [HttpPost]
         public ActionResult<VaccinationStatus> PostVaccinationStatus([FromBody]VaccinationStatus vaccinationStatus)
         {
-            _service.PostVaccinationStatus(vaccinationStatus);
-            return CreatedAtAction("GetVaccinationStatus", new { id = vaccinationStatus.Id }, vaccinationStatus);
+            _service.Create(vaccinationStatus);
+            return CreatedAtAction("GetVaccinationStatus", new { guid = vaccinationStatus.Guid }, vaccinationStatus);
         }
 
         // DELETE: api/VaccinationStatus/5
-        [HttpDelete("{id}")]
-        public ActionResult<VaccinationStatus> DeleteVaccinationStatus(int id)
+        [HttpDelete("{guid}")]
+        public ActionResult<VaccinationStatus> DeleteVaccinationStatus(string guid)
         {
-            _service.DeleteVaccinationStatus(id);
+            _service.Delete(guid);
             return Accepted();
         } 
     }

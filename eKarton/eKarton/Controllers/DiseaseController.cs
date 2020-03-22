@@ -9,7 +9,7 @@ namespace eKarton.Controllers
     [ApiController]
     public class DiseaseController : ControllerBase
     {
-        private readonly DiseaseService _service;
+        private readonly IService<Disease> _service;
 
         public DiseaseController(MedicalRecordContext context)
         {
@@ -20,14 +20,14 @@ namespace eKarton.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Disease>> GetDiseases()
         {
-            return _service.GetDiseases();
+            return _service.GetAll();
         }
 
         // GET: api/Bolest/5
-        [HttpGet("{id}")]
-        public ActionResult<Disease> GetDisease(int id)
+        [HttpGet("{guid}")]
+        public ActionResult<Disease> GetDisease(string guid)
         {
-            var disease = _service.GetDisease(id);
+            var disease = _service.GetByGuid(guid);
             if (disease == null)
             {
                 return NotFound();
@@ -39,15 +39,20 @@ namespace eKarton.Controllers
         // PUT: api/Bolest/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public ActionResult<Disease> PutDisease(int id, [FromBody] Disease disease)
+        [HttpPut("{guid}")]
+        public ActionResult<Disease> PutDisease(string guid, [FromBody] Disease disease)
         {
-            if (id != disease.Id)
+            if (_service.GetByGuid(guid) != null)
             {
-                return BadRequest();
+                _service.Update(guid, disease);
+                return Accepted();
             }
-            _service.PutDisease(id, disease);
-            return NoContent();
+            else
+            {
+                disease.Guid = guid;
+                _service.Create(disease);
+                return Created("guid", guid);
+            }
         }
 
         // POST: api/Bolest
@@ -56,15 +61,19 @@ namespace eKarton.Controllers
         [HttpPost]
         public ActionResult<Disease> PostDisease([FromBody]Disease disease)
         {
-            _service.PostDisease(disease);
-            return Accepted();
+            if (_service.GetByGuid(disease.Guid) != null)
+            {
+                return BadRequest();
+            }
+            _service.Create(disease);
+            return CreatedAtAction("PostDisease", new { guid = disease.Guid }, disease);
         }
 
         // DELETE: api/Bolest/5
-        [HttpDelete("{id}")]
-        public ActionResult<Disease> DeleteDisease(int id)
+        [HttpDelete("{guid}")]
+        public ActionResult<Disease> DeleteDisease(string guid)
         {
-            _service.DeleteDisease(id);
+            _service.Delete(guid);
             return Accepted();
         }
     }

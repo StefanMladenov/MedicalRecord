@@ -1,29 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
+﻿
 namespace eKarton.Models.SQL
 {
-    public class Image
+    public class Image : AbstractEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         public string ImagePath { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Date of taking picture")]
-        public DateTime Date { get; set; }
-
         public ImageType ImageType { get; set; }
-    }
-
-    public enum ImageType
-    {
-        Laboratory,
-        Spirometry,
-        AllergologicalTests
     }
 
     public class Instruction : Image 
@@ -39,6 +20,13 @@ namespace eKarton.Models.SQL
 
         public SnapshotType SnapshotType { get; set; }
     }
+    
+    public class Analysis : Image
+    {
+        public string BodyPart { get; set; }
+
+        public SnapshotType SnapshotType { get; set; }
+    }
 
     public enum SnapshotType
     {
@@ -49,41 +37,11 @@ namespace eKarton.Models.SQL
         Other
     }
 
-    //public class AlergoloskeProbe : Image
-    //{
-
-    //}
-
-    //public class Laboratorija : Image
-    //{
-
-    //}
-    //public class Spirometry : Image
-    //{
-
-    //}
-
-    //public class Rentgen : Picture
-    //{
-
-    //}
-
-    //public class Ultrazvuk: Picture
-    //{
-
-    //}
-
-    //public class Skener: Picture
-    //{
-
-    //}
-    //public class NuklearnaMagnetnaRezonanca: Picture
-    //{
-
-    //}
-    //public class Ostalo : Picture
-    //{
-
-    //}
-
+    public enum ImageType
+    {
+        Laboratory,
+        Spirometry,
+        AllergologicalTests,
+        Other
+    }
 }

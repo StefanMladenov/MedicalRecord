@@ -1,0 +1,57 @@
+﻿@using EKartonWebApp.ViewModels
+@model VisitVM
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<h1> Create new visit</h1>
+@using (Html.BeginForm("PostVisit", "Visit", FormMethod.Post))
+{
+<form>
+    @Html.ValidationSummary(true)
+    <div class="row">
+        <div class="col">
+            @Html.TextBoxFor(a => a.PatientUCIN, new { @type = "text", @class = "form-control", @placeholder = "PatientUCIN" })
+            @Html.ValidationMessageFor(a => a.PatientUCIN)
+        </div>
+        <div class="col">
+            @Html.TextBoxFor(a => a.DoctorUCIN, new { @type = "text", @class = "form-control", @placeholder = "DoctorUCIN" })
+            @Html.ValidationMessageFor(a => a.DoctorUCIN)
+        </div>
+    </div>
+    <div class="col">
+        @Html.TextBoxFor(a => a.HealthInsuranceNumber, new { @type = "text", @class = "form-control", @placeholder = "Health insurance number" })
+        @Html.ValidationMessageFor(a => a.HealthInsuranceNumber)
+    </div>
+    <div class="form-group" style="padding-top:10px">
+        <label for="firstName">CurrentFinding</label>
+        @Html.TextAreaFor(a => a.CurrentFinding, new { @type = "text", @class = "form-control", @rows = "4" })
+        @Html.ValidationMessageFor(a => a.CurrentFinding)
+    </div>
+    <div class="form-group">
+        <label>Therapy</label>
+        @Html.TextAreaFor(a => a.Therapy, new { @type = "text", @class = "form-control", @rows = "4" })
+        @Html.ValidationMessageFor(a => a.Therapy)
+    </div>
+    <div class="form-group">
+        <label>Working diagnosis</label>
+        @Html.TextAreaFor(a => a.WorkingDiagnosis, new { @type = "text", @class = "form-control", @rows = "4" })
+        @Html.ValidationMessageFor(a => a.Therapy)
+    </div>
+    <div style="padding-top: 5px">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+</form>
+    <div style="padding-top:10px">
+        <form asp-action="Create" enctype="multipart/form-data">
+
+            <input multiple asp-for="MyImage" />
+
+            <input type="submit" />
+        </form>
+    </div>
+}

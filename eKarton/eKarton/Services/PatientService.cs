@@ -1,10 +1,12 @@
 ﻿using eKarton.Models.SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace eKarton.Services
 {
-    public class PatientService
+    public class PatientService : IService<Patient>
     {
         private readonly MedicalRecordContext _context;
         public PatientService(MedicalRecordContext context)
@@ -12,34 +14,41 @@ namespace eKarton.Services
             _context = context;
         }
 
-        public List<Patient> GetPatients()
+        public List<Patient> GetAll()
         {
             return _context.Patients.ToList();
         }
 
-        public Patient GetPatient(int id)
+        public Patient GetByGuid(string guid)
         {
-            return _context.Patients.Find(id);
+            return _context.Patients.Find(guid);
         }
 
-        public void PutPatient(int id, Patient _patient)
+        public List<Patient> GetByCondition(Patient patient)
         {
-            Patient patient = _context.Patients.Find(id);
-            patient.FirstName = patient.FirstName;
-            patient.LastName = patient.LastName;
-            _context.Patients.Update(patient);
+            throw new NotImplementedException();
+        }
+
+        public void Create(Patient obj)
+        {
+            if (obj.Guid != null)
+            {
+                obj.Guid = Guid.NewGuid().ToString();
+            }
+            obj.CreatedAt = DateTime.Now;
+            _context.Patients.Add(obj);
             _context.SaveChanges();
         }
 
-        public void PostPatient(Patient patient)
-        {
-            _context.Patients.Add(patient);
+        public void Update(string guid, Patient obj)
+        {   
+            _context.Patients.Update(obj);
             _context.SaveChanges();
         }
 
-        public void DeletePatient(int id)
+        public void Delete(string guid)
         {
-            var patient = _context.Patients.Find(id);
+            var patient = _context.Patients.Find(guid);
             if (patient != null)
             {
                 _context.Patients.Remove(patient);

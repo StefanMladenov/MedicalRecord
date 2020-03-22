@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eKarton.Models.SQL
 {
-    public class Medicine
+    public class Medicine : AbstractEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Required]
         public string NameOfMedicine { get; set; }
         public bool Allergic { get; set; }
     }

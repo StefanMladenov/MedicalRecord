@@ -1,10 +1,11 @@
 ﻿using eKarton.Models.SQL;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace eKarton.Services
 {
-    public class AllergyService
+    public class AllergyService : IService<Allergy>
     {
         private readonly MedicalRecordContext _context;
         public AllergyService(MedicalRecordContext context)
@@ -12,41 +13,76 @@ namespace eKarton.Services
             _context = context;
         }
 
-        public List<Allergy> GetAllergies()
+        public List<Allergy> GetAll()
         {
-            return _context.Allergies.ToList();
+            return _context.Allergies.Include(x => x.Medicines).ToList();
         }
 
-        public Allergy GetAllergy(int id)
+        public Allergy GetByGuid(string guid)
         {
-            return _context.Allergies.Find(id);
+            return _context.Allergies.Include(x => x.Medicines).SingleOrDefault(x=>x.Guid.Equals(guid));
         }
 
-        public void PutAllergy(int id, Allergy _allergy)
+        public List<Allergy> GetByCondition(Allergy allergy)
         {
-            Allergy allergy = _context.Allergies.Find(id);
-            allergy.Id = _allergy.Id;
-            allergy.Medicines = _allergy.Medicines;
-            allergy.Other = _allergy.Other;
-            allergy.Food = _allergy.Food;
+            List<Allergy> allergies = new List<Allergy>();
+            if (allergy.Medicines.Count != 0)
+            {
+                allergies = _context.Allergies.Include(x => x.Medicines).Where(x => x.Medicines.All(y => y.NameOfMedicine == allergy.Medicines[0].NameOfMedicine)).ToList();
+            }
+            return new List<Allergy>();
+        }
+
+        public void Create(Allergy obj)
+        {
+            _context.Allergies.Add(obj);
+            _context.SaveChanges();
+        }
+
+        public void Update(string guid, Allergy obj)
+        {
+            obj.Guid = guid;
+            Allergy allergy = _context.Allergies.Include(x => x.Medicines).SingleOrDefault(x => x.Guid.Equals(guid));
+            foreach(string s in obj.Food)
+            {
+                allergy.Food.Add(s);
+            }
+            foreach(Medicine med in obj.Medicines)
+            {
+                if(_context.Medicines.Find(med.Guid) != null)
+                {
+                    _context.Medicines.Update(med);
+                }
+                else
+                {
+                    _context.Medicines.Add(med);
+                }
+                allergy.Medicines.Add(med);
+            }
+            foreach (string s in obj.Other)
+            {
+                allergy.Other.Add(s);
+            }
             _context.Allergies.Update(allergy);
             _context.SaveChanges();
         }
 
-        public void PostAllergy(Allergy allergy)
+        public void Delete(string guid)
         {
-            _context.Allergies.Add(allergy);
-            _context.SaveChanges();
-        }
-
-        public void DeleteAllergy(int id)
-        {
-            var allergy = _context.Allergies.Find(id);
+            var allergy = _context.Allergies.Include(x => x.Medicines).SingleOrDefault(x => x.Guid.Equals(guid));
             if (allergy != null)
             {
+                if(allergy.Medicines.Count != 0)
+                {
+                    foreach(Medicine med in allergy.Medicines)
+                    {
+                        _context.Medicines.Remove(med);
+                    }
+                }
                 _context.Allergies.Remove(allergy);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
+            return;
         }
     }
 }

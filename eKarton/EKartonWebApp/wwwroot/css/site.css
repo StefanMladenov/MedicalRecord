@@ -12,6 +12,10 @@ a {
   color: #0366d6;
 }
 
+.body{
+    padding-top: 100px;
+}
+
 .back{
     background-color:aquamarine;
     color:red;
