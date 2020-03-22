@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace eKarton.Services
 {
-    public class MedicalRecordService
+    public class MedicalRecordService : IService<MedicalRecord>
     {
         private readonly MedicalRecordContext _context;
 
@@ -15,51 +15,56 @@ namespace eKarton.Services
             _context = context;
         }
 
-        // GET: api/EKarton
-        public List<MedicalRecord> GetMedicalRecords()
+        public List<MedicalRecord> GetAll()
         {
             return _context.MedicalRecords.ToList();
         }
 
-        // GET: api/EKarton/5
-        public MedicalRecord GetMedicalRecord(int id)
+        public MedicalRecord GetByGuid(string guid)
         {
-            MedicalRecord medicalRecord = _context.MedicalRecords.Find(id);
-            if (medicalRecord != null)
-            {
-                return medicalRecord;
-            }
-            return medicalRecord;
+            return _context.MedicalRecords.Find(guid);
         }
-        public void PutMedicalRecord(int id, MedicalRecord _medicalRecord)
+
+        public List<MedicalRecord> GetByCondition(MedicalRecord medicalRecord)
         {
-            MedicalRecord medicalRecord = _context.MedicalRecords.Find(id);
-            medicalRecord.Id = _medicalRecord.Id;
-            medicalRecord.Allergy = _medicalRecord.Allergy;
-            medicalRecord.Anamnesis = _medicalRecord.Anamnesis;
-            medicalRecord.Doctor = _medicalRecord.Doctor;
-            medicalRecord.FathersMedicalRecord = _medicalRecord.FathersMedicalRecord;
-            medicalRecord.MothersMedicalRecord = _medicalRecord.MothersMedicalRecord;
-            medicalRecord.Patient = _medicalRecord.Patient;
-            medicalRecord.VaccinationStatus = _medicalRecord.VaccinationStatus;
-            medicalRecord.Visits = _medicalRecord.Visits;
-            medicalRecord.Images = _medicalRecord.Images;
+            throw new NotImplementedException();
+        }
+
+        public void Create(MedicalRecord obj)
+        {
+            if (obj.Guid != null)
+            {
+                obj.Guid = Guid.NewGuid().ToString();
+            }
+            obj.CreatedAt = DateTime.Now;
+            _context.MedicalRecords.Add(obj);
+            _context.SaveChanges();
+        }
+
+        public void Update(string guid, MedicalRecord obj)
+        {
+            MedicalRecord medicalRecord = _context.MedicalRecords.Find(guid);
+            /*            medicalRecord.Id = _medicalRecord.Id;
+                        medicalRecord.Allergy = _medicalRecord.Allergy;
+                        medicalRecord.Anamnesis = _medicalRecord.Anamnesis;
+                        medicalRecord.Doctor = _medicalRecord.Doctor;
+                        medicalRecord.FathersMedicalRecord = _medicalRecord.FathersMedicalRecord;
+                        medicalRecord.MothersMedicalRecord = _medicalRecord.MothersMedicalRecord;
+                        medicalRecord.Patient = _medicalRecord.Patient;
+                        medicalRecord.VaccinationStatus = _medicalRecord.VaccinationStatus;
+                        medicalRecord.Visits = _medicalRecord.Visits;
+                        medicalRecord.Images = _medicalRecord.Images;*/
+            medicalRecord = obj;
             _context.MedicalRecords.Update(medicalRecord);
             _context.SaveChanges();
         }
 
-        public void PostMedicalRecord(MedicalRecord medicalRecord)
+        public void Delete(string guid)
         {
-            _context.MedicalRecords.Add(medicalRecord);
-            _context.SaveChanges();
-        }
-
-        public void DeleteMedicalRecord(int id)
-        {
-            var anamnesis = _context.MedicalRecords.Find(id);
-            if (anamnesis != null)
+            var medicalRecord = _context.MedicalRecords.Find(guid);
+            if (medicalRecord != null)
             {
-                _context.MedicalRecords.Remove(anamnesis);
+                _context.MedicalRecords.Remove(medicalRecord);
             }
             _context.SaveChanges();
         }

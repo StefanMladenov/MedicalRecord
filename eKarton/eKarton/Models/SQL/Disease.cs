@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace eKarton.Models.SQL
 {
-    public class Disease
+    public class Disease : AbstractEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Required]
         public string DiseaseCode { get; set; }
+        [Required]
         public string DiseaseName { get; set; }
         public string Therapy { get; set; }
         public DiseaseDiscriminator DiseaseDiscriminator { get; set; }
@@ -20,8 +14,8 @@ namespace eKarton.Models.SQL
 
     public enum DiseaseDiscriminator
     {
-        CURRENT,
-        MOVED,
-        FAMILY
+        CURRENT = 1,
+        MOVED = 2,
+        FAMILY = 3 
     }
 }

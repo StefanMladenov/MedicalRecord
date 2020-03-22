@@ -1,0 +1,86 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using EKartonWebApp.ViewModels
+@model PatientVM
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<h1>Login</h1>
+@using (Html.BeginForm("PostPatient", "Patient", FormMethod.Post))
+{
+<form>
+    @Html.ValidationSummary(true)
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="firstName">FirstName</label>
+            @Html.TextBoxFor(a => a.FirstName, new { @type = "text", @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.FirstName)
+        </div>
+        <div class="form-group col-md-6">
+            <label>LastName</label>
+            @Html.TextBoxFor(a => a.LastName, new { @type = "text", @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.LastName)
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputAddress">Email</label>
+            @Html.TextBoxFor(a => a.EMail, new { @type = "email", @class = "form-control" })
+            @Html.ValidationMessageFor(a => a.EMail)
+        </div>
+        @*<div class="form-group col-md-6">
+                <label>Password</label>
+                @Html.TextBoxFor(a => a.Password, new { @type = "password", @class = "form-control" })
+            </div>
+            <div class="form-group col-md-6">
+                <label>Confirm Password</label>
+                @Html.TextBoxFor(a => a.ConfirmPassword, new { @type = "password", @class = "form-control" })
+                @Html.ValidationMessageFor(a => a.ConfirmPassword)
+            </div>*@
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Specialization</label>
+            @Html.TextBoxFor(a => a.MothersName, new { @type = "text", @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Specialization</label>
+            @Html.TextBoxFor(a => a.FathersName, new { @type = "text", @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Uniques Citizens Identity Number</label>
+            @Html.TextBoxFor(a => a.UniqueCitizensIdentityNumber, new { @type = "text", @class = "form-control" })
+
+            @Html.ValidationMessageFor(a => a.UniqueCitizensIdentityNumber, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputState">Gender</label>
+        <select id="inputState" class="form-control">
+            <option selected>Choose...</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        @Html.EditorFor(m => m.Date) ):
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+}

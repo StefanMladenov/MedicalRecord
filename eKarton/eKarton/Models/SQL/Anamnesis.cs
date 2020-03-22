@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace eKarton.Models.SQL
 {
-    public class Anamnesis
+    public class Anamnesis : AbstractEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public ICollection<Disease> Diseases { get; set; }
+        public List<Disease> Diseases { get; set; }
         public string SocioEpidemiologicalStatus { get; set; }
     }
 }

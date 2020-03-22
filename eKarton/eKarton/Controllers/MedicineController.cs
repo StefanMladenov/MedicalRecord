@@ -9,7 +9,7 @@ namespace eKarton.Controllers
     [ApiController]
     public class MedicineController : ControllerBase
     {
-        private readonly MedicineService _service;
+        private readonly IService<Medicine> _service;
         public MedicineController(MedicalRecordContext context)
         {
             _service = new MedicineService(context);
@@ -19,15 +19,14 @@ namespace eKarton.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Medicine>> GetMedicines()
         {
-            return _service.GetMedicines();
+            return _service.GetAll();
         }
 
-        // GET: api/Medicine/5
-        [HttpGet("{id}")]
-        public ActionResult<Medicine> GetMedicine(int id)
+        // GET: api/Medicine/guid
+        [HttpGet("{guid}")]
+        public ActionResult<Medicine> GetMedicine(string guid)
         {
-            var medicine = _service.GetMedicine(id);
-
+            var medicine = _service.GetByGuid(guid);
             if (medicine == null)
             {
                 return NotFound();
@@ -39,15 +38,20 @@ namespace eKarton.Controllers
         // PUT: api/Medicine/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public IActionResult PutMedicine(int id, [FromBody]Medicine medicine)
+        [HttpPut("{guid}")]
+        public IActionResult PutMedicine(string guid, [FromBody]Medicine medicine)
         {
-            if (id != medicine.Id)
+            if (_service.GetByGuid(guid) != null)
             {
-                return BadRequest();
+                _service.Update(guid, medicine);
+                return Accepted();
             }
-            _service.PutMedicine(id, medicine);
-            return NoContent();
+            else
+            {
+                medicine.Guid = guid;
+                _service.Create(medicine);
+                return Created("guid", guid);
+            }
         }
 
         // POST: api/Medicine
@@ -56,15 +60,19 @@ namespace eKarton.Controllers
         [HttpPost]
         public ActionResult<Medicine> PostMedicine([FromBody]Medicine medicine)
         {
-            _service.PostMedicine(medicine);
-            return CreatedAtAction("GetMedicine", new { id = medicine.Id }, medicine);
+            if(_service.GetByGuid(medicine.Guid) != null)
+            {
+                return BadRequest();
+            }
+            _service.Create(medicine);
+            return CreatedAtAction("PostMedicine", new { guid = medicine.Guid }, medicine);
         }
 
         // DELETE: api/Medicine/5
-        [HttpDelete("{id}")]
-        public ActionResult<Medicine> DeleteMedicine(int id)
+        [HttpDelete("{guid}")]
+        public ActionResult<Medicine> DeleteMedicine(string guid)
         {
-            _service.DeleteMedicine(id);
+            _service.Delete(guid);
             return Accepted();
         }
     }

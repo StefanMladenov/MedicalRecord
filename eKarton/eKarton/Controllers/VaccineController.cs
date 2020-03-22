@@ -9,7 +9,7 @@ namespace eKarton.Controllers
     [ApiController]
     public class VaccineController : ControllerBase
     {
-        private readonly VaccineService _service;
+        private readonly IService<Vaccine> _service;
         public VaccineController(MedicalRecordContext context)
         {
             _service = new VaccineService(context);
@@ -19,14 +19,14 @@ namespace eKarton.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Vaccine>> GetVaccines()
         {
-            return _service.GetVaccines();
+            return _service.GetAll();
         }
 
         // GET: api/Vaccine/5
-        [HttpGet("{id}")]
-        public ActionResult<Vaccine> GetVaccine(int id)
+        [HttpGet("{guid}")]
+        public ActionResult<Vaccine> GetVaccine(string guid)
         {
-            var vaccine = _service.GetVaccine(id);
+            var vaccine = _service.GetByGuid(guid);
 
             if (vaccine == null)
             {
@@ -39,10 +39,10 @@ namespace eKarton.Controllers
         // PUT: api/Vaccine/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public IActionResult PutVaccine(int id, [FromBody]Vaccine vaccine)
+        [HttpPut("{guid}")]
+        public IActionResult PutVaccine(string guid, [FromBody]Vaccine vaccine)
         {
-            _service.PutVaccine(id, vaccine);
+            _service.Update(guid, vaccine);
             return NoContent();
         }
 
@@ -52,16 +52,16 @@ namespace eKarton.Controllers
         [HttpPost]
         public ActionResult<Vaccine> PostVaccine([FromBody]Vaccine vaccine)
         {
-            _service.PostVaccine(vaccine);
+            _service.Create(vaccine);
 
-            return CreatedAtAction("GetVaccine", new { id = vaccine.Id }, vaccine);
+            return CreatedAtAction("GetVaccine", new { guid = vaccine.Guid }, vaccine);
         }
 
         // DELETE: api/Vaccine/5
-        [HttpDelete("{id}")]
-        public ActionResult<Vaccine> DeleteVaccine(int id)
+        [HttpDelete("{guid}")]
+        public ActionResult<Vaccine> DeleteVaccine(string guid)
         {
-            _service.DeleteVaccine(id);
+            _service.Delete(guid);
             return Accepted();
         }
     }

@@ -1,5 +1,5 @@
 ﻿@using EKartonWebApp.ViewModels
-@model LoginViewModel
+
 @{
     ViewData["Title"] = "Login";
     Layout = "";
@@ -47,74 +47,17 @@
         <link href="signin.css" rel="stylesheet">
     </head>
 
-@using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form-signin" }))
+@using (Html.BeginForm("MedicalRecordMainMenu", "MedicalRecord", FormMethod.Post, new { @class = "form-signin" }))
 {
         <form >
-            <h1 class="text-center">Unesite podatke</h1>
+            <h1 class="text-center">Your email</h1>
             <label for="inputEmail" class="sr-only">Email address</label>
             <input type="email" id="inputEmail" class="form-control" placeholder="Email" required="" autofocus="">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> Sacuvaj me 
-                </label>
-            </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Prijava</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <p class="text-center">© 2017-2019</p>
         </form>
 }
 
 
 
-
-@*//this is for create form tag
-        @Html.AntiForgeryToken() // this is for prevent CSRF attack
-        @Html.ValidationSummary(true)
-        if (@ViewBag.Message != null)
-        {
-
-            <div style="border:1px solid red">
-                @ViewBag.Message
-            </div>
-        }
-
-        <table>
-            <tr>
-                <td>@Html.LabelFor(a => a.Username)</td>
-                <td>@Html.TextBoxFor(a => a.Username)</td>
-                <td>@Html.ValidationMessageFor(a => a.Username)</td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(a => a.Password)
-                </td>
-                <td>
-                    @Html.PasswordFor(a => a.Password)
-                </td>
-                <td>
-                    @Html.ValidationMessageFor(a => a.Password)
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <input type="submit" value="Login" />
-                </td>
-                <td></td>
-            </tr>
-        </table>
-    }*@
-@*<a asp-area="" asp-controller="Home" asp-action="Register">Register</a>*@
-
-@*@using (Html.BeginForm("Register", "Home"))
-    {
-        <table>
-            <td></td>
-            <td>
-                <input type="button" value="Register" />
-            </td>
-            <td></td>
-        </table>
-    }*@
 

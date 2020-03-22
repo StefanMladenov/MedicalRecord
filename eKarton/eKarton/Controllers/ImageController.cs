@@ -29,14 +29,13 @@ namespace eKarton.Controllers
         {
             var form = HttpContext.Request.Form;
             var form1 = HttpContext.Request.Form.Files;
-            //var form2 = HttpContext.Request.Form;
             string fName = file.FileName;
             string path = Path.Combine(_environment.ContentRootPath, "Images/" + file.FileName);
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-            return file.FileName;
+            return path;
         }
 
     
@@ -57,10 +56,10 @@ namespace eKarton.Controllers
         }
 
         // GET: api/Image/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Image>> GetImage(int id)
+        [HttpGet("{guid}")]
+        public async Task<ActionResult<Image>> GetImage(string guid)
         {
-            var image = await _context.Images.FindAsync(id);
+            var image = await _context.Images.FindAsync(guid);
 
             if (image == null)
             {
@@ -73,10 +72,10 @@ namespace eKarton.Controllers
         // PUT: api/Image/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutImage(int id, Image image)
+        [HttpPut("{guid}")]
+        public async Task<IActionResult> PutImage(string guid, Image image)
         {
-            if (id != image.Id)
+            if (guid != image.Guid)
             {
                 return BadRequest();
             }
@@ -89,7 +88,7 @@ namespace eKarton.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ImageExists(id))
+                if (!ImageExists(guid))
                 {
                     return NotFound();
                 }
@@ -111,14 +110,14 @@ namespace eKarton.Controllers
             _context.Images.Add(image);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetImage", new { id = image.Id }, image);
+            return CreatedAtAction("GetImage", new { guid = image.Guid }, image);
         }
 
         // DELETE: api/Image/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Image>> DeleteImage(int id)
+        [HttpDelete("{guid}")]
+        public async Task<ActionResult<Image>> DeleteImage(string guid)
         {
-            var image = await _context.Images.FindAsync(id);
+            var image = await _context.Images.FindAsync(guid);
             if (image == null)
             {
                 return NotFound();
@@ -130,9 +129,9 @@ namespace eKarton.Controllers
             return image;
         }
 
-        private bool ImageExists(int id)
+        private bool ImageExists(string guid)
         {
-            return _context.Images.Any(e => e.Id == id);
+            return _context.Images.Any(e => e.Guid == guid);
         }
     }
 }

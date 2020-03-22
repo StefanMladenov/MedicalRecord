@@ -1,10 +1,12 @@
 ﻿using eKarton.Models.SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace eKarton.Services
 {
-    public class VaccinationStatusService
+    public class VaccinationStatusService : IService<VaccinationStatus>
     {
         private readonly MedicalRecordContext _context;
         public VaccinationStatusService(MedicalRecordContext context)
@@ -12,34 +14,45 @@ namespace eKarton.Services
             _context = context;
         }
 
-        public List<VaccinationStatus> GetVaccinationStatuses()
+        public List<VaccinationStatus> GetAll()
         {
             return _context.VaccinationStatuses.ToList();
         }
 
-        public VaccinationStatus GetVaccinationStatus(int id)
+        public VaccinationStatus GetByGuid(string guid)
         {
-            return _context.VaccinationStatuses.Find(id);
+            return _context.VaccinationStatuses.Find(guid);
         }
 
-        public void PutVaccinationStatus(int id, VaccinationStatus _vaccinationStatus)
+        public List<VaccinationStatus> GetByCondition(VaccinationStatus vaccination)
         {
-            VaccinationStatus vactionationStatus = _context.VaccinationStatuses.Find(id);
-            vactionationStatus.Id = _vaccinationStatus.Id;
-            vactionationStatus.VaccineList = _vaccinationStatus.VaccineList;
+            throw new NotImplementedException();
+        }
+
+        public void Create(VaccinationStatus obj)
+        {
+            if (obj.Guid != null)
+            {
+                obj.Guid = Guid.NewGuid().ToString();
+            }
+            obj.CreatedAt = DateTime.Now;
+            _context.VaccinationStatuses.Add(obj);
+            _context.SaveChanges();
+        }
+
+        public void Update(string guid, VaccinationStatus obj)
+        {
+            VaccinationStatus vactionationStatus = _context.VaccinationStatuses.Find(guid);
+            /*            vactionationStatus.Id = _vaccinationStatus.Id;
+                        vactionationStatus.VaccineList = _vaccinationStatus.VaccineList;*/
+            vactionationStatus = obj;
             _context.VaccinationStatuses.Update(vactionationStatus);
             _context.SaveChanges();
         }
 
-        public void PostVaccinationStatus(VaccinationStatus vaccinationStatus)
+        public void Delete(string guid)
         {
-            _context.VaccinationStatuses.Add(vaccinationStatus);
-            _context.SaveChanges();
-        }
-
-        public void DeleteVaccinationStatus(int id)
-        {
-            var vaccinationStatus = _context.VaccinationStatuses.Find(id);
+            var vaccinationStatus = _context.VaccinationStatuses.Find(guid);
             if (vaccinationStatus != null)
             {
                 _context.VaccinationStatuses.Remove(vaccinationStatus);

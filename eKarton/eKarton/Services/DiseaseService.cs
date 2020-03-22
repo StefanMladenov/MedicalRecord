@@ -1,10 +1,11 @@
 ﻿using eKarton.Models.SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace eKarton.Services
 {
-    public class DiseaseService
+    public class DiseaseService : IService<Disease>
     {
         private readonly MedicalRecordContext _context;
         public DiseaseService(MedicalRecordContext context)
@@ -12,42 +13,46 @@ namespace eKarton.Services
             _context = context;
         }
 
-        public List<Disease> GetDiseases()
+        public List<Disease> GetAll()
         {
             return _context.Diseases.ToList();
         }
 
-        public Disease GetDisease(int id)
+        public Disease GetByGuid(string guid)
         {
-            return _context.Diseases.Find(id);
+            return _context.Diseases.Find(guid);
         }
 
-        public void PutDisease(int id, Disease _disease)
+        public List<Disease> GetByCondition(Disease disease)
         {
-            Disease disease = _context.Diseases.Find(id);
-            disease.DiseaseCode = _disease.DiseaseCode;
-            disease.DiseaseName = _disease.DiseaseName;
-            disease.Therapy = _disease.Therapy;
-            disease.Id = _disease.Id;
-            disease.DiseaseDiscriminator = _disease.DiseaseDiscriminator;
+            throw new NotImplementedException();
+        }
+
+        public void Create(Disease obj)
+        {
+            _context.Diseases.Add(obj);
+            _context.SaveChanges();
+        }
+
+        public void Update(string guid, Disease obj)
+        {
+            Disease disease = _context.Diseases.Find(guid);
+            disease.DiseaseCode = obj.DiseaseCode;
+            disease.DiseaseName = obj.DiseaseName;
+            disease.Therapy = obj.Therapy;
+            disease.DiseaseDiscriminator = obj.DiseaseDiscriminator;
             _context.Diseases.Update(disease);
             _context.SaveChanges();
         }
 
-        public void PostDisease(Disease disease)
+        public void Delete(string guid)
         {
-            _context.Diseases.Add(disease);
-            _context.SaveChanges();
-        }
-
-        public void DeleteDisease(int id)
-        {
-            var disease = _context.Diseases.Find(id);
+            var disease = _context.Diseases.Find(guid);
             if (disease != null)
             {
                 _context.Diseases.Remove(disease);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
     }
 }

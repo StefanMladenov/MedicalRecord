@@ -1,10 +1,11 @@
 ﻿using eKarton.Models.SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace eKarton.Services
 {
-    public class MedicineService
+    public class MedicineService : IService<Medicine>
     {
         private readonly MedicalRecordContext _context;
         public MedicineService(MedicalRecordContext context)
@@ -12,35 +13,39 @@ namespace eKarton.Services
             _context = context;
         }
 
-        public List<Medicine> GetMedicines()
+        public List<Medicine> GetAll()
         {
-            return _context.Medicines.ToList();
+            return _context.Medicines.OrderByDescending(x => x.CreatedAt).ToList();
         }
 
-        public Medicine GetMedicine(int id)
+        public Medicine GetByGuid(string guid)
         {
-            return _context.Medicines.Find(id);
+            return _context.Medicines.Find(guid);
         }
 
-        public void PutMedicine(int id, Medicine _medicine)
+        public List<Medicine> GetByCondition(Medicine medicine)
         {
-            Medicine medicine = _context.Medicines.Find(id);
-            medicine.Id = _medicine.Id;
-            medicine.NameOfMedicine = _medicine.NameOfMedicine;
-            medicine.Allergic = _medicine.Allergic;
+            throw new NotImplementedException();
+        }
+
+        public void Create(Medicine obj)
+        {
+            _context.Medicines.Add(obj);
+            _context.SaveChanges();
+        }
+
+        public void Update(string guid, Medicine obj)
+        {
+            Medicine medicine = _context.Medicines.Find(guid);
+            medicine.NameOfMedicine = obj.NameOfMedicine;
+            medicine.Allergic = obj.Allergic;
             _context.Medicines.Update(medicine);
             _context.SaveChanges();
         }
 
-        public void PostMedicine(Medicine medicine)
+        public void Delete(string guid)
         {
-            _context.Medicines.Add(medicine);
-            _context.SaveChanges();
-        }
-
-        public void DeleteMedicine(int id)
-        {
-            var medicine = _context.Medicines.Find(id);
+            var medicine = _context.Medicines.Find(guid);
             if (medicine != null)
             {
                 _context.Medicines.Remove(medicine);
