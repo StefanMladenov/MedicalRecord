@@ -16,9 +16,9 @@ namespace EKartonWebApp.ViewModels
         [StringLength(13,MinimumLength = 13)]
         public string UniqueCitizensIdentityNumber { get; set; }
 
-        //[DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        //public DateTime DateOfBirth { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime Date { get; set; }
         [Required]
         [EmailAddress]
         public string EMail { get; set; }

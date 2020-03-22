@@ -9,7 +9,7 @@ namespace eKarton.Controllers
     [ApiController]
     public class AnamnesisController : ControllerBase
     {
-        private readonly AnamnesisService _service;
+        private readonly IService<Anamnesis> _service;
 
         public AnamnesisController(MedicalRecordContext context)
         {
@@ -20,14 +20,14 @@ namespace eKarton.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Anamnesis>> GetAnamnesies()
         {
-            return  _service.GetAnamnesies();
+            return  _service.GetAll();
         }
 
-        // GET: api/Anamnesis/5
-        [HttpGet("{id}")]
-        public ActionResult<Anamnesis> GetAnamnesis(int id)
+        // GET: api/Anamnesis/guid
+        [HttpGet("{guid}")]
+        public ActionResult<Anamnesis> GetAnamnesis(string guid)
         {
-            var anamnesis = _service.GetAnamnesis(id);
+            var anamnesis = _service.GetByGuid(guid);
             if (anamnesis == null)
             {
                 return NotFound();
@@ -35,18 +35,23 @@ namespace eKarton.Controllers
             return anamnesis;
         }
 
-        // PUT: api/Anamnesis/5
+        // PUT: api/Anamnesis/guid
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public IActionResult PutAnamnesis(int id, [FromBody] Anamnesis anamnesis)
+        [HttpPut("{guid}")]
+        public IActionResult PutAnamnesis(string guid, [FromBody] Anamnesis anamnesis)
         {
-            if (id != anamnesis.Id)
+            anamnesis.Guid = guid;
+            if (_service.GetByGuid(guid) != null)
             {
-                return BadRequest();
+                _service.Update(guid, anamnesis);
+                return Accepted();
             }
-            _service.PutAnamnesis(id, anamnesis);
-            return NoContent();
+            else
+            {
+                _service.Create(anamnesis);
+                return Created("guid", guid);
+            }
         }
 
         // POST: api/Anamnesis
@@ -55,16 +60,19 @@ namespace eKarton.Controllers
         [HttpPost]
         public ActionResult<Anamnesis> PostAnamnesis([FromBody]Anamnesis anamnesis)
         {
-            _service.PostAnamnesis(anamnesis);
-
-            return CreatedAtAction("GetAnamnesis", new { id = anamnesis.Id }, anamnesis);
+            if(_service.GetByGuid(anamnesis.Guid) != null)
+            {
+                return BadRequest();
+            }
+            _service.Create(anamnesis);
+            return CreatedAtAction("PostAnamnesis", new { guid = anamnesis.Guid }, anamnesis);
         }
 
         // DELETE: api/Anamnesis/5
         [HttpDelete("{id}")]
-        public ActionResult<Anamnesis> DeleteAnamnesis(int id)
+        public ActionResult<Anamnesis> DeleteAnamnesis(string guid)
         {
-            _service.DeleteAnamnesis(id);
+            _service.Delete(guid);
             return Accepted();
         }
     }

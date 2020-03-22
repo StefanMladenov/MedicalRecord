@@ -9,25 +9,25 @@ namespace eKarton.Controllers
     [ApiController]
     public class AllergyController : ControllerBase
     {
-        private readonly AllergyService _service;
+        private readonly IService<Allergy> _service;
 
         public AllergyController(MedicalRecordContext context)
         {
             _service = new AllergyService(context);
         }
 
-        // GET: api/Bolest
+        // GET: api/Allergy
         [HttpGet]
         public ActionResult<IEnumerable<Allergy>> GetAllergies()
         {
-            return _service.GetAllergies();
+            return _service.GetAll();
         }
 
-        // GET: api/Bolest/5
-        [HttpGet("{id}")]
-        public ActionResult<Allergy> GetAllergy(int id)
+        // GET: api/Allergy/guid
+        [HttpGet("{guid}")]
+        public ActionResult<Allergy> GetAllergy(string guid)
         {
-            var allergy = _service.GetAllergy(id);
+            var allergy = _service.GetByGuid(guid);
             if (allergy == null)
             {
                 return NotFound();
@@ -36,35 +36,55 @@ namespace eKarton.Controllers
             return allergy;
         }
 
-        // PUT: api/Bolest/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public ActionResult<Allergy> PutAllergy(int id, [FromBody]Allergy allergy)
+        [HttpGet("ByCondition")]
+        public ActionResult<List<Allergy>> GetByCondition([FromBody] Allergy allergy)
         {
-            if (id != allergy.Id)
+            var allergiesFromGuid = _service.GetByCondition(allergy);
+            if (allergiesFromGuid != null)
             {
-                return BadRequest();
+                return allergiesFromGuid;
             }
-            _service.PutAllergy(id, allergy);
-            return NoContent();
+            return NotFound();
         }
 
-        // POST: api/Bolest
+        // PUT: api/Allergy/guid
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPut("{guid}")]
+        public ActionResult<Allergy> PutAllergy(string guid, [FromBody]Allergy allergy)
+        {
+            if (_service.GetByGuid(guid) != null)
+            {
+                _service.Update(guid, allergy);
+                return Accepted();
+            }
+            else
+            {
+                allergy.Guid = guid;
+                _service.Create(allergy);
+                return Created("guid", guid);
+            }
+        }
+
+        // POST: api/Allergy
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public ActionResult<Allergy> PostAllergy([FromBody]Allergy allergy)
         {
-            _service.PostAllergy(allergy);
-            return Accepted();
+            if(_service.GetByGuid(allergy.Guid) != null)
+            {
+                return BadRequest();
+            }
+            _service.Create(allergy);
+            return CreatedAtAction("PostAllergy", new { guid = allergy.Guid }, allergy);
         }
 
-        // DELETE: api/Bolest/5
-        [HttpDelete("{id}")]
-        public ActionResult<Allergy> DeleteAllergy(int id)
+        // DELETE: api/Allergy/guid
+        [HttpDelete("{guid}")]
+        public ActionResult<Allergy> DeleteAllergy(string guid)
         {
-            _service.DeleteAllergy(id);
+            _service.Delete(guid);
             return Accepted();
         }
     }

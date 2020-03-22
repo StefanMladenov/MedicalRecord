@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using EKartonWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +9,13 @@ namespace EKartonWebApp.Controllers
     public class DoctorController : Controller
     {
         private List<DoctorDTO> _doctors;
-        private static string _controllerName = "Doctor/";
         eKartonAPI _api = eKartonAPI.GetInstance();
-        // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public /*async Task*/ IActionResult PostDoctor(DoctorVM vm)
+        public IActionResult PostDoctor(DoctorVM vm)
         {
             if (ModelState.IsValid)
             {
@@ -28,9 +23,9 @@ namespace EKartonWebApp.Controllers
                 doctor.FirstName = vm.FirstName;
                 doctor.LastName = vm.LastName;
                 doctor.UniqueCitizensIdentityNumber = vm.UniqueCitizensIdentityNumber;
-                _api.Create(doctor, Routes.APIBaseURI + _controllerName + Routes.PostDoctor);
-                //return Redirect(Routes.GetDoctors);
-                return View("Deleted");
+                doctor.DateOfBirth = vm.Date;
+                _api.Create(doctor, Routes.APIBaseURI + Routes.PostDoctor);
+                return View("Success");
             }
             else
             {
@@ -47,15 +42,15 @@ namespace EKartonWebApp.Controllers
         [HttpGet]
         public IActionResult GetDoctors()
         {
-            _doctors = new List<DoctorDTO>(_api.GetAll<DoctorDTO>(_controllerName + Routes.GetDoctors));
+            _doctors = new List<DoctorDTO>(_api.GetAll<DoctorDTO>(Routes.GetDoctors));
             return View(_doctors);
         }
 
         //[HttpDelete]
-        public IActionResult DeleteDoctorAsync(int id)
+        public IActionResult DeleteDoctor(int id)
         {
-            _api.Delete(id, Routes.APIBaseURI + _controllerName + Routes.DeleteDoctor);
-            return View("Deleted");
+            _api.Delete(id.ToString(), Routes.APIBaseURI + Routes.DeleteDoctor);
+            return View("Success");
         }
     }
 }

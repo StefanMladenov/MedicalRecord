@@ -1,51 +1,69 @@
 ﻿using eKarton.Models.SQL;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace eKarton.Services
 {
-    public class AnamnesisService
+    public class AnamnesisService : IService<Anamnesis>
     {
         private readonly MedicalRecordContext _context;
+
         public AnamnesisService(MedicalRecordContext context)
         {
             _context = context;
         }
 
-        public List<Anamnesis> GetAnamnesies()
+        public List<Anamnesis> GetAll()
         {
-            return _context.Anamnesis.ToList();
+            return _context.Anamnesis.Include(x => x.Diseases).ToList();
         }
 
-        public Anamnesis GetAnamnesis(int id)
+        public Anamnesis GetByGuid(string guid)
         {
-            return _context.Anamnesis.Find(id);
+            return _context.Anamnesis.Include(x => x.Diseases).SingleOrDefault(x => x.Guid.Equals(guid));
         }
 
-        public void PutAnamnesis(int id, Anamnesis _anamnesis)
+        public List<Anamnesis> GetByCondition(Anamnesis anamnesis)
         {
-            Anamnesis anamnesis = _context.Anamnesis.Find(id);
-            anamnesis.Id = _anamnesis.Id;
-            anamnesis.Diseases = _anamnesis.Diseases;
-            anamnesis.SocioEpidemiologicalStatus = _anamnesis.SocioEpidemiologicalStatus;
+            throw new NotImplementedException();
+        }
+
+        public void Create(Anamnesis obj)
+        {
+            _context.Anamnesis.Add(obj);
+            _context.SaveChanges();
+        }
+
+        public void Update(string guid, Anamnesis obj)
+        {
+            Anamnesis anamnesis = _context.Anamnesis.Include(x => x.Diseases).SingleOrDefault(x => x.Guid.Equals(guid));
+            foreach (Disease disease in obj.Diseases)
+            {
+                if (_context.Medicines.Find(disease.Guid) != null)
+                {
+                    _context.Diseases.Update(disease);
+                }
+                else
+                {
+                    _context.Diseases.Add(disease);
+                }
+                anamnesis.Diseases.Add(disease);
+            }
+            anamnesis.SocioEpidemiologicalStatus = obj.SocioEpidemiologicalStatus; 
             _context.Anamnesis.Update(anamnesis);
             _context.SaveChanges();
         }
 
-        public void PostAnamnesis(Anamnesis anamnesis)
+        public void Delete(string guid)
         {
-            _context.Anamnesis.Add(anamnesis);
-            _context.SaveChanges();
-        }
-
-        public void DeleteAnamnesis(int id)
-        {
-            var anamnesis = _context.Anamnesis.Find(id);
+            var anamnesis = _context.Anamnesis.Find(guid);
             if (anamnesis != null)
             {
                 _context.Anamnesis.Remove(anamnesis);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
     }
 }

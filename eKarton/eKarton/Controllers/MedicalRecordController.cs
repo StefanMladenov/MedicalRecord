@@ -10,7 +10,7 @@ namespace eKarton.Controllers
     [ApiController]
     public class MedicalRecordController : ControllerBase
     {
-        private readonly MedicalRecordService _service;
+        private readonly IService<MedicalRecord> _service;
         public MedicalRecordController(MedicalRecordContext context)
         {
             _service = new MedicalRecordService(context);
@@ -20,14 +20,14 @@ namespace eKarton.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<MedicalRecord>> GetMedicalRecords()
         {
-            return _service.GetMedicalRecords();
+            return _service.GetAll();
         }
 
         // GET: api/EKarton/5
-        [HttpGet("{id}")]
-        public ActionResult<MedicalRecord> GetMedicalRecord(int id)
+        [HttpGet("{guid}")]
+        public ActionResult<MedicalRecord> GetMedicalRecord(string guid)
         {
-            var medicalRecord =  _service.GetMedicalRecord(id);
+            var medicalRecord =  _service.GetByGuid(guid);
             if (medicalRecord == null)
             {
                 return NotFound();
@@ -39,14 +39,14 @@ namespace eKarton.Controllers
         // PUT: api/EKarton/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMedicalRecord(int id, [FromBody]MedicalRecord medicalRecord)
+        [HttpPut("{guid}")]
+        public async Task<IActionResult> PutMedicalRecord(string guid, [FromBody]MedicalRecord medicalRecord)
         {
-            if (id != medicalRecord.Id)
+            if (guid != medicalRecord.Guid)
             {
                 return BadRequest();
             }
-            _service.PutMedicalRecord(id, medicalRecord);
+            _service.Update(guid, medicalRecord);
             return NoContent();
         }
 
@@ -56,15 +56,16 @@ namespace eKarton.Controllers
         [HttpPost]
         public ActionResult<MedicalRecord> PostMedicalRecord([FromBody]MedicalRecord medicalRecord)
         {
-            _service.PostMedicalRecord(medicalRecord);
-            return CreatedAtAction("GetEKarton", new { id = medicalRecord.Id }, medicalRecord);
+            _service.Create(medicalRecord);
+            //return CreatedAtAction("GetEKarton", new { guid = medicalRecord.Guid }, medicalRecord);
+            return Accepted();
         }
 
         // DELETE: api/EKarton/5
-        [HttpDelete("{id}")]
-        public ActionResult<MedicalRecord> DeleteMedicalRecord(int id)
+        [HttpDelete("{guid}")]
+        public ActionResult<MedicalRecord> DeleteMedicalRecord(string guid)
         {
-            _service.DeleteMedicalRecord(id);
+            _service.Delete(guid);
             return Accepted();
         }
     }

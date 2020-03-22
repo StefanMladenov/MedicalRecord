@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace eKarton.Services
 { 
-    interface IService
+    public interface IService<T>
     {
-        public List<T> GetAll<T>();
-        public T Get <T>();
-        public void Put<T>(int? id,T obj);
-        public void Post<T>(T obj);
-        public void Delete(int? id);
+        public List<T> GetAll();
+        public T GetByGuid(string guid);
+        public List<T> GetByCondition(T entity);
+        public void Create(T obj);
+        public void Update(string guid, T obj);
+        public void Delete(string guid);
     }
 }

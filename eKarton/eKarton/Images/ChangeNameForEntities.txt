@@ -1,0 +1,11 @@
+Anamneza - Amamnesis
+Bolest - Disease
+Karton - medical record
+KartonAlergena - Alergija - Alergy 
+KartonVakcinacije - Vaccination Status
+Lek - Medicine
+Osoba - Person
+Pregled - Visit
+Slika - Image
+Ustanova - Institute
+Vakcina - Vaccine 

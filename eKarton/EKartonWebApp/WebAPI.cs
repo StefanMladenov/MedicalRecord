@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using EKartonWebApp.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -22,7 +21,7 @@ namespace EKartonWebApp
         #endregion
 
         public void Update<T>(T t, string path, int id);
-        public void Delete(int id, string path);
+        public void Delete(string id, string path);
     }
 
     public class eKartonAPI : API
@@ -88,66 +87,67 @@ namespace EKartonWebApp
             return t[0];
         }
 
-        public void GetBy<T>(T t,int index, string path)
+        public void GetBy<T>(T t, int index, string path)
         {
             throw new NotImplementedException();
         }
 
-        public void Update<T>(T t, string path,int id)
+        public void Update<T>(T t, string path, int id)
         {
             _client.PutAsync(path + "/" + id, SerializeContent(t));
         }
 
-        public void Delete(int id, string path)
+        public void Delete(string id, string path)
         {
-           _client.DeleteAsync(path + id);
+            _client.DeleteAsync(path + id);
         }
 
         public void GetOne(int id, string path)
         {
             _client.GetAsync(path + "/" + id);
         }
+        public async Task<HttpResponseMessage> Exists(string UCIN, string path)
+        {
+            var result = await _client.GetAsync(path + "/" + UCIN);
+            string str = await result.Content.ReadAsStringAsync();
+            return result;
+        }
 
-        //public async Task SendImage(string path, [FromForm] IFormFile model)
-        //{
-        //    HttpClient cli = new HttpClient();
+        public async Task<HttpResponseMessage> UploadFiles(VisitVM model)
+        {
+            List<HttpResponseMessage> messages = new List<HttpResponseMessage>();
+            ImageVM m = new ImageVM();
+            using (var httpClient = new HttpClient())
+            {
+                foreach (IFormFile file in model.MyImage)
+                {
+                    var st = file.OpenReadStream();
+                    var ss = file.FileName;
+                    using (var form = new MultipartFormDataContent())
+                    {
+                        using (var streamContent = new StreamContent(st))
+                        {
+                            using (var fileContent = new ByteArrayContent(await streamContent.ReadAsByteArrayAsync()))
+                            {
+                                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
 
-        //    // we need to send a request with multipart/form-data
-        //    //var multiForm = new MultipartFormDataContent()
-        //    //{
-        //    //    // add API method parameters
-        //    //    { new StringContent("CustomField1"), "1" },
-        //    //    { new StringContent("CustomField2"), "1234" },
-        //    //    { new StringContent("CustomField3"), "5" },
-        //    //};
-        //    //var multiForm = new MultipartFormDataContent()
-        //    // add file and directly upload it
-        //    //using FileStream fs = System.IO.File.OpenRead("C:/1.jpg");
-        //    //multiForm.Add(new StreamContent(fs), "file", "1.jpg");
+                                // "file" parameter name should be the same as the server side input parameter name
+                                form.Add(fileContent, "file", ss);
+                                m.ImageBytes = await fileContent.ReadAsByteArrayAsync();
+                                HttpResponseMessage response = await httpClient.PostAsync(Routes.APIBaseURI + "Image/UploadFile", form);
+                                messages.Add(response);
+                                var k = response.ReasonPhrase;
+                                var result = await response.Content.ReadAsStringAsync();
+                                m.ImagePath = result;
 
-        //    // send request to API
-        //    //var responce = await cli.PostAsync("https://localhost:123/api/Images/PostImage", model);
-        //    var memory = new MemoryStream();
-        //    model.CopyTo(memory);
-        //    using (var form = new MultipartFormDataContent())
-        //    {
-        //        /*using (var fs = File.OpenRead())
-        //        {*/
-        //            using (var streamContent = new StreamContent(memory))
-        //            {
-        //                using (var fileContent = new ByteArrayContent(await streamContent.ReadAsByteArrayAsync()))
-        //                {
-        //                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                            }
+                        }
+                    }
 
-        //                    // "file" parameter name should be the same as the server side input parameter name
-        //                    form.Add(fileContent, "file", model.FileName);
-        //                    HttpResponseMessage response = await cli.PostAsync(Routes.APIBaseURI + "/Image/UploadFile", form);
-        //                }
-        //            }
-        //        //}
-        //    }
-            
-        //}
+                }
+            }
+            return messages[0];
+        }
     }
 
     public class MedicalRecordDTO
@@ -294,15 +294,25 @@ namespace EKartonWebApp
         public DateTime Datum { get; set; }
     }
     public class VaccineDTO
-    { 
+    {
         public int Id { get; set; }
-
         public string VaccineName { get; set; }
-
         //if trajanje==null then neograniceno else dani
         public int Duration { get; set; }
-
         public DateTime VaccinationDate { get; set; }
+    }
+
+    public class VisitDTO
+    {
+        public string ObjectId { get; set; }
+        public string Id { get; set; }
+        public int HealthInsuranceNumber { get; set; }
+        public string PatientUCIN { get; set; }
+        public string Therapy { get; set; }
+        public string DoctorUCIN { get; set; }
+        public string WorkingDiagnosis { get; set; }
+        public string CurrentFinding { get; set; }
+        public string[] FilePaths { get; set; }
     }
     public enum ImageType
     {

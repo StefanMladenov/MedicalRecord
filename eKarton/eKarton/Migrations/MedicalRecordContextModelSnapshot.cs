@@ -21,10 +21,12 @@ namespace eKarton.Migrations
 
             modelBuilder.Entity("eKarton.Models.SQL.Allergy", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Food")
                         .HasColumnType("nvarchar(max)");
@@ -32,61 +34,69 @@ namespace eKarton.Migrations
                     b.Property<string>("Other")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.ToTable("Allergies");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Anamnesis", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SocioEpidemiologicalStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.ToTable("Anamnesis");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Disease", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("AnamnesisId")
-                        .HasColumnType("int");
+                    b.Property<string>("AnamnesisGuid")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DiseaseCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DiseaseDiscriminator")
                         .HasColumnType("int");
 
                     b.Property<string>("DiseaseName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Therapy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
-                    b.HasIndex("AnamnesisId");
+                    b.HasIndex("AnamnesisGuid");
 
                     b.ToTable("Diseases");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Doctor", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -99,8 +109,8 @@ namespace eKarton.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("InstituteId")
-                        .HasColumnType("int");
+                    b.Property<string>("InstituteGuid")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -115,9 +125,9 @@ namespace eKarton.Migrations
                         .HasColumnType("nvarchar(13)")
                         .HasMaxLength(13);
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
-                    b.HasIndex("InstituteId");
+                    b.HasIndex("InstituteGuid");
 
                     b.HasIndex("UniqueCitizensIdentityNumber")
                         .IsUnique();
@@ -127,12 +137,11 @@ namespace eKarton.Migrations
 
             modelBuilder.Entity("eKarton.Models.SQL.Image", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImagePath")
@@ -141,109 +150,121 @@ namespace eKarton.Migrations
                     b.Property<int>("ImageType")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MedicalRecordId")
-                        .HasColumnType("int");
+                    b.Property<string>("MedicalRecordGuid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
-                    b.HasIndex("MedicalRecordId");
+                    b.HasIndex("MedicalRecordGuid");
 
                     b.ToTable("Images");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Institute", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.ToTable("Institutes");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.MedicalRecord", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("AllergyId")
-                        .HasColumnType("int");
+                    b.Property<string>("AllergyGuid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("AnamnesisId")
-                        .HasColumnType("int");
+                    b.Property<string>("AnamnesisGuid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("DoctorId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("FathersMedicalRecordId")
-                        .HasColumnType("int");
+                    b.Property<string>("DoctorGuid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("MothersMedicalRecordId")
-                        .HasColumnType("int");
+                    b.Property<string>("FathersMedicalRecordGuid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("PatientId")
-                        .HasColumnType("int");
+                    b.Property<string>("MothersMedicalRecordGuid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("VaccinationStatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("PatientGuid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("VaccinationStatusGuid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("AllergyId");
+                    b.Property<string>("Visits")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AnamnesisId");
+                    b.HasKey("Guid");
 
-                    b.HasIndex("DoctorId");
+                    b.HasIndex("AllergyGuid");
 
-                    b.HasIndex("FathersMedicalRecordId");
+                    b.HasIndex("AnamnesisGuid");
 
-                    b.HasIndex("MothersMedicalRecordId")
+                    b.HasIndex("DoctorGuid");
+
+                    b.HasIndex("FathersMedicalRecordGuid");
+
+                    b.HasIndex("MothersMedicalRecordGuid")
                         .IsUnique()
-                        .HasFilter("[MothersMedicalRecordId] IS NOT NULL");
+                        .HasFilter("[MothersMedicalRecordGuid] IS NOT NULL");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("PatientGuid");
 
-                    b.HasIndex("VaccinationStatusId");
+                    b.HasIndex("VaccinationStatusGuid");
 
                     b.ToTable("MedicalRecords");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Medicine", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Allergic")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("AllergyId")
-                        .HasColumnType("int");
+                    b.Property<string>("AllergyGuid")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NameOfMedicine")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
-                    b.HasIndex("AllergyId");
+                    b.HasIndex("AllergyGuid");
 
                     b.ToTable("Medicines");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Patient", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -281,7 +302,7 @@ namespace eKarton.Migrations
                         .HasColumnType("nvarchar(13)")
                         .HasMaxLength(13);
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasIndex("UniqueCitizensIdentityNumber")
                         .IsUnique();
@@ -291,22 +312,26 @@ namespace eKarton.Migrations
 
             modelBuilder.Entity("eKarton.Models.SQL.VaccinationStatus", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Guid");
 
                     b.ToTable("VaccinationStatuses");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Vaccine", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
@@ -314,110 +339,88 @@ namespace eKarton.Migrations
                     b.Property<DateTime>("VaccinationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("VaccinationStatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("VaccinationStatusGuid")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("VaccineName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("VaccineSerialMark")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("VaccinationStatusId");
+                    b.HasKey("Guid");
+
+                    b.HasIndex("VaccinationStatusGuid");
 
                     b.ToTable("Vaccines");
-                });
-
-            modelBuilder.Entity("eKarton.Models.SQL.VisitEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Datum")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("MedicalRecordId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MedicalRecordId");
-
-                    b.ToTable("VisitEntity");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Disease", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.Anamnesis", null)
                         .WithMany("Diseases")
-                        .HasForeignKey("AnamnesisId");
+                        .HasForeignKey("AnamnesisGuid");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Doctor", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.Institute", "Institute")
                         .WithMany("Doctors")
-                        .HasForeignKey("InstituteId");
+                        .HasForeignKey("InstituteGuid");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Image", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.MedicalRecord", null)
                         .WithMany("Images")
-                        .HasForeignKey("MedicalRecordId");
+                        .HasForeignKey("MedicalRecordGuid");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.MedicalRecord", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.Allergy", "Allergy")
                         .WithMany()
-                        .HasForeignKey("AllergyId");
+                        .HasForeignKey("AllergyGuid");
 
                     b.HasOne("eKarton.Models.SQL.Anamnesis", "Anamnesis")
                         .WithMany()
-                        .HasForeignKey("AnamnesisId");
+                        .HasForeignKey("AnamnesisGuid");
 
                     b.HasOne("eKarton.Models.SQL.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorGuid");
 
                     b.HasOne("eKarton.Models.SQL.MedicalRecord", "FathersMedicalRecord")
                         .WithMany()
-                        .HasForeignKey("FathersMedicalRecordId");
+                        .HasForeignKey("FathersMedicalRecordGuid");
 
                     b.HasOne("eKarton.Models.SQL.MedicalRecord", "MothersMedicalRecord")
                         .WithOne()
-                        .HasForeignKey("eKarton.Models.SQL.MedicalRecord", "MothersMedicalRecordId");
+                        .HasForeignKey("eKarton.Models.SQL.MedicalRecord", "MothersMedicalRecordGuid");
 
                     b.HasOne("eKarton.Models.SQL.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId");
+                        .HasForeignKey("PatientGuid");
 
                     b.HasOne("eKarton.Models.SQL.VaccinationStatus", "VaccinationStatus")
                         .WithMany()
-                        .HasForeignKey("VaccinationStatusId");
+                        .HasForeignKey("VaccinationStatusGuid");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Medicine", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.Allergy", null)
                         .WithMany("Medicines")
-                        .HasForeignKey("AllergyId");
+                        .HasForeignKey("AllergyGuid");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Vaccine", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.VaccinationStatus", null)
-                        .WithMany("VaccineList")
-                        .HasForeignKey("VaccinationStatusId");
-                });
-
-            modelBuilder.Entity("eKarton.Models.SQL.VisitEntity", b =>
-                {
-                    b.HasOne("eKarton.Models.SQL.MedicalRecord", null)
-                        .WithMany("Visits")
-                        .HasForeignKey("MedicalRecordId");
+                        .WithMany("Vaccines")
+                        .HasForeignKey("VaccinationStatusGuid");
                 });
 #pragma warning restore 612, 618
         }

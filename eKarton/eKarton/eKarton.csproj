@@ -5,6 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DtoModels\**" />
+    <Compile Remove="Helpers\**" />
+    <Content Remove="DtoModels\**" />
+    <Content Remove="Helpers\**" />
+    <EmbeddedResource Remove="DtoModels\**" />
+    <EmbeddedResource Remove="Helpers\**" />
+    <None Remove="DtoModels\**" />
+    <None Remove="Helpers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\UsersController.cs" />
+    <Compile Remove="Models\SQL\User.cs" />
+    <Compile Remove="Services\UserService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
@@ -22,9 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Mongo\" />
-    <Folder Include="MyStaticFiles\images\" />
-    <Folder Include="MyStaticFiles\StaticFiles\" />
     <Folder Include="Images\" />
   </ItemGroup>
 

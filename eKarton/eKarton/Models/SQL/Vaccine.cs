@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eKarton.Models.SQL
 {
-    public class Vaccine
+    public class Vaccine : AbstractEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Required]
+        public string VaccineSerialMark { get; set; }
+
+        [Required]
         public string VaccineName { get; set; }
         
         //if trajanje==null then neograniceno else dani
