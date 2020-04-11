@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace eKarton.Services
+namespace eMedicalRecord.Services
 { 
     public interface IService<T>
     {

@@ -1,10 +1,10 @@
-﻿using eKarton.Models.SQL;
+﻿using eMedicalRecord.Models.SQL;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eKarton.Services
+namespace eMedicalRecord.Services
 {
     public class AnamnesisService : IService<Anamnesis>
     {

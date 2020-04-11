@@ -1,4 +1,4 @@
-using eKarton.Models;
+using eMedicalRecord.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,10 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using eKarton.Services;
-using eKarton.Models.SQL;
+using eMedicalRecord.Services;
+using eMedicalRecord.Models.SQL;
 
-namespace eKarton
+namespace eMedicalRecord
 {
     public class Startup
     {
@@ -34,16 +34,6 @@ namespace eKarton
             services.AddSingleton<IVisitArchiveDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<VisitArchiveDatabaseSettings>>().Value);
 
-            services.AddSingleton<AllergyService>();
-            services.AddSingleton<AnamnesisService>();
-            services.AddSingleton<DiseaseService>();
-            services.AddSingleton<DoctorService>();
-            services.AddSingleton<ImageService>();
-            services.AddSingleton<MedicalRecordService>();
-            services.AddSingleton<MedicineService>();
-            services.AddSingleton<PatientService>();
-            services.AddSingleton<VaccinationStatusService>();
-            services.AddSingleton<VaccineService>();
             services.AddSingleton<VisitService>();
         }
 

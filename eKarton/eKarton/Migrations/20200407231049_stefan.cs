@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace eKarton.Migrations
+namespace eMedicalRecord.Migrations
 {
     public partial class stefan : Migration
     {

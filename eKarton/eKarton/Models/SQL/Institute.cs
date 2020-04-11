@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace eKarton.Models.SQL
+namespace eMedicalRecord.Models.SQL
 {
     public class Institute : AbstractEntity
     {

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace eKarton.Models.SQL
+namespace eMedicalRecord.Models.SQL
 {
     public class MedicalRecordContext : DbContext
     {
@@ -53,10 +53,6 @@ namespace eKarton.Models.SQL
             modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Snapshots);
 
             modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Instructions);
-
-            modelBuilder.Entity<MedicalRecord>().HasOne(j => j.FathersMedicalRecord);
-
-            modelBuilder.Entity<MedicalRecord>().HasOne(k => k.MothersMedicalRecord);
 
             modelBuilder.Entity<MedicalRecord>().HasOne(j => j.Doctor);
 

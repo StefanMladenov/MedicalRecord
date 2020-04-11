@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace eKarton.Models
+namespace eMedicalRecord.Models
 {
     public class Visit
     {

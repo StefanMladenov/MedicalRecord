@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using eKarton.Models.SQL;
+using eMedicalRecord.Models.SQL;
 
-namespace eKarton.Migrations
+namespace eMedicalRecord.Migrations
 {
     [DbContext(typeof(MedicalRecordContext))]
     partial class MedicalRecordContextModelSnapshot : ModelSnapshot
@@ -232,12 +232,6 @@ namespace eKarton.Migrations
                     b.Property<string>("DoctorGuid")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FathersMedicalRecordGuid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("MothersMedicalRecordGuid")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("PatientGuid")
                         .HasColumnType("nvarchar(450)");
 
@@ -254,12 +248,6 @@ namespace eKarton.Migrations
                     b.HasIndex("AnamnesisGuid");
 
                     b.HasIndex("DoctorGuid");
-
-                    b.HasIndex("FathersMedicalRecordGuid");
-
-                    b.HasIndex("MothersMedicalRecordGuid")
-                        .IsUnique()
-                        .HasFilter("[MothersMedicalRecordGuid] IS NOT NULL");
 
                     b.HasIndex("PatientGuid");
 
@@ -472,14 +460,6 @@ namespace eKarton.Migrations
                     b.HasOne("eKarton.Models.SQL.Doctor", "Doctor")
                         .WithMany()
                         .HasForeignKey("DoctorGuid");
-
-                    b.HasOne("eKarton.Models.SQL.MedicalRecord", "FathersMedicalRecord")
-                        .WithMany()
-                        .HasForeignKey("FathersMedicalRecordGuid");
-
-                    b.HasOne("eKarton.Models.SQL.MedicalRecord", "MothersMedicalRecord")
-                        .WithOne()
-                        .HasForeignKey("eKarton.Models.SQL.MedicalRecord", "MothersMedicalRecordGuid");
 
                     b.HasOne("eKarton.Models.SQL.Patient", "Patient")
                         .WithMany()

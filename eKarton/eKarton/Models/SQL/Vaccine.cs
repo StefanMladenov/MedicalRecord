@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace eKarton.Models.SQL
+namespace eMedicalRecord.Models.SQL
 {
     public class Vaccine : AbstractEntity
     {

@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using eKarton.Models.SQL;
+using eMedicalRecord.Models.SQL;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
-using eKarton.Services;
+using eMedicalRecord.Services;
 
-namespace eKarton.Controllers
+namespace eMedicalRecord.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

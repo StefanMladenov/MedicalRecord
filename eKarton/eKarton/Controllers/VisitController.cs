@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using eKarton.Services;
-using eKarton.Models;
-using eKarton.Models.SQL;
+using eMedicalRecord.Services;
+using eMedicalRecord.Models;
+using eMedicalRecord.Models.SQL;
 
-namespace eKarton.Controllers
+namespace eMedicalRecord.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

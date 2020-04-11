@@ -10,8 +10,8 @@ using eMedicalRecord.Models.SQL;
 namespace eMedicalRecord.Migrations
 {
     [DbContext(typeof(MedicalRecordContext))]
-    [Migration("20200407231049_stefan")]
-    partial class stefan
+    [Migration("20200411153638_stefan1")]
+    partial class stefan1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -234,12 +234,6 @@ namespace eMedicalRecord.Migrations
                     b.Property<string>("DoctorGuid")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FathersMedicalRecordGuid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("MothersMedicalRecordGuid")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("PatientGuid")
                         .HasColumnType("nvarchar(450)");
 
@@ -256,12 +250,6 @@ namespace eMedicalRecord.Migrations
                     b.HasIndex("AnamnesisGuid");
 
                     b.HasIndex("DoctorGuid");
-
-                    b.HasIndex("FathersMedicalRecordGuid");
-
-                    b.HasIndex("MothersMedicalRecordGuid")
-                        .IsUnique()
-                        .HasFilter("[MothersMedicalRecordGuid] IS NOT NULL");
 
                     b.HasIndex("PatientGuid");
 
@@ -474,14 +462,6 @@ namespace eMedicalRecord.Migrations
                     b.HasOne("eKarton.Models.SQL.Doctor", "Doctor")
                         .WithMany()
                         .HasForeignKey("DoctorGuid");
-
-                    b.HasOne("eKarton.Models.SQL.MedicalRecord", "FathersMedicalRecord")
-                        .WithMany()
-                        .HasForeignKey("FathersMedicalRecordGuid");
-
-                    b.HasOne("eKarton.Models.SQL.MedicalRecord", "MothersMedicalRecord")
-                        .WithOne()
-                        .HasForeignKey("eKarton.Models.SQL.MedicalRecord", "MothersMedicalRecordGuid");
 
                     b.HasOne("eKarton.Models.SQL.Patient", "Patient")
                         .WithMany()

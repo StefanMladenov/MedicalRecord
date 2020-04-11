@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace eKarton.Models.SQL
+namespace eMedicalRecord.Models.SQL
 {
     public class Medicine : AbstractEntity
     {

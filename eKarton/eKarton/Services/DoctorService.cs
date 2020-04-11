@@ -1,8 +1,8 @@
-﻿using eKarton.Models.SQL;
+﻿using eMedicalRecord.Models.SQL;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eKarton.Services
+namespace eMedicalRecord.Services
 {
     public class DoctorService : IService<Doctor>
     {

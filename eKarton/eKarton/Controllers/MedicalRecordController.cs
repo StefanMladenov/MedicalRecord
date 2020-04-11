@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using eKarton.Models.SQL;
-using eKarton.Services;
+using eMedicalRecord.Models.SQL;
+using eMedicalRecord.Services;
 
-namespace eKarton.Controllers
+namespace eMedicalRecord.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -37,7 +37,7 @@ namespace eKarton.Controllers
 
         // PUT: api/MedicalRecord/guid
         [HttpPut("{guid}")]
-        public async Task<IActionResult> PutMedicalRecord(string guid, [FromBody]MedicalRecord medicalRecord)
+        public ActionResult<MedicalRecord> PutMedicalRecord(string guid, [FromBody]MedicalRecord medicalRecord)
         {
             if (ModelState.IsValid)
             {

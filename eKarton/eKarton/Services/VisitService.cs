@@ -1,9 +1,9 @@
 ﻿using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-using eKarton.Models;
+using eMedicalRecord.Models;
 
-namespace eKarton.Services
+namespace eMedicalRecord.Services
 {
     public class VisitService : IService<Visit>
     {

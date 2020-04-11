@@ -1,10 +1,10 @@
-﻿using eKarton.Models.SQL;
+﻿using eMedicalRecord.Models.SQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace eKarton.Services
+namespace eMedicalRecord.Services
 {
     public class VaccinationStatusService : IService<VaccinationStatus>
     {

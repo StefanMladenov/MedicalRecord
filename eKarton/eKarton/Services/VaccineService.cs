@@ -1,9 +1,9 @@
-﻿using eKarton.Models.SQL;
+﻿using eMedicalRecord.Models.SQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eKarton.Services
+namespace eMedicalRecord.Services
 {
     public class VaccineService : IService<Vaccine>
     {

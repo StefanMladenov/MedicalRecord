@@ -1,5 +1,5 @@
 ﻿
-namespace eKarton.Models.SQL
+namespace eMedicalRecord.Models.SQL
 {
     public abstract class Image : AbstractEntity
     {

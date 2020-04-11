@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace eKarton.Models
+namespace eMedicalRecord.Models
 {
     public abstract class AbstractEntity
     {

@@ -9632,9 +9632,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\eKarton\\eKarton\\eKarton\\eKarton\\eKarton.csproj",
-      "projectName": "eKarton",
-      "projectPath": "E:\\eKarton\\eKarton\\eKarton\\eKarton\\eKarton.csproj",
+      "projectUniqueName": "E:\\eKarton\\eKarton\\eKarton\\eKarton\\eMedicalRecord.csproj",
+      "projectName": "eMedicalRecord",
+      "projectPath": "E:\\eKarton\\eKarton\\eKarton\\eKarton\\eMedicalRecord.csproj",
       "packagesPath": "C:\\Users\\ktg\\.nuget\\packages\\",
       "outputPath": "E:\\eKarton\\eKarton\\eKarton\\eKarton\\obj\\",
       "projectStyle": "PackageReference",
@@ -9729,7 +9729,7 @@
             "version": "[3.0.1, 3.0.1]"
           },
           {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "name": "Microsoft.NETCore.App.Host.win-x86",
             "version": "[3.0.2, 3.0.2]"
           }
         ],
