@@ -48,7 +48,11 @@ namespace eKarton.Models.SQL
 
             #region MedicalRecord
 
-            modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Images);
+            modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Analysis);
+
+            modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Snapshots);
+
+            modelBuilder.Entity<MedicalRecord>().HasMany(k => k.Instructions);
 
             modelBuilder.Entity<MedicalRecord>().HasOne(j => j.FathersMedicalRecord);
 
@@ -58,7 +62,7 @@ namespace eKarton.Models.SQL
 
             modelBuilder.Entity<MedicalRecord>().HasOne(k => k.Patient);
 
-            modelBuilder.Entity<MedicalRecord>().Property(p => p.Visits)
+            modelBuilder.Entity<MedicalRecord>().Property(p => p.VisitGuids)
             .HasConversion(
             v => JsonConvert.SerializeObject(v),
             v => JsonConvert.DeserializeObject<List<string>>(v));
@@ -67,7 +71,9 @@ namespace eKarton.Models.SQL
         }
 
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
-        public DbSet<Image> Images { get; set; }
+        public DbSet<Instruction> Instructions { get; set; }
+        public DbSet<Snapshot> Snapshots { get; set; }
+        public DbSet<Analysis> Analysis { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<VaccinationStatus> VaccinationStatuses { get; set; }

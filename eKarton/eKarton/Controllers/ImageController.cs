@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using eKarton.Models.SQL;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using eKarton.Services;
 
 namespace eKarton.Controllers
 {
@@ -17,15 +15,17 @@ namespace eKarton.Controllers
     {
         private readonly MedicalRecordContext _context;
         public static IWebHostEnvironment _environment;
+        private readonly IService<Image> _service;
 
         public ImageController(IWebHostEnvironment environment, MedicalRecordContext context)
         {
             _environment = environment;
             _context = context;
+            _service = new ImageService(context);
         }
 
-        [HttpPost("UploadFile")]
-        public async Task<string> UploadFile([FromForm] IFormFile file)
+        [HttpPost("{action}/{guid}")]
+        public async Task<string> UploadFile([FromForm] IFormFile file, string guid)
         {
             var form = HttpContext.Request.Form;
             var form1 = HttpContext.Request.Form.Files;
@@ -38,29 +38,18 @@ namespace eKarton.Controllers
             return path;
         }
 
-    
-        
-
-        /// <summary>
-        /// Uplaods an image to the server.
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-
-
         // GET: api/Image
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Image>>> GetImages()
         {
-            return await _context.Images.ToListAsync();
+            return _service.GetAll();
         }
 
-        // GET: api/Image/5
+        // GET: api/Image/guid
         [HttpGet("{guid}")]
         public async Task<ActionResult<Image>> GetImage(string guid)
         {
-            var image = await _context.Images.FindAsync(guid);
-
+            var image = _service.GetByGuid(guid);
             if (image == null)
             {
                 return NotFound();
@@ -69,69 +58,48 @@ namespace eKarton.Controllers
             return image;
         }
 
-        // PUT: api/Image/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{guid}")]
-        public async Task<IActionResult> PutImage(string guid, Image image)
+        // POST: api/Image/snapshot
+        [HttpPost("snapshot")]
+        public async Task<ActionResult<Snapshot>> PostSnapshot(Snapshot snapshot)
         {
-            if (guid != image.Guid)
+            if (_service.GetByGuid(snapshot.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
-
-            _context.Entry(image).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ImageExists(guid))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            _service.Create(snapshot);
+            return CreatedAtAction("Created Snapshot", new { guid = snapshot.Guid }, snapshot);
         }
 
-        // POST: api/Image
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Image>> PostImage(Image image)
+        // POST: api/Image/instruction
+        [HttpPost("instruction")]
+        public async Task<ActionResult<Instruction>> PostInstruction(Instruction instruction)
         {
-            _context.Images.Add(image);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetImage", new { guid = image.Guid }, image);
+            if (_service.GetByGuid(instruction.Guid) != null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            _service.Create(instruction);
+            return CreatedAtAction("Created Instruction", new { guid = instruction.Guid }, instruction);
         }
 
-        // DELETE: api/Image/5
+        // POST: api/Image/analysis
+        [HttpPost("analysis")]
+        public async Task<ActionResult<Analysis>> PostAnalysis(Analysis analysis)
+        {
+            if (_service.GetByGuid(analysis.Guid) != null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            _service.Create(analysis);
+            return CreatedAtAction("Created Analysis", new { guid = analysis.Guid }, analysis);
+        }
+
+        // DELETE: api/Image/guid
         [HttpDelete("{guid}")]
         public async Task<ActionResult<Image>> DeleteImage(string guid)
         {
-            var image = await _context.Images.FindAsync(guid);
-            if (image == null)
-            {
-                return NotFound();
-            }
-
-            _context.Images.Remove(image);
-            await _context.SaveChangesAsync();
-
-            return image;
-        }
-
-        private bool ImageExists(string guid)
-        {
-            return _context.Images.Any(e => e.Guid == guid);
+            _service.Delete(guid);
+            return Accepted();
         }
     }
 }

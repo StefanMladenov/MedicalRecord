@@ -22,41 +22,53 @@ namespace eKarton.Controllers
             return _service.GetAll();
         }
 
-        // GET: api/VaccinationStatus/5
+        // GET: api/VaccinationStatus/guid
         [HttpGet("{guid}")]
         public ActionResult<VaccinationStatus> GetVaccinationStatus(string guid)
         {
             var vaccinationStatus = _service.GetByGuid(guid);
-
             if (vaccinationStatus == null)
             {
                 return NotFound();
             }
-
             return vaccinationStatus;
         }
 
-        // PUT: api/VaccinationStatus/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        // PUT: api/VaccinationStatus/guid
         [HttpPut("{guid}")]
         public IActionResult PutVaccinationStatus(string guid, [FromBody]VaccinationStatus vaccinationStatus)
         {
-            _service.Update(guid, vaccinationStatus);
-            return NoContent();
+            if (ModelState.IsValid)
+            {
+                var vaccStatus = _service.GetByGuid(guid);
+                if (vaccStatus != null)
+                {
+                    _service.Update(guid, vaccinationStatus, vaccStatus);
+                    return Accepted();
+                }
+                else
+                {
+                    vaccinationStatus.Guid = guid;
+                    _service.Create(vaccinationStatus);
+                    return Created("guid", guid);
+                }
+            }
+            return BadRequest();
         }
 
         // POST: api/VaccinationStatus
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public ActionResult<VaccinationStatus> PostVaccinationStatus([FromBody]VaccinationStatus vaccinationStatus)
         {
+            if (_service.GetByGuid(vaccinationStatus.Guid) != null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _service.Create(vaccinationStatus);
-            return CreatedAtAction("GetVaccinationStatus", new { guid = vaccinationStatus.Guid }, vaccinationStatus);
+            return CreatedAtAction("PostAllergy", new { guid = vaccinationStatus.Guid }, vaccinationStatus);
         }
 
-        // DELETE: api/VaccinationStatus/5
+        // DELETE: api/VaccinationStatus/guid
         [HttpDelete("{guid}")]
         public ActionResult<VaccinationStatus> DeleteVaccinationStatus(string guid)
         {

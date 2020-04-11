@@ -23,25 +23,19 @@ namespace eKarton.Services
             return _context.Diseases.Find(guid);
         }
 
-        public List<Disease> GetByCondition(Disease disease)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Create(Disease obj)
         {
             _context.Diseases.Add(obj);
             _context.SaveChanges();
         }
 
-        public void Update(string guid, Disease obj)
+        public void Update(string guid, Disease obj, Disease objToUpdate)
         {
-            Disease disease = _context.Diseases.Find(guid);
-            disease.DiseaseCode = obj.DiseaseCode;
-            disease.DiseaseName = obj.DiseaseName;
-            disease.Therapy = obj.Therapy;
-            disease.DiseaseDiscriminator = obj.DiseaseDiscriminator;
-            _context.Diseases.Update(disease);
+            objToUpdate.DiseaseCode = obj.DiseaseCode;
+            objToUpdate.DiseaseName = obj.DiseaseName;
+            objToUpdate.Therapy = obj.Therapy;
+            objToUpdate.DiseaseDiscriminator = obj.DiseaseDiscriminator;
+            _context.Diseases.Update(objToUpdate);
             _context.SaveChanges();
         }
 

@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using eKarton.Services;
 using eKarton.Models;
+using eKarton.Models.SQL;
 
 namespace eKarton.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class VisitController : ControllerBase
     {
@@ -17,13 +18,13 @@ namespace eKarton.Controllers
         }
 
         [HttpGet (Name="GetVisits")]
-        public ActionResult<List<Visit>> Getttt() =>
-            _visitService.Get();
+        public ActionResult<List<Visit>> Get() =>
+            _visitService.GetAll();
 
-        [HttpGet("{id:length(24)}", Name = "GetVisit")]
-        public ActionResult<Visit> Get(string id)
+        [HttpGet("{guid}")]
+        public ActionResult<Visit> GetVisit(string guid)
         {
-            var visit = _visitService.Get(id);
+            var visit = _visitService.GetByGuid(guid);
 
             if (visit == null)
             {
@@ -53,32 +54,33 @@ namespace eKarton.Controllers
             return CreatedAtRoute("GetVisit", new { id = visit1.Guid.ToString() }, visit1);
         }
 
-        [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Visit visitIn)
+        [HttpPut("{guid}")]
+        public IActionResult Update(string guid, Visit visitIn)
         {
-            var visit = _visitService.Get(id);
+            var visit = _visitService.GetByGuid(guid);
 
             if (visit == null)
             {
-                return NotFound();
+                _visitService.Create(visitIn);
+                return Accepted();
             }
 
-            _visitService.Update(id, visitIn);
+            _visitService.Update(guid, visitIn);
 
-            return NoContent();
+            return Accepted();
         }
 
-        [HttpDelete("{id:length(24)}")]
-        public IActionResult DeleteVisit(string id)
+        [HttpDelete("{guid}")]
+        public IActionResult DeleteVisit(string guid)
         {
-            var visit = _visitService.Get(id);
+            var visit = _visitService.GetByGuid(guid);
 
             if (visit == null)
             { 
                 return NotFound();
             }
 
-            _visitService.Remove(visit.Guid);
+            _visitService.Remove(visit);
 
             return NoContent();
         }

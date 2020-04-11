@@ -29,11 +29,21 @@ namespace eKarton
             services.Configure<VisitArchiveDatabaseSettings>(
                 Configuration.GetSection(nameof(VisitArchiveDatabaseSettings)));
 
-            services.AddDbContext<MedicalRecordContext>(opts => opts.UseSqlServer(Configuration["DefaultConnection:ConnectionString"]));
+            services.AddDbContext<MedicalRecordContext>(opts => opts.UseSqlServer(Configuration["SQLConnection:ConnectionString"]));
 
             services.AddSingleton<IVisitArchiveDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<VisitArchiveDatabaseSettings>>().Value);
 
+            services.AddSingleton<AllergyService>();
+            services.AddSingleton<AnamnesisService>();
+            services.AddSingleton<DiseaseService>();
+            services.AddSingleton<DoctorService>();
+            services.AddSingleton<ImageService>();
+            services.AddSingleton<MedicalRecordService>();
+            services.AddSingleton<MedicineService>();
+            services.AddSingleton<PatientService>();
+            services.AddSingleton<VaccinationStatusService>();
+            services.AddSingleton<VaccineService>();
             services.AddSingleton<VisitService>();
         }
 

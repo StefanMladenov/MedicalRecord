@@ -1,11 +1,6 @@
-﻿using eKarton.Models.SQL;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace eKarton.Models
 {
@@ -28,7 +23,8 @@ namespace eKarton.Models
 
         [BsonElement("DoctorUCIN")]
         public string DoctorUCIN { get; set; }
-
+        
+        [BsonRequired]
         [BsonElement("PatientUCIN")]
         public string PatientUCIN { get; set; }
 

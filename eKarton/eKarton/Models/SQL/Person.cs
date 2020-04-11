@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eKarton.Models.SQL
 {
-    public class Person : AbstractEntity
+    public abstract class Person : AbstractEntity
     {
         [Required]
         [StringLength(50)]

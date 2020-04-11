@@ -23,29 +23,24 @@ namespace eKarton.Services
             return _context.Allergies.Include(x => x.Medicines).SingleOrDefault(x=>x.Guid.Equals(guid));
         }
 
-        public List<Allergy> GetByCondition(Allergy allergy)
-        {
-            List<Allergy> allergies = new List<Allergy>();
-            if (allergy.Medicines.Count != 0)
-            {
-                allergies = _context.Allergies.Include(x => x.Medicines).Where(x => x.Medicines.All(y => y.NameOfMedicine == allergy.Medicines[0].NameOfMedicine)).ToList();
-            }
-            return new List<Allergy>();
-        }
-
         public void Create(Allergy obj)
         {
             _context.Allergies.Add(obj);
             _context.SaveChanges();
         }
 
-        public void Update(string guid, Allergy obj)
+        public void Update(string guid, Allergy obj, Allergy objToUpdate)
         {
-            obj.Guid = guid;
-            Allergy allergy = _context.Allergies.Include(x => x.Medicines).SingleOrDefault(x => x.Guid.Equals(guid));
+            foreach (Medicine m in objToUpdate.Medicines)
+            {
+                _context.Medicines.Remove(m);
+            }
+            objToUpdate.Food = new List<string>();
+            objToUpdate.Medicines = new List<Medicine>();
+            objToUpdate.Other = new List<string>();
             foreach(string s in obj.Food)
             {
-                allergy.Food.Add(s);
+                objToUpdate.Food.Add(s);
             }
             foreach(Medicine med in obj.Medicines)
             {
@@ -57,13 +52,13 @@ namespace eKarton.Services
                 {
                     _context.Medicines.Add(med);
                 }
-                allergy.Medicines.Add(med);
+                objToUpdate.Medicines.Add(med);
             }
             foreach (string s in obj.Other)
             {
-                allergy.Other.Add(s);
+                objToUpdate.Other.Add(s);
             }
-            _context.Allergies.Update(allergy);
+            _context.Allergies.Update(objToUpdate);
             _context.SaveChanges();
         }
 
@@ -82,7 +77,6 @@ namespace eKarton.Services
                 _context.Allergies.Remove(allergy);
                 _context.SaveChanges();
             }
-            return;
         }
     }
 }

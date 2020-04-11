@@ -22,42 +22,53 @@ namespace eKarton.Controllers
             return _service.GetAll();
         }
 
-        // GET: api/Vaccine/5
+        // GET: api/Vaccine/guid
         [HttpGet("{guid}")]
         public ActionResult<Vaccine> GetVaccine(string guid)
         {
             var vaccine = _service.GetByGuid(guid);
-
             if (vaccine == null)
             {
                 return NotFound();
             }
-
             return vaccine;
         }
 
-        // PUT: api/Vaccine/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        // PUT: api/Vaccine/guid
         [HttpPut("{guid}")]
         public IActionResult PutVaccine(string guid, [FromBody]Vaccine vaccine)
         {
-            _service.Update(guid, vaccine);
-            return NoContent();
+            if (ModelState.IsValid)
+            {
+                var vacc = _service.GetByGuid(guid);
+                if (vacc != null)
+                {
+                    _service.Update(guid, vaccine, vacc);
+                    return Accepted();
+                }
+                else
+                {
+                    vaccine.Guid = guid;
+                    _service.Create(vaccine);
+                    return Created("guid", guid);
+                }
+            }
+            return BadRequest();
         }
 
         // POST: api/Vaccine
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public ActionResult<Vaccine> PostVaccine([FromBody]Vaccine vaccine)
         {
+            if (_service.GetByGuid(vaccine.Guid) != null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _service.Create(vaccine);
-
-            return CreatedAtAction("GetVaccine", new { guid = vaccine.Guid }, vaccine);
+            return CreatedAtAction("PostAllergy", new { guid = vaccine.Guid }, vaccine);
         }
 
-        // DELETE: api/Vaccine/5
+        // DELETE: api/Vaccine/guid
         [HttpDelete("{guid}")]
         public ActionResult<Vaccine> DeleteVaccine(string guid)
         {

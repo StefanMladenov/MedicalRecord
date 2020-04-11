@@ -36,31 +36,31 @@ namespace eKarton.Controllers
         }
 
         // PUT: api/Anamnesis/guid
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{guid}")]
         public IActionResult PutAnamnesis(string guid, [FromBody] Anamnesis anamnesis)
         {
-            anamnesis.Guid = guid;
-            if (_service.GetByGuid(guid) != null)
+            if (ModelState.IsValid)
             {
-                _service.Update(guid, anamnesis);
-                return Accepted();
+                var anamn = _service.GetByGuid(guid);
+                if (anamn != null)
+                {
+                    _service.Update(guid, anamnesis, anamn);
+                    return Accepted();
+                }
+                else
+                {
+                    _service.Create(anamnesis);
+                    return Created("guid", guid);
+                }
             }
-            else
-            {
-                _service.Create(anamnesis);
-                return Created("guid", guid);
-            }
+            return BadRequest();
         }
 
         // POST: api/Anamnesis
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public ActionResult<Anamnesis> PostAnamnesis([FromBody]Anamnesis anamnesis)
         {
-            if(_service.GetByGuid(anamnesis.Guid) != null)
+            if(_service.GetByGuid(anamnesis.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
@@ -68,8 +68,8 @@ namespace eKarton.Controllers
             return CreatedAtAction("PostAnamnesis", new { guid = anamnesis.Guid }, anamnesis);
         }
 
-        // DELETE: api/Anamnesis/5
-        [HttpDelete("{id}")]
+        // DELETE: api/Anamnesis/guid
+        [HttpDelete("{guid}")]
         public ActionResult<Anamnesis> DeleteAnamnesis(string guid)
         {
             _service.Delete(guid);

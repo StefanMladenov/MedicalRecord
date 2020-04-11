@@ -24,11 +24,6 @@ namespace eKarton.Services
             return _context.VaccinationStatuses.Find(guid);
         }
 
-        public List<VaccinationStatus> GetByCondition(VaccinationStatus vaccination)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Create(VaccinationStatus obj)
         {
             if (obj.Guid != null)
@@ -40,13 +35,18 @@ namespace eKarton.Services
             _context.SaveChanges();
         }
 
-        public void Update(string guid, VaccinationStatus obj)
+        public void Update(string guid, VaccinationStatus obj, VaccinationStatus objToUpdate)
         {
-            VaccinationStatus vactionationStatus = _context.VaccinationStatuses.Find(guid);
-            /*            vactionationStatus.Id = _vaccinationStatus.Id;
-                        vactionationStatus.VaccineList = _vaccinationStatus.VaccineList;*/
-            vactionationStatus = obj;
-            _context.VaccinationStatuses.Update(vactionationStatus);
+            foreach(Vaccine v in objToUpdate.Vaccines)
+            {
+                _context.Vaccines.Remove(v);
+            }
+            objToUpdate.Vaccines = new List<Vaccine>();
+            foreach(Vaccine v in obj.Vaccines)
+            {
+                objToUpdate.Vaccines.Add(v);
+            }
+            _context.VaccinationStatuses.Update(objToUpdate);
             _context.SaveChanges();
         }
 
@@ -55,6 +55,13 @@ namespace eKarton.Services
             var vaccinationStatus = _context.VaccinationStatuses.Find(guid);
             if (vaccinationStatus != null)
             {
+                if(vaccinationStatus.Vaccines.Count != 0)
+                {
+                    foreach(Vaccine v in vaccinationStatus.Vaccines)
+                    {
+                        _context.Vaccines.Remove(v);
+                    }
+                }
                 _context.VaccinationStatuses.Remove(vaccinationStatus);
             }
             _context.SaveChanges();

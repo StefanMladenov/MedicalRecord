@@ -10,8 +10,10 @@ namespace eKarton.Models.SQL
         public MedicalRecord MothersMedicalRecord { get; set; }
         public Allergy Allergy { get; set; }
         public VaccinationStatus VaccinationStatus { get; set; }
-        public ICollection<Image> Images { get; set; }
-        public List<string> Visits { get; set; }
+        public List<Snapshot> Snapshots { get; set; }
+        public List<Analysis> Analysis { get; set; }
+        public List<Instruction> Instructions { get; set; }
+        public List<string> VisitGuids { get; set; }
         public Anamnesis Anamnesis { get; set; }
     }
 }

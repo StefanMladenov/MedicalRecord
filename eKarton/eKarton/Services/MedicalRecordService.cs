@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace eKarton.Services
 {
@@ -41,7 +40,7 @@ namespace eKarton.Services
             _context.SaveChanges();
         }
 
-        public void Update(string guid, MedicalRecord obj)
+        public void Update(string guid, MedicalRecord obj, MedicalRecord objToUpdate)
         {
             MedicalRecord medicalRecord = _context.MedicalRecords.Find(guid);
             /*            medicalRecord.Id = _medicalRecord.Id;
@@ -55,6 +54,7 @@ namespace eKarton.Services
                         medicalRecord.Visits = _medicalRecord.Visits;
                         medicalRecord.Images = _medicalRecord.Images;*/
             medicalRecord = obj;
+            
             _context.MedicalRecords.Update(medicalRecord);
             _context.SaveChanges();
         }

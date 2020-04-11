@@ -1,10 +1,9 @@
 ﻿
 namespace eKarton.Models.SQL
 {
-    public class Image : AbstractEntity
+    public abstract class Image : AbstractEntity
     {
         public string ImagePath { get; set; }
-        public ImageType ImageType { get; set; }
     }
 
     public class Instruction : Image 
@@ -17,31 +16,28 @@ namespace eKarton.Models.SQL
     public class Snapshot : Image
     {
         public string BodyPart { get; set; }
-
         public SnapshotType SnapshotType { get; set; }
     }
     
     public class Analysis : Image
     {
-        public string BodyPart { get; set; }
-
-        public SnapshotType SnapshotType { get; set; }
+        public AnalysisType SnapshotType { get; set; }
     }
 
     public enum SnapshotType
     {
-        XRay,
-        Ultrasound,
-        Scanner,
-        NuclearMagneticResonance,
-        Other
+        XRAY = 1,
+        ULTRASOUND = 2,
+        SCANNER = 3,
+        NUCLEAR_MAGNETIC_RESONANCE = 4,
+        OTHER = 5
     }
 
-    public enum ImageType
+    public enum AnalysisType
     {
-        Laboratory,
-        Spirometry,
-        AllergologicalTests,
-        Other
+        LABORATORY = 1,
+        SPIROMETRY = 2,
+        ALLERGOLOGICAL_TESTS = 3,
+        OTHER = 4
     }
 }

@@ -15,14 +15,14 @@ namespace eKarton.Controllers
         {
             _service = new PatientService(context);
         }
-        // GET: api/Pacijent
+        // GET: api/Patient
         [HttpGet]
         public ActionResult<IEnumerable<Patient>> GetPatients()
         {
             return _service.GetAll();
         }
 
-        // GET: api/Pacijent/5
+        // GET: api/Patient/guid
         [HttpGet("{guid}")]
         public ActionResult<Patient> GetPatient(string guid)
         {
@@ -34,53 +34,46 @@ namespace eKarton.Controllers
             return patient;
         }
 
-        // PUT: api/Patient/5
+        // PUT: api/Patient/guid
         [HttpPut("{guid}")]
         public IActionResult PutPatient(string guid, [FromBody]Patient patient)
         {
-            if (guid != patient.Guid)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
+                var _patient = _service.GetByGuid(guid);
+                if (_patient != null)
+                {
+                    _service.Update(guid, patient, _patient);
+                    return Accepted();
+                }
+                else
+                {
+                    patient.Guid = guid;
+                    _service.Create(patient);
+                    return Created("guid", guid);
+                }
             }
-            _service.Update(guid, patient);
-            return Accepted();
+            return BadRequest();
         }
 
         // POST: api/Patient
         [HttpPost]
         public ActionResult<Patient> PostPatient([FromBody]Patient patient)
         {
-            if (ModelState.IsValid)
-            {
-                _service.Create(patient);
-                return Accepted();
-            }
-            else
+            if (_service.GetByGuid(patient.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
+            _service.Create(patient);
+            return CreatedAtAction("PostAllergy", new { guid = patient.Guid }, patient);
         }
 
-        // DELETE: api/Patient/5
+        // DELETE: api/Patient/guid
         [HttpDelete("{guid}")]
         public ActionResult<Patient> DeletePatient(string guid)
         {
             _service.Delete(guid);
             return Accepted();
         }
-
-/*        [HttpPost("{UCIN}")]
-        public ActionResult PatientExists(string ucin)
-        {
-            bool exists = _service.Exists(ucin);
-            if(exists)
-            {
-                return Accepted();
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }*/
     }
 }

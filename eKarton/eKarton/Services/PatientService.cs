@@ -24,24 +24,24 @@ namespace eKarton.Services
             return _context.Patients.Find(guid);
         }
 
-        public List<Patient> GetByCondition(Patient patient)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Create(Patient obj)
         {
-            if (obj.Guid != null)
-            {
-                obj.Guid = Guid.NewGuid().ToString();
-            }
-            obj.CreatedAt = DateTime.Now;
             _context.Patients.Add(obj);
             _context.SaveChanges();
         }
 
-        public void Update(string guid, Patient obj)
-        {   
+        public void Update(string guid, Patient obj, Patient objToUpdate)
+        {
+            objToUpdate.DateOfBirth = obj.DateOfBirth;
+            objToUpdate.EMail = obj.EMail;
+            objToUpdate.FathersName = obj.FathersName;
+            objToUpdate.FirstName = obj.FirstName;
+            objToUpdate.Gender = obj.Gender;
+            objToUpdate.HealthInsuranceNumber = obj.HealthInsuranceNumber;
+            objToUpdate.LastName = obj.LastName;
+            objToUpdate.MothersName = obj.MothersName;
+            objToUpdate.TypeOfInsurance = obj.TypeOfInsurance;
+            objToUpdate.UniqueCitizensIdentityNumber = obj.UniqueCitizensIdentityNumber;
             _context.Patients.Update(obj);
             _context.SaveChanges();
         }

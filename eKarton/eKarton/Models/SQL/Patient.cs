@@ -11,13 +11,13 @@
 
     public enum InsuranceTypeDiscriminator
     {
-        PRIVATE,
-        PUBLIC
+        PRIVATE = 1,
+        PUBLIC = 2
     }
 
     public enum GenderDiscriminator
     {
-        MALE,
-        FEMALE
+        MALE = 1,
+        FEMALE = 2
     }
 }

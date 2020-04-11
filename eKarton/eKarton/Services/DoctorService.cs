@@ -1,8 +1,6 @@
 ﻿using eKarton.Models.SQL;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace eKarton.Services
 {
@@ -24,35 +22,20 @@ namespace eKarton.Services
             return _context.Doctors.Find(guid);
         }
 
-        public List<Doctor> GetByCondition(Doctor doctor)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Create(Doctor obj)
         {
             _context.Doctors.Add(obj);
             _context.SaveChanges();
         }
 
-        public void Update(string guid, Doctor obj)
+        public void Update(string guid, Doctor obj, Doctor objToUpdate)
         {
-            Doctor doctor = _context.Doctors.Find(guid);
-            doctor.FirstName = obj.FirstName;
-            doctor.LastName = obj.LastName;
-            doctor.EMail = obj.EMail;
-            doctor.Specialization = obj.Specialization;
-            doctor.DateOfBirth = obj.DateOfBirth;
-            if(_context.Institutes.Find(obj.Institute.Guid) != null)
-            {
-                _context.Institutes.Update(obj.Institute);
-            }
-            else
-            {
-                _context.Institutes.Add(obj.Institute);
-            }
-            doctor.Institute = obj.Institute;
-            _context.Doctors.Update(doctor);
+            objToUpdate.FirstName = obj.FirstName;
+            objToUpdate.LastName = obj.LastName;
+            objToUpdate.EMail = obj.EMail;
+            objToUpdate.Specialization = obj.Specialization;
+            objToUpdate.DateOfBirth = obj.DateOfBirth;
+            _context.Doctors.Update(objToUpdate);
             _context.SaveChanges();
         }
 

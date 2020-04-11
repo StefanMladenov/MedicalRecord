@@ -42,17 +42,22 @@ namespace eKarton.Controllers
         [HttpPut("{guid}")]
         public ActionResult<Disease> PutDisease(string guid, [FromBody] Disease disease)
         {
-            if (_service.GetByGuid(guid) != null)
+            if (ModelState.IsValid)
             {
-                _service.Update(guid, disease);
-                return Accepted();
+                var dis = _service.GetByGuid(guid);
+                if (dis != null)
+                {
+                    _service.Update(guid, disease, dis);
+                    return Accepted();
+                }
+                else
+                {
+                    disease.Guid = guid;
+                    _service.Create(disease);
+                    return Created("guid", guid);
+                }
             }
-            else
-            {
-                disease.Guid = guid;
-                _service.Create(disease);
-                return Created("guid", guid);
-            }
+            return BadRequest();
         }
 
         // POST: api/Bolest
@@ -61,7 +66,7 @@ namespace eKarton.Controllers
         [HttpPost]
         public ActionResult<Disease> PostDisease([FromBody]Disease disease)
         {
-            if (_service.GetByGuid(disease.Guid) != null)
+            if (_service.GetByGuid(disease.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }

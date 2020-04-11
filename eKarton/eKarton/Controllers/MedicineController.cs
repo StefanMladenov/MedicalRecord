@@ -31,36 +31,36 @@ namespace eKarton.Controllers
             {
                 return NotFound();
             }
-
             return medicine;
         }
 
-        // PUT: api/Medicine/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        // PUT: api/Medicine/guid
         [HttpPut("{guid}")]
         public IActionResult PutMedicine(string guid, [FromBody]Medicine medicine)
         {
-            if (_service.GetByGuid(guid) != null)
+            if (ModelState.IsValid)
             {
-                _service.Update(guid, medicine);
-                return Accepted();
+                var med = _service.GetByGuid(guid);
+                if (med != null)
+                {
+                    _service.Update(guid, medicine, med);
+                    return Accepted();
+                }
+                else
+                {
+                    medicine.Guid = guid;
+                    _service.Create(medicine);
+                    return Created("guid", guid);
+                }
             }
-            else
-            {
-                medicine.Guid = guid;
-                _service.Create(medicine);
-                return Created("guid", guid);
-            }
+            return BadRequest();
         }
 
         // POST: api/Medicine
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public ActionResult<Medicine> PostMedicine([FromBody]Medicine medicine)
         {
-            if(_service.GetByGuid(medicine.Guid) != null)
+            if(_service.GetByGuid(medicine.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
@@ -68,7 +68,7 @@ namespace eKarton.Controllers
             return CreatedAtAction("PostMedicine", new { guid = medicine.Guid }, medicine);
         }
 
-        // DELETE: api/Medicine/5
+        // DELETE: api/Medicine/guid
         [HttpDelete("{guid}")]
         public ActionResult<Medicine> DeleteMedicine(string guid)
         {

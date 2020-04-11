@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace eKarton.Services
 {
@@ -24,11 +23,6 @@ namespace eKarton.Services
             return _context.Vaccines.Find(guid);
         }
 
-        public List<Vaccine> GetByCondition(Vaccine vaccine)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Create(Vaccine obj)
         {
             if (obj.Guid != null)
@@ -40,15 +34,12 @@ namespace eKarton.Services
             _context.SaveChanges();
         }
 
-        public void Update(string guid, Vaccine obj)
+        public void Update(string guid, Vaccine obj, Vaccine objToUpdate)
         {
-            Vaccine vaccine = _context.Vaccines.Find(guid);
-            /*            vaccine.Id = _vaccine.Id;
-                        vaccine.Duration = _vaccine.Duration;
-                        vaccine.VaccinationDate = _vaccine.VaccinationDate;
-                        vaccine.VaccineName = _vaccine.VaccineName;*/
-            vaccine = obj;
-            _context.Vaccines.Update(vaccine);
+            objToUpdate.Duration = obj.Duration;
+            objToUpdate.VaccineName = obj.VaccineName;
+            objToUpdate.VaccineSerialMark = obj.VaccineSerialMark;
+            _context.Vaccines.Update(objToUpdate);
             _context.SaveChanges();
         }
 
