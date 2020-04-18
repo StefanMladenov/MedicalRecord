@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace eMedicalRecord.Models.SQL
+namespace eKarton.Models.SQL
 {
     public class MedicalRecordContext : DbContext
     {
@@ -24,7 +24,7 @@ namespace eMedicalRecord.Models.SQL
 
             modelBuilder.Entity<Anamnesis>().HasMany(t => t.Diseases);
 
-           
+
 
             modelBuilder.Entity<Allergy>().Property(p => p.Other)
            .HasConversion(
@@ -35,8 +35,6 @@ namespace eMedicalRecord.Models.SQL
 
             modelBuilder.Entity<VaccinationStatus>().HasMany(x => x.Vaccines);
 
-            modelBuilder.Entity<Institute>().HasMany(x => x.Doctors);
-            
             modelBuilder.Entity<Patient>()
             .HasIndex(u => u.UniqueCitizensIdentityNumber)
             .IsUnique();
@@ -78,6 +76,5 @@ namespace eMedicalRecord.Models.SQL
         public DbSet<Vaccine> Vaccines { get; set; }
         public DbSet<Disease> Diseases { get; set; }
         public DbSet<Anamnesis> Anamnesis { get; set; }
-        public DbSet<Institute> Institutes { get; set; }
     }
 }

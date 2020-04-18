@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using eKarton.Models.SQL;
+using eKarton.Services;
 using Microsoft.AspNetCore.Mvc;
-using eMedicalRecord.Models.SQL;
-using eMedicalRecord.Services;
+using System.Collections.Generic;
 
-namespace eMedicalRecord.Controllers
+namespace eKarton.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -11,16 +11,16 @@ namespace eMedicalRecord.Controllers
     {
         private readonly IService<Anamnesis> _service;
 
-        public AnamnesisController(MedicalRecordContext context)
+        public AnamnesisController(IService<Anamnesis> service)
         {
-            _service = new AnamnesisService(context);
+            _service = service;
         }
 
         // GET: api/Anamnesis
         [HttpGet]
         public ActionResult<IEnumerable<Anamnesis>> GetAnamnesies()
         {
-            return  _service.GetAll();
+            return _service.GetAll();
         }
 
         // GET: api/Anamnesis/guid
@@ -49,6 +49,7 @@ namespace eMedicalRecord.Controllers
                 }
                 else
                 {
+                    anamnesis.Guid = guid;
                     _service.Create(anamnesis);
                     return Created("guid", guid);
                 }
@@ -60,7 +61,7 @@ namespace eMedicalRecord.Controllers
         [HttpPost]
         public ActionResult<Anamnesis> PostAnamnesis([FromBody]Anamnesis anamnesis)
         {
-            if(_service.GetByGuid(anamnesis.Guid) != null || !ModelState.IsValid)
+            if (_service.GetByGuid(anamnesis.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }

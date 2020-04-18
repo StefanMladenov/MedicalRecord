@@ -1,8 +1,7 @@
-﻿using eMedicalRecord.Models.SQL;
-using Microsoft.EntityFrameworkCore;
+﻿using eKarton.Models.SQL;
 using System.Collections.Generic;
 
-namespace eMedicalRecord.Services
+namespace eKarton.Services
 {
     public class ImageService : IService<Image>
     {

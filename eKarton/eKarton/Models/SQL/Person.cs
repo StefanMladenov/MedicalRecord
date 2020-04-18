@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace eMedicalRecord.Models.SQL
+namespace eKarton.Models.SQL
 {
     public abstract class Person : AbstractEntity
     {
@@ -9,7 +9,7 @@ namespace eMedicalRecord.Models.SQL
         [StringLength(50)]
         [Display(Name = "First name")]
         public string FirstName { get; set; }
-        
+
         [Required]
         [StringLength(50)]
         [Display(Name = "Last name")]

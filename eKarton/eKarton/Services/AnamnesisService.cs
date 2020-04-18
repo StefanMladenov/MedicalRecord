@@ -1,10 +1,9 @@
-﻿using eMedicalRecord.Models.SQL;
+﻿using eKarton.Models.SQL;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eMedicalRecord.Services
+namespace eKarton.Services
 {
     public class AnamnesisService : IService<Anamnesis>
     {
@@ -25,11 +24,6 @@ namespace eMedicalRecord.Services
             return _context.Anamnesis.Include(x => x.Diseases).SingleOrDefault(x => x.Guid.Equals(guid));
         }
 
-        public List<Anamnesis> GetByCondition(Anamnesis anamnesis)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Create(Anamnesis obj)
         {
             _context.Anamnesis.Add(obj);
@@ -43,21 +37,25 @@ namespace eMedicalRecord.Services
                 _context.Diseases.Remove(disease);
             }
             objToUpdate.Diseases = new List<Disease>();
-            foreach (Disease dis in obj.Diseases)
+            if (obj.Diseases != null)
             {
-                objToUpdate.Diseases.Add(dis);
+                foreach (Disease dis in obj.Diseases)
+                {
+                    _context.Diseases.Add(dis);
+                    objToUpdate.Diseases.Add(dis);
+                }
             }
-            objToUpdate.SocioEpidemiologicalStatus = obj.SocioEpidemiologicalStatus; 
+            objToUpdate.SocioEpidemiologicalStatus = obj.SocioEpidemiologicalStatus;
             _context.Anamnesis.Update(objToUpdate);
             _context.SaveChanges();
         }
 
         public void Delete(string guid)
         {
-            var anamnesis = _context.Anamnesis.Find(guid);
+            var anamnesis = GetByGuid(guid);
             if (anamnesis != null)
             {
-                if(anamnesis.Diseases.Count != 0)
+                if (anamnesis.Diseases != null && anamnesis.Diseases.Count != 0)
                 {
                     foreach (Disease dis in anamnesis.Diseases)
                     {

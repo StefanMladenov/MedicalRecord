@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace eMedicalRecord.Models.SQL
+namespace eKarton.Models.SQL
 {
     public class Disease : AbstractEntity
     {
@@ -16,6 +16,6 @@ namespace eMedicalRecord.Models.SQL
     {
         CURRENT = 1,
         MOVED = 2,
-        FAMILY = 3 
+        FAMILY = 3
     }
 }

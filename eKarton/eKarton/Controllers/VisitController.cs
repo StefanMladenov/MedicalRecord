@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using eKarton.Models;
+using eKarton.Services;
 using Microsoft.AspNetCore.Mvc;
-using eMedicalRecord.Services;
-using eMedicalRecord.Models;
-using eMedicalRecord.Models.SQL;
+using System.Collections.Generic;
 
-namespace eMedicalRecord.Controllers
+namespace eKarton.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,7 +16,7 @@ namespace eMedicalRecord.Controllers
             _visitService = visitService;
         }
 
-        [HttpGet (Name="GetVisits")]
+        [HttpGet(Name = "GetVisits")]
         public ActionResult<List<Visit>> Get() =>
             _visitService.GetAll();
 
@@ -42,8 +41,8 @@ namespace eMedicalRecord.Controllers
             visit1.DoctorUCIN = visit.DoctorUCIN;
             visit1.Therapy = visit.Therapy;
             visit1.WorkingDiagnosis = visit.WorkingDiagnosis;
-            string[] lista = {"aaaaaa", "bbbbbbb" };
-            
+            string[] lista = { "aaaaaa", "bbbbbbb" };
+
             visit1.FilePaths = lista;
             visit1.CurrentFinding = visit.CurrentFinding;
             visit1.UpdatedOn = visit.UpdatedOn;
@@ -76,7 +75,7 @@ namespace eMedicalRecord.Controllers
             var visit = _visitService.GetByGuid(guid);
 
             if (visit == null)
-            { 
+            {
                 return NotFound();
             }
 

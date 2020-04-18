@@ -1,4 +1,4 @@
-﻿namespace eMedicalRecord.Models
+﻿namespace eKarton.Models
 {
     public class VisitArchiveDatabaseSettings : IVisitArchiveDatabaseSettings
     {

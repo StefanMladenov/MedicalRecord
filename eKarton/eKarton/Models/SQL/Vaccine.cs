@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace eMedicalRecord.Models.SQL
+namespace eKarton.Models.SQL
 {
     public class Vaccine : AbstractEntity
     {
@@ -10,7 +9,7 @@ namespace eMedicalRecord.Models.SQL
 
         [Required]
         public string VaccineName { get; set; }
-       
+
         public int Duration { get; set; }
     }
 }

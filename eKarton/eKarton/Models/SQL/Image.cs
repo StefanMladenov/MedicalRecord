@@ -1,14 +1,13 @@
 ﻿
-namespace eMedicalRecord.Models.SQL
+namespace eKarton.Models.SQL
 {
     public abstract class Image : AbstractEntity
     {
         public string ImagePath { get; set; }
     }
 
-    public class Instruction : Image 
+    public class Instruction : Image
     {
-        public Institute Institute { get; set; }
         public Doctor DoctorFrom { get; set; }
         public Doctor DoctorTo { get; set; }
     }
@@ -18,10 +17,10 @@ namespace eMedicalRecord.Models.SQL
         public string BodyPart { get; set; }
         public SnapshotType SnapshotType { get; set; }
     }
-    
+
     public class Analysis : Image
     {
-        public AnalysisType SnapshotType { get; set; }
+        public AnalysisType AnalysisType { get; set; }
     }
 
     public enum SnapshotType

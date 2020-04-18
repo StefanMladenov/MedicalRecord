@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace eMedicalRecord.Migrations
+namespace eKarton.Migrations
 {
     public partial class stefan1 : Migration
     {

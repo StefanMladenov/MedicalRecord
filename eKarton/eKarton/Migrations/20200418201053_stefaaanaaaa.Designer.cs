@@ -10,8 +10,8 @@ using eKarton.Models.SQL;
 namespace eKarton.Migrations
 {
     [DbContext(typeof(MedicalRecordContext))]
-    [Migration("20200411153638_stefan1")]
-    partial class stefan1
+    [Migration("20200418201053_stefaaanaaaa")]
+    partial class stefaaanaaaa
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,6 +47,9 @@ namespace eKarton.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("AnalysisType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -55,9 +58,6 @@ namespace eKarton.Migrations
 
                     b.Property<string>("MedicalRecordGuid")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("SnapshotType")
-                        .HasColumnType("int");
 
                     b.HasKey("Guid");
 
@@ -136,9 +136,6 @@ namespace eKarton.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("InstituteGuid")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -154,29 +151,10 @@ namespace eKarton.Migrations
 
                     b.HasKey("Guid");
 
-                    b.HasIndex("InstituteGuid");
-
                     b.HasIndex("UniqueCitizensIdentityNumber")
                         .IsUnique();
 
                     b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("eKarton.Models.SQL.Institute", b =>
-                {
-                    b.Property<string>("Guid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Guid");
-
-                    b.ToTable("Institutes");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Instruction", b =>
@@ -197,9 +175,6 @@ namespace eKarton.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InstituteGuid")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("MedicalRecordGuid")
                         .HasColumnType("nvarchar(450)");
 
@@ -208,8 +183,6 @@ namespace eKarton.Migrations
                     b.HasIndex("DoctorFromGuid");
 
                     b.HasIndex("DoctorToGuid");
-
-                    b.HasIndex("InstituteGuid");
 
                     b.HasIndex("MedicalRecordGuid");
 
@@ -235,6 +208,7 @@ namespace eKarton.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PatientGuid")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("VaccinationStatusGuid")
@@ -310,8 +284,8 @@ namespace eKarton.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<int>("HealthInsuranceNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("HealthInsuranceNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -423,13 +397,6 @@ namespace eKarton.Migrations
                         .HasForeignKey("AnamnesisGuid");
                 });
 
-            modelBuilder.Entity("eKarton.Models.SQL.Doctor", b =>
-                {
-                    b.HasOne("eKarton.Models.SQL.Institute", null)
-                        .WithMany("Doctors")
-                        .HasForeignKey("InstituteGuid");
-                });
-
             modelBuilder.Entity("eKarton.Models.SQL.Instruction", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.Doctor", "DoctorFrom")
@@ -439,10 +406,6 @@ namespace eKarton.Migrations
                     b.HasOne("eKarton.Models.SQL.Doctor", "DoctorTo")
                         .WithMany()
                         .HasForeignKey("DoctorToGuid");
-
-                    b.HasOne("eKarton.Models.SQL.Institute", "Institute")
-                        .WithMany()
-                        .HasForeignKey("InstituteGuid");
 
                     b.HasOne("eKarton.Models.SQL.MedicalRecord", null)
                         .WithMany("Instructions")
@@ -465,7 +428,9 @@ namespace eKarton.Migrations
 
                     b.HasOne("eKarton.Models.SQL.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientGuid");
+                        .HasForeignKey("PatientGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("eKarton.Models.SQL.VaccinationStatus", "VaccinationStatus")
                         .WithMany()

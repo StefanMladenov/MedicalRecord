@@ -1,9 +1,8 @@
-﻿using eMedicalRecord.Models.SQL;
-using System;
+﻿using eKarton.Models.SQL;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eMedicalRecord.Services
+namespace eKarton.Services
 {
     public class DiseaseService : IService<Disease>
     {
@@ -41,7 +40,7 @@ namespace eMedicalRecord.Services
 
         public void Delete(string guid)
         {
-            var disease = _context.Diseases.Find(guid);
+            var disease = GetByGuid(guid);
             if (disease != null)
             {
                 _context.Diseases.Remove(disease);

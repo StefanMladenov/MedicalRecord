@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using eKarton.Models.SQL;
+using eKarton.Services;
 using Microsoft.AspNetCore.Mvc;
-using eMedicalRecord.Models.SQL;
-using eMedicalRecord.Services;
+using System.Collections.Generic;
 
-namespace eMedicalRecord.Controllers
+namespace eKarton.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -11,19 +11,19 @@ namespace eMedicalRecord.Controllers
     {
         private readonly IService<Disease> _service;
 
-        public DiseaseController(MedicalRecordContext context)
+        public DiseaseController(IService<Disease> service)
         {
-            _service = new DiseaseService(context);
+            _service = service;
         }
 
-        // GET: api/Bolest
+        // GET: api/Disease
         [HttpGet]
         public ActionResult<IEnumerable<Disease>> GetDiseases()
         {
             return _service.GetAll();
         }
 
-        // GET: api/Bolest/5
+        // GET: api/Disease/5
         [HttpGet("{guid}")]
         public ActionResult<Disease> GetDisease(string guid)
         {
@@ -36,9 +36,7 @@ namespace eMedicalRecord.Controllers
             return disease;
         }
 
-        // PUT: api/Bolest/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        // PUT: api/Disease/5
         [HttpPut("{guid}")]
         public ActionResult<Disease> PutDisease(string guid, [FromBody] Disease disease)
         {
@@ -60,9 +58,7 @@ namespace eMedicalRecord.Controllers
             return BadRequest();
         }
 
-        // POST: api/Bolest
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        // POST: api/Disease
         [HttpPost]
         public ActionResult<Disease> PostDisease([FromBody]Disease disease)
         {
@@ -74,7 +70,7 @@ namespace eMedicalRecord.Controllers
             return CreatedAtAction("PostDisease", new { guid = disease.Guid }, disease);
         }
 
-        // DELETE: api/Bolest/5
+        // DELETE: api/Disease/5
         [HttpDelete("{guid}")]
         public ActionResult<Disease> DeleteDisease(string guid)
         {

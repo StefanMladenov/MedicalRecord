@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace eMedicalRecord.Services
-{ 
+namespace eKarton.Services
+{
     public interface IService<T>
     {
         public List<T> GetAll();

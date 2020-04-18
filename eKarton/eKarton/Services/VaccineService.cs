@@ -1,9 +1,8 @@
-﻿using eMedicalRecord.Models.SQL;
-using System;
+﻿using eKarton.Models.SQL;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eMedicalRecord.Services
+namespace eKarton.Services
 {
     public class VaccineService : IService<Vaccine>
     {
@@ -25,11 +24,6 @@ namespace eMedicalRecord.Services
 
         public void Create(Vaccine obj)
         {
-            if (obj.Guid != null)
-            {
-                obj.Guid = Guid.NewGuid().ToString();
-            }
-            obj.CreatedAt = DateTime.Now;
             _context.Vaccines.Add(obj);
             _context.SaveChanges();
         }
@@ -45,13 +39,12 @@ namespace eMedicalRecord.Services
 
         public void Delete(string guid)
         {
-            var vaccine = _context.Vaccines.Find(guid);
+            var vaccine = GetByGuid(guid);
             if (vaccine != null)
             {
                 _context.Vaccines.Remove(vaccine);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
-
     }
 }

@@ -1,9 +1,9 @@
-﻿using eMedicalRecord.Models.SQL;
+﻿using eKarton.Models.SQL;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eMedicalRecord.Services
+namespace eKarton.Services
 {
     public class AllergyService : IService<Allergy>
     {
@@ -20,7 +20,7 @@ namespace eMedicalRecord.Services
 
         public Allergy GetByGuid(string guid)
         {
-            return _context.Allergies.Include(x => x.Medicines).SingleOrDefault(x=>x.Guid.Equals(guid));
+            return _context.Allergies.Include(x => x.Medicines).SingleOrDefault(x => x.Guid.Equals(guid));
         }
 
         public void Create(Allergy obj)
@@ -38,21 +38,17 @@ namespace eMedicalRecord.Services
             objToUpdate.Food = new List<string>();
             objToUpdate.Medicines = new List<Medicine>();
             objToUpdate.Other = new List<string>();
-            foreach(string s in obj.Food)
+            foreach (string s in obj.Food)
             {
                 objToUpdate.Food.Add(s);
             }
-            foreach(Medicine med in obj.Medicines)
+            if (obj.Medicines != null)
             {
-                if(_context.Medicines.Find(med.Guid) != null)
-                {
-                    _context.Medicines.Update(med);
-                }
-                else
+                foreach (Medicine med in obj.Medicines)
                 {
                     _context.Medicines.Add(med);
+                    objToUpdate.Medicines.Add(med);
                 }
-                objToUpdate.Medicines.Add(med);
             }
             foreach (string s in obj.Other)
             {
@@ -67,9 +63,9 @@ namespace eMedicalRecord.Services
             var allergy = _context.Allergies.Include(x => x.Medicines).SingleOrDefault(x => x.Guid.Equals(guid));
             if (allergy != null)
             {
-                if(allergy.Medicines.Count != 0)
+                if (allergy.Medicines != null && allergy.Medicines.Count != 0)
                 {
-                    foreach(Medicine med in allergy.Medicines)
+                    foreach (Medicine med in allergy.Medicines)
                     {
                         _context.Medicines.Remove(med);
                     }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using eKarton.Models.SQL;
+using eKarton.Services;
 using Microsoft.AspNetCore.Mvc;
-using eMedicalRecord.Models.SQL;
-using eMedicalRecord.Services;
+using System.Collections.Generic;
 
-namespace eMedicalRecord.Controllers
+namespace eKarton.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -11,9 +11,9 @@ namespace eMedicalRecord.Controllers
     {
         private readonly IService<Allergy> _service;
 
-        public AllergyController(MedicalRecordContext context)
+        public AllergyController(IService<Allergy> service)
         {
-            _service = new AllergyService(context);
+            _service = service;
         }
 
         // GET: api/Allergy
@@ -39,12 +39,12 @@ namespace eMedicalRecord.Controllers
         [HttpPut("{guid}")]
         public ActionResult<Allergy> PutAllergy(string guid, [FromBody]Allergy allergy)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
-                var _allergy = _service.GetByGuid(guid);
-                if (_allergy != null)
+                var allerg = _service.GetByGuid(guid);
+                if (allerg != null)
                 {
-                    _service.Update(guid, allergy, _allergy);
+                    _service.Update(guid, allergy, allerg);
                     return Accepted();
                 }
                 else
@@ -61,7 +61,7 @@ namespace eMedicalRecord.Controllers
         [HttpPost]
         public ActionResult<Allergy> PostAllergy([FromBody]Allergy allergy)
         {
-            if(_service.GetByGuid(allergy.Guid) != null || !ModelState.IsValid)
+            if (_service.GetByGuid(allergy.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }

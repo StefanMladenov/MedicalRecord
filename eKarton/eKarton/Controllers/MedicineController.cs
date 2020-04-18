@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using eKarton.Models.SQL;
+using eKarton.Services;
 using Microsoft.AspNetCore.Mvc;
-using eMedicalRecord.Models.SQL;
-using eMedicalRecord.Services;
+using System.Collections.Generic;
 
-namespace eMedicalRecord.Controllers
+namespace eKarton.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class MedicineController : ControllerBase
     {
         private readonly IService<Medicine> _service;
-        public MedicineController(MedicalRecordContext context)
+        public MedicineController(IService<Medicine> service)
         {
-            _service = new MedicineService(context);
+            _service = service;
         }
 
         // GET: api/Medicine
@@ -60,7 +60,7 @@ namespace eMedicalRecord.Controllers
         [HttpPost]
         public ActionResult<Medicine> PostMedicine([FromBody]Medicine medicine)
         {
-            if(_service.GetByGuid(medicine.Guid) != null || !ModelState.IsValid)
+            if (_service.GetByGuid(medicine.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }

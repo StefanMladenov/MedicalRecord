@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using eMedicalRecord.Models.SQL;
+using eKarton.Models.SQL;
 
-namespace eMedicalRecord.Migrations
+namespace eKarton.Migrations
 {
     [DbContext(typeof(MedicalRecordContext))]
     partial class MedicalRecordContextModelSnapshot : ModelSnapshot
@@ -45,6 +45,9 @@ namespace eMedicalRecord.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("AnalysisType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -53,9 +56,6 @@ namespace eMedicalRecord.Migrations
 
                     b.Property<string>("MedicalRecordGuid")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("SnapshotType")
-                        .HasColumnType("int");
 
                     b.HasKey("Guid");
 
@@ -134,9 +134,6 @@ namespace eMedicalRecord.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("InstituteGuid")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -152,29 +149,10 @@ namespace eMedicalRecord.Migrations
 
                     b.HasKey("Guid");
 
-                    b.HasIndex("InstituteGuid");
-
                     b.HasIndex("UniqueCitizensIdentityNumber")
                         .IsUnique();
 
                     b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("eKarton.Models.SQL.Institute", b =>
-                {
-                    b.Property<string>("Guid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Guid");
-
-                    b.ToTable("Institutes");
                 });
 
             modelBuilder.Entity("eKarton.Models.SQL.Instruction", b =>
@@ -195,9 +173,6 @@ namespace eMedicalRecord.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InstituteGuid")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("MedicalRecordGuid")
                         .HasColumnType("nvarchar(450)");
 
@@ -206,8 +181,6 @@ namespace eMedicalRecord.Migrations
                     b.HasIndex("DoctorFromGuid");
 
                     b.HasIndex("DoctorToGuid");
-
-                    b.HasIndex("InstituteGuid");
 
                     b.HasIndex("MedicalRecordGuid");
 
@@ -233,6 +206,7 @@ namespace eMedicalRecord.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PatientGuid")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("VaccinationStatusGuid")
@@ -308,8 +282,8 @@ namespace eMedicalRecord.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<int>("HealthInsuranceNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("HealthInsuranceNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -421,13 +395,6 @@ namespace eMedicalRecord.Migrations
                         .HasForeignKey("AnamnesisGuid");
                 });
 
-            modelBuilder.Entity("eKarton.Models.SQL.Doctor", b =>
-                {
-                    b.HasOne("eKarton.Models.SQL.Institute", null)
-                        .WithMany("Doctors")
-                        .HasForeignKey("InstituteGuid");
-                });
-
             modelBuilder.Entity("eKarton.Models.SQL.Instruction", b =>
                 {
                     b.HasOne("eKarton.Models.SQL.Doctor", "DoctorFrom")
@@ -437,10 +404,6 @@ namespace eMedicalRecord.Migrations
                     b.HasOne("eKarton.Models.SQL.Doctor", "DoctorTo")
                         .WithMany()
                         .HasForeignKey("DoctorToGuid");
-
-                    b.HasOne("eKarton.Models.SQL.Institute", "Institute")
-                        .WithMany()
-                        .HasForeignKey("InstituteGuid");
 
                     b.HasOne("eKarton.Models.SQL.MedicalRecord", null)
                         .WithMany("Instructions")
@@ -463,7 +426,9 @@ namespace eMedicalRecord.Migrations
 
                     b.HasOne("eKarton.Models.SQL.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientGuid");
+                        .HasForeignKey("PatientGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("eKarton.Models.SQL.VaccinationStatus", "VaccinationStatus")
                         .WithMany()

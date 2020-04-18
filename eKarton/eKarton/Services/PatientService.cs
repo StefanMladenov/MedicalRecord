@@ -1,10 +1,8 @@
-﻿using eMedicalRecord.Models.SQL;
-using System;
+﻿using eKarton.Models.SQL;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
-namespace eMedicalRecord.Services
+namespace eKarton.Services
 {
     public class PatientService : IService<Patient>
     {
@@ -42,18 +40,18 @@ namespace eMedicalRecord.Services
             objToUpdate.MothersName = obj.MothersName;
             objToUpdate.TypeOfInsurance = obj.TypeOfInsurance;
             objToUpdate.UniqueCitizensIdentityNumber = obj.UniqueCitizensIdentityNumber;
-            _context.Patients.Update(obj);
+            _context.Patients.Update(objToUpdate);
             _context.SaveChanges();
         }
 
         public void Delete(string guid)
         {
-            var patient = _context.Patients.Find(guid);
+            var patient = GetByGuid(guid);
             if (patient != null)
             {
                 _context.Patients.Remove(patient);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
     }
 }

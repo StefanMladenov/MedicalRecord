@@ -1,4 +1,4 @@
-﻿namespace eMedicalRecord.Models.SQL
+﻿namespace eKarton.Models.SQL
 {
     public class Doctor : Person
     {

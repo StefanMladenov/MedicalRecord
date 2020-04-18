@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using eKarton.Models.SQL;
+using eKarton.Services;
 using Microsoft.AspNetCore.Mvc;
-using eMedicalRecord.Models.SQL;
-using eMedicalRecord.Services;
+using System.Collections.Generic;
 
-namespace eMedicalRecord.Controllers
+namespace eKarton.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -11,9 +11,9 @@ namespace eMedicalRecord.Controllers
     {
         private readonly IService<Doctor> _service;
 
-        public DoctorController(MedicalRecordContext context)
+        public DoctorController(IService<Doctor> service)
         {
-            _service = new DoctorService(context);
+            _service = service;
         }
 
         // GET: api/Doctor

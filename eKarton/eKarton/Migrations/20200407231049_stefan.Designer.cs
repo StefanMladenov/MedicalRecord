@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using eMedicalRecord.Models.SQL;
+using eKarton.Models.SQL;
 
-namespace eMedicalRecord.Migrations
+namespace eKarton.Migrations
 {
     [DbContext(typeof(MedicalRecordContext))]
     [Migration("20200407231049_stefan")]

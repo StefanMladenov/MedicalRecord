@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using eKarton.Models.SQL;
+using eKarton.Services;
 using Microsoft.AspNetCore.Mvc;
-using eMedicalRecord.Models.SQL;
-using eMedicalRecord.Services;
+using System.Collections.Generic;
 
-namespace eMedicalRecord.Controllers
+namespace eKarton.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PatientController : ControllerBase
     {
         private readonly IService<Patient> _service;
 
-        public PatientController(MedicalRecordContext context)
+        public PatientController(IService<Patient> service)
         {
-            _service = new PatientService(context);
+            _service = service;
         }
         // GET: api/Patient
         [HttpGet]
@@ -65,7 +65,7 @@ namespace eMedicalRecord.Controllers
                 return BadRequest();
             }
             _service.Create(patient);
-            return CreatedAtAction("PostAllergy", new { guid = patient.Guid }, patient);
+            return CreatedAtAction("PostPatient", new { guid = patient.Guid }, patient);
         }
 
         // DELETE: api/Patient/guid

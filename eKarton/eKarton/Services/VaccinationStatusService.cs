@@ -1,10 +1,9 @@
-﻿using eMedicalRecord.Models.SQL;
-using System;
+﻿using eKarton.Models.SQL;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
-namespace eMedicalRecord.Services
+namespace eKarton.Services
 {
     public class VaccinationStatusService : IService<VaccinationStatus>
     {
@@ -16,35 +15,34 @@ namespace eMedicalRecord.Services
 
         public List<VaccinationStatus> GetAll()
         {
-            return _context.VaccinationStatuses.ToList();
+            return _context.VaccinationStatuses.Include(x => x.Vaccines).ToList();
         }
 
         public VaccinationStatus GetByGuid(string guid)
         {
-            return _context.VaccinationStatuses.Find(guid);
+            return _context.VaccinationStatuses.Include(x => x.Vaccines).SingleOrDefault(x => x.Guid.Equals(guid));
         }
 
         public void Create(VaccinationStatus obj)
         {
-            if (obj.Guid != null)
-            {
-                obj.Guid = Guid.NewGuid().ToString();
-            }
-            obj.CreatedAt = DateTime.Now;
             _context.VaccinationStatuses.Add(obj);
             _context.SaveChanges();
         }
 
         public void Update(string guid, VaccinationStatus obj, VaccinationStatus objToUpdate)
         {
-            foreach(Vaccine v in objToUpdate.Vaccines)
+            foreach (Vaccine v in objToUpdate.Vaccines)
             {
                 _context.Vaccines.Remove(v);
             }
             objToUpdate.Vaccines = new List<Vaccine>();
-            foreach(Vaccine v in obj.Vaccines)
+            if (obj.Vaccines != null)
             {
-                objToUpdate.Vaccines.Add(v);
+                foreach (Vaccine v in obj.Vaccines)
+                {
+                    _context.Vaccines.Add(v);
+                    objToUpdate.Vaccines.Add(v);
+                }
             }
             _context.VaccinationStatuses.Update(objToUpdate);
             _context.SaveChanges();
@@ -52,19 +50,19 @@ namespace eMedicalRecord.Services
 
         public void Delete(string guid)
         {
-            var vaccinationStatus = _context.VaccinationStatuses.Find(guid);
+            var vaccinationStatus = GetByGuid(guid);
             if (vaccinationStatus != null)
             {
-                if(vaccinationStatus.Vaccines.Count != 0)
+                if (vaccinationStatus.Vaccines != null && vaccinationStatus.Vaccines.Count != 0)
                 {
-                    foreach(Vaccine v in vaccinationStatus.Vaccines)
+                    foreach (Vaccine v in vaccinationStatus.Vaccines)
                     {
                         _context.Vaccines.Remove(v);
                     }
                 }
                 _context.VaccinationStatuses.Remove(vaccinationStatus);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
     }
 }

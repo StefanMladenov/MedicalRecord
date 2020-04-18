@@ -1,27 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using eKarton.Models.SQL;
+using eKarton.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using eMedicalRecord.Models.SQL;
-using Microsoft.AspNetCore.Hosting;
+using System.Collections.Generic;
 using System.IO;
-using eMedicalRecord.Services;
+using System.Threading.Tasks;
 
-namespace eMedicalRecord.Controllers
+namespace eKarton.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ImageController : ControllerBase
     {
-        private readonly MedicalRecordContext _context;
         public static IWebHostEnvironment _environment;
         private readonly IService<Image> _service;
 
-        public ImageController(IWebHostEnvironment environment, MedicalRecordContext context)
+        public ImageController(IWebHostEnvironment environment, IService<Image> service)
         {
             _environment = environment;
-            _context = context;
-            _service = new ImageService(context);
+            _service = service;
         }
 
         [HttpPost("{action}/{guid}")]
