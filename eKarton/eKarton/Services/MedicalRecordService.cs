@@ -57,34 +57,47 @@ namespace eKarton.Services
                 foreach (Medicine med in objToUpdate.Allergy.Medicines)
                 {
                     _context.Medicines.Remove(med);
-                }
-                objToUpdate.Allergy.Medicines = new List<Medicine>();
-                if (obj.Allergy.Medicines != null && obj.Allergy.Medicines.Count != 0)
-                {
-                    foreach (Medicine med in obj.Allergy.Medicines)
-                    {
-                        _context.Medicines.Add(med);
-                        objToUpdate.Allergy.Medicines.Add(med);
-                    }
-                }
-                objToUpdate.Allergy.Food = new List<string>();
-                objToUpdate.Allergy.Other = new List<string>();
-                foreach (string s in obj.Allergy.Food)
-                {
-                    objToUpdate.Allergy.Food.Add(s);
-                }
-                foreach (string s in obj.Allergy.Other)
-                {
-                    objToUpdate.Allergy.Other.Add(s);
-                }
-
+                } 
             }
+            else
+            {
+                objToUpdate.Allergy = new Allergy();
+                _context.Allergies.Add(objToUpdate.Allergy);
+            }
+            objToUpdate.Allergy.Medicines = new List<Medicine>();
+            if (obj.Allergy.Medicines != null && obj.Allergy.Medicines.Count != 0)
+            {
+                foreach (Medicine med in obj.Allergy.Medicines)
+                {
+                    _context.Medicines.Add(med);
+                    objToUpdate.Allergy.Medicines.Add(med);
+                }
+            }
+            objToUpdate.Allergy.Food = new List<string>();
+            objToUpdate.Allergy.Other = new List<string>();
+            foreach (string s in obj.Allergy.Food)
+            {
+                objToUpdate.Allergy.Food.Add(s);
+            }
+            foreach (string s in obj.Allergy.Other)
+            {
+                objToUpdate.Allergy.Other.Add(s);
+            }
+
             #endregion
 
             #region Anamnesis
-            foreach (Disease dis in objToUpdate.Anamnesis.Diseases)
+            if (objToUpdate.Anamnesis != null)
             {
-                _context.Diseases.Remove(dis);
+                foreach (Disease dis in objToUpdate.Anamnesis.Diseases)
+                {
+                    _context.Diseases.Remove(dis);
+                }
+            }
+            else
+            {
+                objToUpdate.Anamnesis = new Anamnesis();
+                _context.Anamnesis.Add(objToUpdate.Anamnesis);
             }
             objToUpdate.Anamnesis.Diseases = new List<Disease>();
             if (obj.Anamnesis.Diseases != null && obj.Anamnesis.Diseases.Count != 0)
@@ -176,17 +189,23 @@ namespace eKarton.Services
                 {
                     _context.Vaccines.Remove(vacc);
                 }
-                objToUpdate.VaccinationStatus.Vaccines = new List<Vaccine>();
-                if (obj.VaccinationStatus.Vaccines != null && obj.VaccinationStatus.Vaccines.Count != 0)
-                {
-                    foreach (Vaccine vacc in obj.VaccinationStatus.Vaccines)
-                    {
-                        _context.Vaccines.Add(vacc);
-                        objToUpdate.VaccinationStatus.Vaccines.Add(vacc);
-                    }
-                }
-                _context.VaccinationStatuses.Update(objToUpdate.VaccinationStatus);
             }
+            else
+            {
+                objToUpdate.VaccinationStatus = new VaccinationStatus();
+                _context.VaccinationStatuses.Add(objToUpdate.VaccinationStatus);
+            }
+            objToUpdate.VaccinationStatus.Vaccines = new List<Vaccine>();
+            if (obj.VaccinationStatus.Vaccines != null && obj.VaccinationStatus.Vaccines.Count != 0)
+            {
+                foreach (Vaccine vacc in obj.VaccinationStatus.Vaccines)
+                {
+                    _context.Vaccines.Add(vacc);
+                    objToUpdate.VaccinationStatus.Vaccines.Add(vacc);
+                }
+            }
+            _context.VaccinationStatuses.Update(objToUpdate.VaccinationStatus);
+
             #endregion
 
             #region VisitGuids
@@ -317,8 +336,10 @@ namespace eKarton.Services
                     _context.VaccinationStatuses.Remove(medicalRecord.VaccinationStatus);
                 }
                 #endregion
-
-                _context.Doctors.Remove(medicalRecord.Doctor);
+                if (medicalRecord.Doctor != null)
+                {
+                    _context.Doctors.Remove(medicalRecord.Doctor);
+                }
                 _context.Patients.Remove(medicalRecord.Patient);
                 _context.MedicalRecords.Remove(medicalRecord);
                 _context.SaveChanges();

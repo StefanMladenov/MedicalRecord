@@ -16,56 +16,59 @@ namespace eKarton.Controllers
             _visitService = visitService;
         }
 
-        [HttpGet(Name = "GetVisits")]
+        [HttpGet]
         public ActionResult<List<Visit>> Get() =>
             _visitService.GetAll();
 
-        [HttpGet("{guid}")]
+        [HttpGet("GetByGuid/{guid}")]
         public ActionResult<Visit> GetVisit(string guid)
         {
             var visit = _visitService.GetByGuid(guid);
-
             if (visit == null)
             {
                 return NotFound();
             }
-
             return visit;
         }
 
-        [HttpPost]
-        public ActionResult<Visit> PostVisit(Visit visit)
+        [HttpGet("GetByMRGuid/{guid}")]
+        public ActionResult<List<Visit>> GetVisitByMedicalRecordGuid(string guid)
         {
-            Visit visit1 = new Visit();
-            visit1.PatientUCIN = visit.PatientUCIN;
-            visit1.DoctorUCIN = visit.DoctorUCIN;
-            visit1.Therapy = visit.Therapy;
-            visit1.WorkingDiagnosis = visit.WorkingDiagnosis;
-            string[] lista = { "aaaaaa", "bbbbbbb" };
+            return _visitService.GetAllByRecordGuid(guid);
+        }
 
-            visit1.FilePaths = lista;
-            visit1.CurrentFinding = visit.CurrentFinding;
-            visit1.UpdatedOn = visit.UpdatedOn;
+        [HttpGet("GetByPatientUcin/{ucin}")]
+        public ActionResult<List<Visit>> GetVisitByPatientUCIN(string ucin)
+        {
+            return _visitService.GetAllByPatientUCIN(ucin);
+        }
 
-
-            _visitService.Create(visit1);
-
-            return CreatedAtRoute("GetVisit", new { id = visit1.Guid.ToString() }, visit1);
+        [HttpPost]
+        public ActionResult<Visit> PostVisit([FromBody]Visit visit)
+        {
+            if (ModelState.IsValid)
+            {
+                var _visit = _visitService.GetByGuid(visit.Guid);
+                if (_visit != null)
+                {
+                    return BadRequest();
+                }
+                _visitService.Create(visit);
+                return Created("PostVisit", visit);
+            }
+            return BadRequest();
         }
 
         [HttpPut("{guid}")]
-        public IActionResult Update(string guid, Visit visitIn)
+        public IActionResult PutVisit(string guid, [FromBody] Visit visitIn)
         {
             var visit = _visitService.GetByGuid(guid);
-
             if (visit == null)
             {
                 _visitService.Create(visitIn);
-                return Accepted();
+                return Created("PutVisit", visitIn);
             }
-
-            _visitService.Update(guid, visitIn);
-
+            _visitService.Update(guid, visit, visitIn);
             return Accepted();
         }
 
@@ -73,15 +76,12 @@ namespace eKarton.Controllers
         public IActionResult DeleteVisit(string guid)
         {
             var visit = _visitService.GetByGuid(guid);
-
             if (visit == null)
             {
                 return NotFound();
             }
-
             _visitService.Remove(visit);
-
-            return NoContent();
+            return Accepted();
         }
     }
 }

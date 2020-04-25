@@ -1,5 +1,6 @@
 ﻿using eKarton.Models;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +16,15 @@ namespace eKarton.Services
             var database = client.GetDatabase(settings.DatabaseName);
 
             _visits = database.GetCollection<Visit>(settings.VisitsCollectionName);
+            var indexOptions = new CreateIndexOptions();
+            var indexKeys = Builders<Visit>.IndexKeys.Ascending(x => x.PatientUCIN);
+            var indexModel = new CreateIndexModel<Visit>(indexKeys, indexOptions);
+            _visits.Indexes.CreateOne(indexModel);
+
+            var indexOptions1 = new CreateIndexOptions();
+            var indexKeys1 = Builders<Visit>.IndexKeys.Ascending(x => x.MedicalRecordGuid);
+            var indexModel1 = new CreateIndexModel<Visit>(indexKeys1, indexOptions1);
+            _visits.Indexes.CreateOne(indexModel1);
         }
 
         public List<Visit> GetAll() =>
@@ -28,23 +38,28 @@ namespace eKarton.Services
             _visits.InsertOne(visit);
         }
 
-        public void Update(string id, Visit visitIn) =>
-            _visits.ReplaceOne(visit => visit.Guid == id, visitIn);
-
         public void Remove(Visit visitIn) =>
-            _visits.DeleteOne(visit => visit.Guid == visitIn.Guid);
+            _visits.DeleteOne(visit => visit.Id == visitIn.Id);
 
-        public void Delete(string id) =>
-            _visits.DeleteOne(visit => visit.Guid == id);
-
-        public List<Visit> GetByCondition(Visit entity)
-        {
-            throw new System.NotImplementedException();
-        }
+        public void Delete(string guid) =>
+            _visits.DeleteOne(visit => visit.Guid == guid);
 
         public void Update(string guid, Visit obj, Visit objToUpdate)
         {
-            throw new System.NotImplementedException();
+            objToUpdate.Id = obj.Id;
+            objToUpdate.Guid = guid;
+            objToUpdate.CreatedOn = obj.CreatedOn;
+           _visits.ReplaceOne(visit => visit.Guid == guid, objToUpdate);
+        }
+
+        public List<Visit> GetAllByRecordGuid(string guid)
+        {
+            return _visits.Find<Visit>(visit => visit.MedicalRecordGuid == guid).ToList();
+        }
+
+        public List<Visit> GetAllByPatientUCIN(string ucin)
+        {
+            return _visits.Find<Visit>(visit => visit.PatientUCIN == ucin).ToList();
         }
     }
 }
