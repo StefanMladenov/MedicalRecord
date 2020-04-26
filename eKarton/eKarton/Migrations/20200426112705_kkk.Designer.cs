@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eKarton.Models.SQL;
 
 namespace eKarton.Migrations
 {
     [DbContext(typeof(MedicalRecordContext))]
-    partial class MedicalRecordContextModelSnapshot : ModelSnapshot
+    [Migration("20200426112705_kkk")]
+    partial class kkk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +55,6 @@ namespace eKarton.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ImageType")
-                        .HasColumnType("int");
 
                     b.Property<string>("MedicalRecordGuid")
                         .HasColumnType("nvarchar(450)");
@@ -169,9 +168,6 @@ namespace eKarton.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ImageType")
-                        .HasColumnType("int");
 
                     b.Property<string>("MedicalRecordGuid")
                         .HasColumnType("nvarchar(450)");
@@ -322,9 +318,6 @@ namespace eKarton.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ImageType")
-                        .HasColumnType("int");
 
                     b.Property<string>("MedicalRecordGuid")
                         .HasColumnType("nvarchar(450)");

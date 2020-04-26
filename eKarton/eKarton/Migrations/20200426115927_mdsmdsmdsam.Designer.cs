@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eKarton.Models.SQL;
 
 namespace eKarton.Migrations
 {
     [DbContext(typeof(MedicalRecordContext))]
-    partial class MedicalRecordContextModelSnapshot : ModelSnapshot
+    [Migration("20200426115927_mdsmdsmdsam")]
+    partial class mdsmdsmdsam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

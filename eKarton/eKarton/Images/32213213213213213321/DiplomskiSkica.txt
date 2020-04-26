@@ -1,0 +1,37 @@
+Skica diplomskog pismeni:
+
+//uvod/motivacija/ pros/cons postojeceg sistema
+3 strane
+
+// .NET Core 3.0 - 
+1,2 strane
+
+//web api 
+1
+referenca na doktorat
+rest vs soap
+
+//web api u .net core
+1
+
+//modeli
+
+// controller / service pros/cons
+
+
+
+
+//mongodb.driver
+//1 strana
+
+
+
+
+
+dva indeksa za pribavljanje - vise vremena za upis nego za citanje, ali sortiranje get-a cesce - time consuming
+
+//mongoDB Sharding - postoji realna opcija u buducnosti da se poveca 
+broj upisa/citanja 2-3 strane
+
+//bypassing sa asinhronim pozivima ka pregledima u mongu nakon getovanja pacijenta
+//tu bi dobro doso redis da iskesira 

@@ -14,90 +14,269 @@ namespace eKarton.Controllers
     public class ImageController : ControllerBase
     {
         public static IWebHostEnvironment _environment;
-        private readonly IService<Image> _service;
+        private readonly IService<Snapshot> _snapshotService;
+        private readonly IService<Instruction> _instructionService;
+        private readonly IService<Analysis> _analysisService;
 
-        public ImageController(IWebHostEnvironment environment, IService<Image> service)
+        public ImageController(IWebHostEnvironment environment, IService<Snapshot> snapshotService, IService<Instruction> instructionService, IService<Analysis> analysisService)
         {
             _environment = environment;
-            _service = service;
+            _snapshotService = snapshotService;
+            _instructionService = instructionService;
+            _analysisService = analysisService;
         }
 
-        [HttpPost("{action}/{guid}")]
-        public async Task<string> UploadFile([FromForm] IFormFile file, string guid)
+        // POST: api/Image/UploadFile/foldername
+        [HttpPost("{action}/{foldername}")]
+        public async Task<string> UploadFile([FromForm] IFormFile file, string foldername)
         {
             var form = HttpContext.Request.Form;
             var form1 = HttpContext.Request.Form.Files;
             string fName = file.FileName;
-            string path = Path.Combine(_environment.ContentRootPath, "Images/" + file.FileName);
-            using (var stream = new FileStream(path, FileMode.Create))
+            string path = Path.Combine(_environment.ContentRootPath, "Images\\" + foldername);
+            string pathWithFilename = path + "\\" + file.FileName;
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            using (var stream = new FileStream(pathWithFilename, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-            return path;
+            return pathWithFilename;
         }
 
         // GET: api/Image
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Image>>> GetImages()
         {
-            return _service.GetAll();
+            List<Image> list = new List<Image>();
+            list.AddRange(_snapshotService.GetAll());
+            list.AddRange(_instructionService.GetAll());
+            list.AddRange(_analysisService.GetAll());
+            return list;
+        }
+
+        // GET: api/Image/snapshot
+        [HttpGet("snapshot")]
+        public async Task<ActionResult<IEnumerable<Snapshot>>> GetSnapshots()
+        {
+            return _snapshotService.GetAll();
+        }
+
+        // GET: api/Image/snapshot
+        [HttpGet("instruction")]
+        public async Task<ActionResult<IEnumerable<Instruction>>> GetInstructions()
+        {
+            return _instructionService.GetAll();
+        }
+
+        // GET: api/Image/analysis
+        [HttpGet("analysis")]
+        public async Task<ActionResult<IEnumerable<Analysis>>> GetAnalyses()
+        {
+            return _analysisService.GetAll();
         }
 
         // GET: api/Image/guid
         [HttpGet("{guid}")]
-        public async Task<ActionResult<Image>> GetImage(string guid)
+        public ActionResult<Image> GetImage(string guid)
         {
-            var image = _service.GetByGuid(guid);
-            if (image == null)
+            Image image = _snapshotService.GetByGuid(guid);
+            if (image != null)
             {
-                return NotFound();
+                return image;
             }
+            image = _instructionService.GetByGuid(guid);
+            if (image != null)
+            {
+                return image;
+            }
+            image = _analysisService.GetByGuid(guid);
+            if (image != null)
+            {
+                return image;
+            }
+            return NotFound();
+        }
 
-            return image;
+        // GET: api/Image/snapshot/guid
+        [HttpGet("snapshot/{guid}")]
+        public ActionResult<Snapshot> GetSnapshot(string guid)
+        {
+            var snapshot = _snapshotService.GetByGuid(guid);
+            if (snapshot != null)
+            {
+                return snapshot;
+            }
+            return NotFound();
+        }
+
+        // GET: api/Image/instruction/guid
+        [HttpGet("instruction/{guid}")]
+        public ActionResult<Instruction> GetInstruction(string guid)
+        {
+            var instruction = _instructionService.GetByGuid(guid);
+            if (instruction != null)
+            {
+                return instruction;
+            }
+            return NotFound();
+        }
+
+        // GET: api/Image/analysis/guid
+        [HttpGet("analysis/{guid}")]
+        public ActionResult<Analysis> GetAnalysis(string guid)
+        {
+            var analysis = _analysisService.GetByGuid(guid);
+            if (analysis != null)
+            {
+                return analysis;
+            }
+            return NotFound();
         }
 
         // POST: api/Image/snapshot
         [HttpPost("snapshot")]
-        public async Task<ActionResult<Snapshot>> PostSnapshot(Snapshot snapshot)
+        public ActionResult<Snapshot> PostSnapshot(Snapshot snapshot)
         {
-            if (_service.GetByGuid(snapshot.Guid) != null || !ModelState.IsValid)
+            if (_snapshotService.GetByGuid(snapshot.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
-            _service.Create(snapshot);
-            return CreatedAtAction("Created Snapshot", new { guid = snapshot.Guid }, snapshot);
+            _snapshotService.Create(snapshot);
+            return CreatedAtAction("PostSnapshot", new { guid = snapshot.Guid }, snapshot);
         }
 
         // POST: api/Image/instruction
         [HttpPost("instruction")]
-        public async Task<ActionResult<Instruction>> PostInstruction(Instruction instruction)
+        public ActionResult<Instruction> PostInstruction(Instruction instruction)
         {
-            if (_service.GetByGuid(instruction.Guid) != null || !ModelState.IsValid)
+            if (_instructionService.GetByGuid(instruction.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
-            _service.Create(instruction);
-            return CreatedAtAction("Created Instruction", new { guid = instruction.Guid }, instruction);
+            _instructionService.Create(instruction);
+            return CreatedAtAction("PostInstruction", new { guid = instruction.Guid }, instruction);
         }
 
         // POST: api/Image/analysis
         [HttpPost("analysis")]
-        public async Task<ActionResult<Analysis>> PostAnalysis(Analysis analysis)
+        public ActionResult<Analysis> PostAnalysis(Analysis analysis)
         {
-            if (_service.GetByGuid(analysis.Guid) != null || !ModelState.IsValid)
+            if (_analysisService.GetByGuid(analysis.Guid) != null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
-            _service.Create(analysis);
-            return CreatedAtAction("Created Analysis", new { guid = analysis.Guid }, analysis);
+            _analysisService.Create(analysis);
+            return CreatedAtAction("PostAnalysis", new { guid = analysis.Guid }, analysis);
+        }
+
+        // PUT: api/Image/snapshot/guid
+        [HttpPut("snapshot/{guid}")]
+        public ActionResult<Snapshot> PutSnapshot(string guid, [FromBody]Snapshot snapshot)
+        {
+            if (ModelState.IsValid)
+            {
+                var snapsh = _snapshotService.GetByGuid(guid);
+                if (snapsh != null)
+                {
+                    _snapshotService.Update(guid, snapshot, snapsh);
+                    return Accepted();
+                }
+                else
+                {
+                    snapshot.Guid = guid;
+                    _snapshotService.Create(snapshot);
+                    return Created("guid", guid);
+                }
+            }
+            return BadRequest();
+        }
+
+        // PUT: api/Image/instruction/guid
+        [HttpPut("instruction/{guid}")]
+        public ActionResult<Instruction> PutInstruction(string guid, [FromBody]Instruction instruction)
+        {
+            if (ModelState.IsValid)
+            {
+                var instr = _instructionService.GetByGuid(guid);
+                if (instr != null)
+                {
+                    _instructionService.Update(guid, instruction, instr);
+                    return Accepted();
+                }
+                else
+                {
+                    instruction.Guid = guid;
+                    _instructionService.Create(instruction);
+                    return Created("guid", guid);
+                }
+            }
+            return BadRequest();
+        }
+        
+        // PUT: api/Image/analysis/guid
+        [HttpPut("analysis/{guid}")]
+        public ActionResult<Analysis> PutAnalysis(string guid, [FromBody]Analysis analysis)
+        {
+            if (ModelState.IsValid)
+            {
+                var analys = _analysisService.GetByGuid(guid);
+                if (analys != null)
+                {
+                    _analysisService.Update(guid, analysis, analys);
+                    return Accepted();
+                }
+                else
+                {
+                    analysis.Guid = guid;
+                    _analysisService.Create(analysis);
+                    return Created("guid", guid);
+                }
+            }
+            return BadRequest();
         }
 
         // DELETE: api/Image/guid
         [HttpDelete("{guid}")]
-        public async Task<ActionResult<Image>> DeleteImage(string guid)
+        public ActionResult<Image> DeleteImage(string guid)
         {
-            _service.Delete(guid);
-            return Accepted();
+            var imagePath = "";
+            Snapshot ss = _snapshotService.GetByGuid(guid);
+            if(ss != null)
+            {
+                imagePath = ss.ImagePath;
+                _snapshotService.Delete(guid);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+                return Accepted();
+            }
+            Instruction instr = _instructionService.GetByGuid(guid);
+            if (instr != null)
+            {
+                imagePath = instr.ImagePath;
+                _instructionService.Delete(guid);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+                return Accepted();
+            }
+            Analysis analysis = _analysisService.GetByGuid(guid);
+            if (analysis != null)
+            {
+                imagePath = analysis.ImagePath;
+                _analysisService.Delete(guid);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+                return Accepted();
+            }
+            return NotFound();
         }
     }
 }

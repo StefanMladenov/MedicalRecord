@@ -4,12 +4,13 @@ namespace eKarton.Models.SQL
     public abstract class Image : AbstractEntity
     {
         public string ImagePath { get; set; }
+
+        public ImageType ImageType { get; set; }
     }
 
     public class Instruction : Image
     {
-        public Doctor DoctorFrom { get; set; }
-        public Doctor DoctorTo { get; set; }
+        public string SpecializationTo { get; set; }
     }
 
     public class Snapshot : Image
@@ -22,7 +23,13 @@ namespace eKarton.Models.SQL
     {
         public AnalysisType AnalysisType { get; set; }
     }
-
+    public enum ImageType
+    {
+        SNAPSHOT = 1,
+        INSTRUCTION = 2,
+        ANALYSIS = 3
+    }
+    
     public enum SnapshotType
     {
         XRAY = 1,

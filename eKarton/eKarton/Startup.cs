@@ -38,7 +38,9 @@ namespace eKarton
             services.AddScoped<IService<Anamnesis>, AnamnesisService>();
             services.AddScoped<IService<Disease>, DiseaseService>();
             services.AddScoped<IService<Doctor>, DoctorService>();
-            services.AddScoped<IService<Image>, ImageService>();
+            services.AddScoped<IService<Snapshot>, SnapshotService>();
+            services.AddScoped<IService<Instruction>, InstructionService>();
+            services.AddScoped<IService<Analysis>, AnalysisService>();
             services.AddScoped<IService<MedicalRecord>, MedicalRecordService>();
             services.AddScoped<IService<Medicine>, MedicineService>();
             services.AddScoped<IService<Patient>, PatientService>();

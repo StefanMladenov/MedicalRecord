@@ -23,8 +23,7 @@ namespace eKarton.Services
                 .Include(x => x.VaccinationStatus).ThenInclude(y => y.Vaccines)
                 .Include(x => x.Snapshots)
                 .Include(x => x.Analysis)
-                .Include(x => x.Instructions).ThenInclude(y => y.DoctorFrom)
-                .Include(x => x.Instructions).ThenInclude(y => y.DoctorTo)
+                .Include(x => x.Instructions)
                 .Include(x => x.Anamnesis).ThenInclude(y => y.Diseases).ToList();
         }
 
@@ -37,8 +36,7 @@ namespace eKarton.Services
                 .Include(x => x.VaccinationStatus).ThenInclude(y => y.Vaccines)
                 .Include(x => x.Snapshots)
                 .Include(x => x.Analysis)
-                .Include(x => x.Instructions).ThenInclude(y => y.DoctorFrom)
-                .Include(x => x.Instructions).ThenInclude(y => y.DoctorTo)
+                .Include(x => x.Instructions)
                 .Include(x => x.Anamnesis).ThenInclude(y => y.Diseases)
                 .SingleOrDefault(x => x.Guid.Equals(guid));
         }
@@ -137,8 +135,6 @@ namespace eKarton.Services
             #region Instructions
             foreach (Instruction instr in objToUpdate.Instructions)
             {
-                _context.Doctors.Remove(instr.DoctorFrom);
-                _context.Doctors.Remove(instr.DoctorTo);
                 _context.Instructions.Remove(instr);
             }
             objToUpdate.Instructions = new List<Instruction>();
@@ -306,8 +302,6 @@ namespace eKarton.Services
                 {
                     foreach (Instruction instr in medicalRecord.Instructions)
                     {
-                        _context.Doctors.Remove(instr.DoctorFrom);
-                        _context.Doctors.Remove(instr.DoctorTo);
                         _context.Instructions.Remove(instr);
                     }
                 }
@@ -336,6 +330,7 @@ namespace eKarton.Services
                     _context.VaccinationStatuses.Remove(medicalRecord.VaccinationStatus);
                 }
                 #endregion
+
                 if (medicalRecord.Doctor != null)
                 {
                     _context.Doctors.Remove(medicalRecord.Doctor);
