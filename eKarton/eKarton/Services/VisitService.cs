@@ -16,6 +16,7 @@ namespace eKarton.Services
             var database = client.GetDatabase(settings.DatabaseName);
 
             _visits = database.GetCollection<Visit>(settings.VisitsCollectionName);
+
             var indexOptions = new CreateIndexOptions();
             var indexKeys = Builders<Visit>.IndexKeys.Ascending(x => x.PatientUCIN);
             var indexModel = new CreateIndexModel<Visit>(indexKeys, indexOptions);

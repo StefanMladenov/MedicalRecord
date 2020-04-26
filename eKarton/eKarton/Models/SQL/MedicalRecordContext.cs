@@ -17,28 +17,24 @@ namespace eKarton.Models.SQL
 
             modelBuilder.Entity<Allergy>().Property(p => p.Food)
             .HasConversion(
-            v => JsonConvert.SerializeObject(v), // lambda expression 
+            v => JsonConvert.SerializeObject(v),
             v => JsonConvert.DeserializeObject<List<string>>(v));
 
+            modelBuilder.Entity<Allergy>().Property(p => p.Other)
+            .HasConversion(
+            v => JsonConvert.SerializeObject(v),
+            v => JsonConvert.DeserializeObject<List<string>>(v));
+
+            modelBuilder.Entity<Allergy>().HasMany(x => x.Medicines);
             #endregion
 
             modelBuilder.Entity<Anamnesis>().HasMany(t => t.Diseases);
-
-
-
-            modelBuilder.Entity<Allergy>().Property(p => p.Other)
-           .HasConversion(
-           v => JsonConvert.SerializeObject(v),
-           v => JsonConvert.DeserializeObject<List<string>>(v));
-
-            modelBuilder.Entity<Allergy>().HasMany(x => x.Medicines);
 
             modelBuilder.Entity<VaccinationStatus>().HasMany(x => x.Vaccines);
 
             modelBuilder.Entity<Patient>()
             .HasIndex(u => u.UniqueCitizensIdentityNumber)
             .IsUnique();
-
 
             modelBuilder.Entity<Doctor>()
             .HasIndex(u => u.UniqueCitizensIdentityNumber)

@@ -7,6 +7,7 @@ namespace eKarton.Services
     public class SnapshotService : IService<Snapshot>
     {
         private readonly MedicalRecordContext _context;
+
         public SnapshotService(MedicalRecordContext context)
         {
             _context = context;

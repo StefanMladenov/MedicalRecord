@@ -23,7 +23,7 @@ namespace eKarton.Controllers
             return _service.GetAll();
         }
 
-        // GET: api/Disease/5
+        // GET: api/Disease/guid
         [HttpGet("{guid}")]
         public ActionResult<Disease> GetDisease(string guid)
         {
@@ -36,7 +36,7 @@ namespace eKarton.Controllers
             return disease;
         }
 
-        // PUT: api/Disease/5
+        // PUT: api/Disease/guid
         [HttpPut("{guid}")]
         public ActionResult<Disease> PutDisease(string guid, [FromBody] Disease disease)
         {
@@ -70,7 +70,7 @@ namespace eKarton.Controllers
             return CreatedAtAction("PostDisease", new { guid = disease.Guid }, disease);
         }
 
-        // DELETE: api/Disease/5
+        // DELETE: api/Disease/guid
         [HttpDelete("{guid}")]
         public ActionResult<Disease> DeleteDisease(string guid)
         {

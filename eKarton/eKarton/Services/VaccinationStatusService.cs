@@ -8,6 +8,7 @@ namespace eKarton.Services
     public class VaccinationStatusService : IService<VaccinationStatus>
     {
         private readonly MedicalRecordContext _context;
+
         public VaccinationStatusService(MedicalRecordContext context)
         {
             _context = context;

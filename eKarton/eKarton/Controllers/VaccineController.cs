@@ -10,6 +10,7 @@ namespace eKarton.Controllers
     public class VaccineController : ControllerBase
     {
         private readonly IService<Vaccine> _service;
+
         public VaccineController(IService<Vaccine> service)
         {
             _service = service;

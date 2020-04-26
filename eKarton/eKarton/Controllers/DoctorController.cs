@@ -23,7 +23,7 @@ namespace eKarton.Controllers
             return _service.GetAll();
         }
 
-        // GET: api/Lekar/guid
+        // GET: api/Doctor/guid
         [HttpGet("{guid}")]
         public ActionResult<Doctor> GetDoctor(string guid)
         {
@@ -35,7 +35,7 @@ namespace eKarton.Controllers
             return doctor;
         }
 
-        //PUT: api/Lekar/guid
+        //PUT: api/Doctor/guid
         [HttpPut("{guid}")]
         public IActionResult PutDoctor(string guid, [FromBody]Doctor doctor)
         {

@@ -7,6 +7,7 @@ namespace eKarton.Services
     public class DoctorService : IService<Doctor>
     {
         private readonly MedicalRecordContext _context;
+
         public DoctorService(MedicalRecordContext context)
         {
             _context = context;

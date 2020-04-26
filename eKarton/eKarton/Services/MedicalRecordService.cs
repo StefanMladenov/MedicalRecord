@@ -250,7 +250,6 @@ namespace eKarton.Services
                 objToUpdate.Patient.MothersName = obj.Patient.MothersName;
                 objToUpdate.Patient.TypeOfInsurance = obj.Patient.TypeOfInsurance;
                 objToUpdate.Patient.UniqueCitizensIdentityNumber = obj.Patient.UniqueCitizensIdentityNumber;
-                //_context.Patients.Update(objToUpdate.Patient);
             }
             #endregion
 

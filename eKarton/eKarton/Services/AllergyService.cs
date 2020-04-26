@@ -8,6 +8,7 @@ namespace eKarton.Services
     public class AllergyService : IService<Allergy>
     {
         private readonly MedicalRecordContext _context;
+
         public AllergyService(MedicalRecordContext context)
         {
             _context = context;

@@ -57,21 +57,21 @@ namespace eKarton.Controllers
             return list;
         }
 
-        // GET: api/Image/snapshot
+        // GET: api/Image/Snapshot
         [HttpGet("snapshot")]
         public async Task<ActionResult<IEnumerable<Snapshot>>> GetSnapshots()
         {
             return _snapshotService.GetAll();
         }
 
-        // GET: api/Image/snapshot
+        // GET: api/Image/Instruction
         [HttpGet("instruction")]
         public async Task<ActionResult<IEnumerable<Instruction>>> GetInstructions()
         {
             return _instructionService.GetAll();
         }
 
-        // GET: api/Image/analysis
+        // GET: api/Image/Analysis
         [HttpGet("analysis")]
         public async Task<ActionResult<IEnumerable<Analysis>>> GetAnalyses()
         {
@@ -100,7 +100,7 @@ namespace eKarton.Controllers
             return NotFound();
         }
 
-        // GET: api/Image/snapshot/guid
+        // GET: api/Image/Snapshot/guid
         [HttpGet("snapshot/{guid}")]
         public ActionResult<Snapshot> GetSnapshot(string guid)
         {
@@ -112,7 +112,7 @@ namespace eKarton.Controllers
             return NotFound();
         }
 
-        // GET: api/Image/instruction/guid
+        // GET: api/Image/Instruction/guid
         [HttpGet("instruction/{guid}")]
         public ActionResult<Instruction> GetInstruction(string guid)
         {
@@ -124,7 +124,7 @@ namespace eKarton.Controllers
             return NotFound();
         }
 
-        // GET: api/Image/analysis/guid
+        // GET: api/Image/Analysis/guid
         [HttpGet("analysis/{guid}")]
         public ActionResult<Analysis> GetAnalysis(string guid)
         {
@@ -136,7 +136,7 @@ namespace eKarton.Controllers
             return NotFound();
         }
 
-        // POST: api/Image/snapshot
+        // POST: api/Image/Snapshot
         [HttpPost("snapshot")]
         public ActionResult<Snapshot> PostSnapshot(Snapshot snapshot)
         {
@@ -148,7 +148,7 @@ namespace eKarton.Controllers
             return CreatedAtAction("PostSnapshot", new { guid = snapshot.Guid }, snapshot);
         }
 
-        // POST: api/Image/instruction
+        // POST: api/Image/Instruction
         [HttpPost("instruction")]
         public ActionResult<Instruction> PostInstruction(Instruction instruction)
         {
@@ -160,7 +160,7 @@ namespace eKarton.Controllers
             return CreatedAtAction("PostInstruction", new { guid = instruction.Guid }, instruction);
         }
 
-        // POST: api/Image/analysis
+        // POST: api/Image/Analysis
         [HttpPost("analysis")]
         public ActionResult<Analysis> PostAnalysis(Analysis analysis)
         {
@@ -172,7 +172,7 @@ namespace eKarton.Controllers
             return CreatedAtAction("PostAnalysis", new { guid = analysis.Guid }, analysis);
         }
 
-        // PUT: api/Image/snapshot/guid
+        // PUT: api/Image/Snapshot/guid
         [HttpPut("snapshot/{guid}")]
         public ActionResult<Snapshot> PutSnapshot(string guid, [FromBody]Snapshot snapshot)
         {
@@ -194,7 +194,7 @@ namespace eKarton.Controllers
             return BadRequest();
         }
 
-        // PUT: api/Image/instruction/guid
+        // PUT: api/Image/Instruction/guid
         [HttpPut("instruction/{guid}")]
         public ActionResult<Instruction> PutInstruction(string guid, [FromBody]Instruction instruction)
         {
@@ -216,7 +216,7 @@ namespace eKarton.Controllers
             return BadRequest();
         }
 
-        // PUT: api/Image/analysis/guid
+        // PUT: api/Image/Analysis/guid
         [HttpPut("analysis/{guid}")]
         public ActionResult<Analysis> PutAnalysis(string guid, [FromBody]Analysis analysis)
         {
