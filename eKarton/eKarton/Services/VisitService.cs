@@ -48,6 +48,10 @@ namespace eKarton.Services
         {
             objToUpdate.Id = obj.Id;
             objToUpdate.Guid = guid;
+            if(obj.MedicalRecordGuid != null)
+            {
+                objToUpdate.MedicalRecordGuid = obj.MedicalRecordGuid;
+            }
             objToUpdate.CreatedOn = obj.CreatedOn;
            _visits.ReplaceOne(visit => visit.Guid == guid, objToUpdate);
         }
