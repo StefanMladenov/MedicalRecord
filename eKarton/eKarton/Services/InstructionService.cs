@@ -40,6 +40,10 @@ namespace eKarton.Services
             var obj = GetByGuid(guid);
             if (obj != null)
             {
+                if (System.IO.File.Exists(obj.ImagePath))
+                {
+                    System.IO.File.Delete(obj.ImagePath);
+                }
                 _context.Instructions.Remove(obj);
                 _context.SaveChanges();
             }

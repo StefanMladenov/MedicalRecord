@@ -215,7 +215,7 @@ namespace eKarton.Controllers
             }
             return BadRequest();
         }
-        
+
         // PUT: api/Image/analysis/guid
         [HttpPut("analysis/{guid}")]
         public ActionResult<Analysis> PutAnalysis(string guid, [FromBody]Analysis analysis)
@@ -242,41 +242,21 @@ namespace eKarton.Controllers
         [HttpDelete("{guid}")]
         public ActionResult<Image> DeleteImage(string guid)
         {
-            var imagePath = "";
-            Snapshot ss = _snapshotService.GetByGuid(guid);
-            if(ss != null)
+            _snapshotService.Delete(guid);
+            _instructionService.Delete(guid);
+            _analysisService.Delete(guid);
+            return Accepted();
+        }
+
+        // DELETE: api/Image/DeleteFileOnPath
+        [HttpDelete("{action}")]
+        public ActionResult<Image> DeleteFileOnPath([FromBody]Snapshot image)
+        {
+            if (System.IO.File.Exists(image.ImagePath))
             {
-                imagePath = ss.ImagePath;
-                _snapshotService.Delete(guid);
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
-                return Accepted();
+                System.IO.File.Delete(image.ImagePath);
             }
-            Instruction instr = _instructionService.GetByGuid(guid);
-            if (instr != null)
-            {
-                imagePath = instr.ImagePath;
-                _instructionService.Delete(guid);
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
-                return Accepted();
-            }
-            Analysis analysis = _analysisService.GetByGuid(guid);
-            if (analysis != null)
-            {
-                imagePath = analysis.ImagePath;
-                _analysisService.Delete(guid);
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
-                return Accepted();
-            }
-            return NotFound();
+            return Accepted();
         }
     }
 }
