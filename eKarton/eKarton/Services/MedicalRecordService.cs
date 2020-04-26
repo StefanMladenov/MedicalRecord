@@ -200,7 +200,6 @@ namespace eKarton.Services
                     objToUpdate.VaccinationStatus.Vaccines.Add(vacc);
                 }
             }
-            _context.VaccinationStatuses.Update(objToUpdate.VaccinationStatus);
 
             #endregion
 
@@ -223,12 +222,17 @@ namespace eKarton.Services
                     objToUpdate.Doctor.Specialization = obj.Doctor.Specialization;
                     objToUpdate.Doctor.DateOfBirth = obj.Doctor.DateOfBirth;
                     objToUpdate.Doctor.UniqueCitizensIdentityNumber = obj.Doctor.UniqueCitizensIdentityNumber;
-                    _context.Doctors.Update(objToUpdate.Doctor);
                 }
                 else
                 {
-                    _context.Doctors.Add(obj.Doctor);
-                    objToUpdate.Doctor = obj.Doctor;
+                    objToUpdate.Doctor = new Doctor();
+                    objToUpdate.Doctor.FirstName = obj.Doctor.FirstName;
+                    objToUpdate.Doctor.LastName = obj.Doctor.LastName;
+                    objToUpdate.Doctor.EMail = obj.Doctor.EMail;
+                    objToUpdate.Doctor.Specialization = obj.Doctor.Specialization;
+                    objToUpdate.Doctor.DateOfBirth = obj.Doctor.DateOfBirth;
+                    objToUpdate.Doctor.UniqueCitizensIdentityNumber = obj.Doctor.UniqueCitizensIdentityNumber;
+                    _context.Doctors.Add(objToUpdate.Doctor);
                 }
             }
             #endregion
@@ -246,7 +250,7 @@ namespace eKarton.Services
                 objToUpdate.Patient.MothersName = obj.Patient.MothersName;
                 objToUpdate.Patient.TypeOfInsurance = obj.Patient.TypeOfInsurance;
                 objToUpdate.Patient.UniqueCitizensIdentityNumber = obj.Patient.UniqueCitizensIdentityNumber;
-                _context.Patients.Update(objToUpdate.Patient);
+                //_context.Patients.Update(objToUpdate.Patient);
             }
             #endregion
 
