@@ -10,7 +10,7 @@ Prerequisites:
 Project setup:
 
 1) Change connection strings in order to work with your local databases in appsettings.json
-2) Since its code-first approach, you need to run into package manager console commands for migrations and database:
+2) Since it's code-first approach, you need to run into package manager console commands for migrations and database:
        
        1. add-migration migrationName
        2. update-database
