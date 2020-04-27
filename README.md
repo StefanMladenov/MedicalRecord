@@ -15,5 +15,5 @@ Project setup:
        1. add-migration migrationName
        2. update-database
 
-3) Set debug profile to eKarton profile
+3) Set debug profile to eKarton 
 
